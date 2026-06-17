@@ -1,12 +1,17 @@
 // components/MainContent.tsx
 import styles from "./CardProduct.module.css";
 import { Plus } from "lucide-react";
+interface Topping {
+    name: string;
+    quantity: number;
+}
+
 interface CardProductProps {
     productName: string;
     description: string;
-    price: string;
+    price: number;
     hasToppings: boolean;
-    toppings?: string[];
+    toppings?: Topping[];
     img: string;
     onClick?: () => void;
 }

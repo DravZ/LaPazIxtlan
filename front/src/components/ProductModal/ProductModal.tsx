@@ -1,5 +1,7 @@
+import { Minus, Plus, ShoppingCart } from "lucide-react";
 import type { ProductMenu } from "../../interfaces/ProductMenu";
 import styles from './ProductModal.module.css';
+import { useEffect, useState } from "react";
 
 interface ProductModalProps {
     product: ProductMenu | null;
@@ -11,7 +13,21 @@ const ProductModal = ({
     onClose
 }: ProductModalProps) => {
 
+    const [cantidad, setCantidad] = useState(1);
+
+    const [toppings, setToppings] = useState(
+        product?.toppings || []
+    );
+
+    useEffect(() => {
+        setCantidad(1);
+        setToppings(product?.toppings || []);
+    }, [product]);
+
     if (!product) return null;
+
+    const precio =
+        Number(product.price) * cantidad;
 
     return (
         <div className={styles.overlay} onClick={onClose}>
@@ -21,7 +37,10 @@ const ProductModal = ({
             >
                 <button
                     className={styles.closeButton}
-                    onClick={onClose}
+                    onClick={() => {
+                        setCantidad(1);
+                        onClose();
+                    }}
                 >
                     ✕
                 </button>
@@ -33,7 +52,6 @@ const ProductModal = ({
                     />
                 </div>
 
-                {/* Scroll */}
                 <div className={styles.body}>
 
                     <div className={styles.content}>
@@ -41,36 +59,88 @@ const ProductModal = ({
                             ESPECIALES
                         </span>
 
-                        <h2>{product.productName}</h2>
+                        <h2 className={styles.productName}>
+                            {product.productName}
+                        </h2>
 
-                        <p>{product.description}</p>
+                        <p className={styles.description}>
+                            {product.description}
+                        </p>
 
-                        {product.toppings ? product.hasToppings &&
-                            product.toppings?.length > 0 && (
-                                <>
-                                    <h4>
-                                        Personaliza tu orden
-                                    </h4>
+                        {product.hasToppings && (
+                            <>
+                                <h4 className={styles.toppingsTitle}>
+                                    Personaliza tu orden
+                                </h4>
 
-                                    <div className={styles.toppings}>
-                                        {product.toppings.map(
-                                            (topping) => (
+                                <div className={styles.toppingsContainer}>
+                                    {toppings.map((topping) => (
+                                        <div
+                                            key={topping.name}
+                                            className={styles.toppingRow}
+                                        >
+                                            <span>
+                                                {topping.name}
+                                            </span>
+
+                                            <div className={styles.toppingControls}>
                                                 <button
-                                                    key={topping}
-                                                    className={
-                                                        styles.topping
-                                                    }
+                                                    className={styles.toppingButton}
+                                                    onClick={() => {
+                                                        setToppings(prev =>
+                                                            prev.map(t =>
+                                                                t.name === topping.name
+                                                                    ? {
+                                                                        ...t,
+                                                                        quantity: Math.max(
+                                                                            0,
+                                                                            t.quantity - 1
+                                                                        )
+                                                                    }
+                                                                    : t
+                                                            )
+                                                        );
+                                                    }}
                                                 >
-                                                    {topping}
+                                                    <Minus size={20} />
                                                 </button>
-                                            )
-                                        )}
-                                    </div>
-                                </>
-                            ) : (<></>)}
+
+                                                <span className={styles.toppingValue}>
+                                                    {topping.quantity === 0
+                                                        ? "Sin"
+                                                        : topping.quantity === 1
+                                                            ? "Normal"
+                                                            : "Extra"}
+                                                </span>
+
+                                                <button
+                                                    className={styles.toppingButton}
+                                                    onClick={() => {
+                                                        setToppings(prev =>
+                                                            prev.map(t =>
+                                                                t.name === topping.name
+                                                                    ? {
+                                                                        ...t,
+                                                                        quantity: Math.min(
+                                                                            2,
+                                                                            t.quantity + 1
+                                                                        )
+                                                                    }
+                                                                    : t
+                                                            )
+                                                        );
+                                                    }}
+                                                >
+                                                    <Plus size={20} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        )}
                     </div>
 
-                    {/* Footer fijo */}
                     <div className={styles.footer}>
                         <div className={styles.priceRow}>
                             <span className={styles.price}>
@@ -78,17 +148,36 @@ const ProductModal = ({
                             </span>
 
                             <div className={styles.quantity}>
-                                <button>-</button>
+                                <button
+                                    className={styles.quantityMinus}
+                                    onClick={() => {
+                                        if (cantidad > 1) {
+                                            setCantidad(prev => prev - 1);
+                                        }
+                                    }}
+                                >
+                                    <Minus size={24} />
+                                </button>
 
-                                <span>1</span>
+                                <span className={styles.numberQuantity}>
+                                    {cantidad}
+                                </span>
 
-                                <button>+</button>
+                                <button
+                                    className={styles.quantityPlus}
+                                    onClick={() =>
+                                        setCantidad(prev => prev + 1)
+                                    }
+                                >
+                                    <Plus size={24} />
+                                </button>
                             </div>
                         </div>
 
                         <button className={styles.addButton}>
-                            Añadir al Pedido · $
-                            {product.price}
+                            <ShoppingCart size={20} />
+                            <span className="my-0 py-0 mx-2"></span>
+                            Añadir al Pedido · ${precio}
                         </button>
                     </div>
 

@@ -2,11 +2,49 @@
 
 import { useNavigate } from "react-router-dom";
 
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/Sidebar/Sidebar";
 import MainContent from "../components/menu/MainContent/MainContent";
+import type { ProductMenu } from "../interfaces/ProductMenu";
+import SecondaryPanel from "../components/SecondaryPanel/SecondaryPanel";
+import { useState } from "react";
 
-const TabletLayout = () => {
+interface TabletLayoutProps {
+  onSelectProduct: (
+    product: ProductMenu
+  ) => void;
+}
+const TabletLayout = ({
+  onSelectProduct,
+}: TabletLayoutProps) => {
   const navigate = useNavigate();
+
+  const [view, setView] =
+    useState<"main" | "panel">("main");
+
+  return (
+    <div className="container-fluid vh-100 overflow-hidden">
+      <div className="row vh-100">
+
+        <div className="col-3 border-end m-0 p-0">
+          <Sidebar
+            view={view}
+            setView={setView}
+          />
+        </div>
+
+        <div className="col-9 m-0 p-0 h-100">
+          {view === "main" ? (
+            <MainContent
+              onSelectProduct={onSelectProduct}
+            />
+          ) : (
+            <SecondaryPanel />
+          )}
+        </div>
+
+      </div>
+    </div>
+  );
 
   return (
     <div className="container-fluid">
@@ -14,7 +52,10 @@ const TabletLayout = () => {
 
         <div className="col-3 border-end">
 
-          <Sidebar />
+          <Sidebar
+            view={view}
+            setView={setView}
+          />
 
           <button
             className="btn btn-primary w-100 mt-3"
@@ -26,7 +67,9 @@ const TabletLayout = () => {
         </div>
 
         <div className="col-9">
-          <MainContent />
+          <MainContent
+            onSelectProduct={onSelectProduct}
+          />
         </div>
 
       </div>

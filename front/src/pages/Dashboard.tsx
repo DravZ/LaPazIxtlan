@@ -1,10 +1,15 @@
 // pages/Dashboard.tsx
 
-import DesktopLayout from "../layouts/DesktopLayout";
-import TabletLayout from "../layouts/TabletLayout";
-import MobileLayout from "../layouts/MobileLayout";
+import { useState } from "react";
 
 import { useScreenSize } from "../hooks/useScreenSize";
+
+import DesktopLayout from "../layouts/DesktopLayout";
+import TabletLayout from "../layouts/TabletLayout";
+import MobileLayout from "../layouts/MobileLayout/MobileLayout";
+
+import ProductModal from "../components/ProductModal/ProductModal";
+import type { ProductMenu } from "../interfaces/ProductMenu";
 
 const Dashboard = () => {
   const {
@@ -12,15 +17,35 @@ const Dashboard = () => {
     isTablet,
   } = useScreenSize();
 
-  if (isDesktop) {
-    return <DesktopLayout />;
-  }
+  const [selectedProduct, setSelectedProduct] =
+    useState<ProductMenu | null>(null);
 
-  if (isTablet) {
-    return <TabletLayout />;
-  }
+  const layoutProps = {
+    onSelectProduct: setSelectedProduct,
+  };
 
-  return <MobileLayout />;
+  return (
+    <>
+      {isDesktop && (
+        <DesktopLayout {...layoutProps} />
+      )}
+
+      {isTablet && (
+        <TabletLayout {...layoutProps} />
+      )}
+
+      {!isDesktop && !isTablet && (
+        <MobileLayout {...layoutProps} />
+      )}
+
+      <ProductModal
+        product={selectedProduct}
+        onClose={() =>
+          setSelectedProduct(null)
+        }
+      />
+    </>
+  );
 };
 
 export default Dashboard;

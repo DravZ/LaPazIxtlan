@@ -10,14 +10,36 @@
 
     z-index: 9999;
 }
+
+.category {
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 300;
+    font-size: 0.8rem;
+    color: #7A5C3E;
+}
+
+.productName {
+    font-family: "Playfair Display", serif;
+    font-weight: 600;
+    font-size: 2rem;
+    color: #2C1A0E;
+}
+
+.description {
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    color: #7A5C3E;
+}
+
 .modal {
     position: relative;
 
-    width: min(680px, 70vw);
+    width: min(680px, 50vw);
 
     height: min(90vh, 900px);
 
-    background: #F8F3EA;
+    background: #F5EDE0;
 
     border-radius: 28px;
 
@@ -26,6 +48,7 @@
     display: flex;
     flex-direction: column;
 }
+
 .closeButton {
     position: absolute;
 
@@ -40,12 +63,13 @@
     border: none;
     border-radius: 50%;
 
-    background: rgba(0,0,0,.25);
+    background: rgba(0, 0, 0, .25);
 
     color: white;
 
     cursor: pointer;
 }
+
 .imageContainer {
     height: 300px;
 
@@ -58,6 +82,7 @@
 
     object-fit: cover;
 }
+
 .body {
     flex: 1;
 
@@ -66,6 +91,7 @@
 
     min-height: 0;
 }
+
 .content {
     flex: 1;
 
@@ -73,6 +99,7 @@
 
     padding: 28px;
 }
+
 .footer {
     flex-shrink: 0;
 
@@ -82,6 +109,7 @@
 
     border-top: 1px solid #E4DACC;
 }
+
 .priceRow {
     display: flex;
 
@@ -97,14 +125,23 @@
     font-weight: 700;
 
     color: #C65A1A;
+    font-family: "Playfair Display", serif;
 }
+
 .quantity {
     display: flex;
     align-items: center;
     gap: 14px;
 }
 
-.quantity button {
+.numberQuantity {
+    font-family: "Playfair Display", serif;
+    font-weight: 600;
+    font-size: 2rem;
+    color: #2C1A0E;
+}
+
+.quantityMinus {
     width: 44px;
     height: 44px;
 
@@ -112,36 +149,48 @@
     border: none;
 
     cursor: pointer;
-}
-.addButton {
-    width: 100%;
+    background: #E8D4B0;
 
+    color: black;
+}
+
+.quantityPlus {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 50%;
     border: none;
 
-    border-radius: 18px;
-
-    padding: 18px;
-
+    cursor: pointer;
     background: #C65A1A;
 
     color: white;
-
-    font-size: 1.1rem;
-
-    font-weight: 700;
-
-    cursor: pointer;
 }
+
+.addButton {
+    width: 100%;
+    border: none;
+    border-radius: 18px;
+    padding: 18px;
+    background: #C65A1A;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: "Nunito Sans", sans-serif;
+}
+
 @media (max-width: 992px) {
 
     .modal {
-        width: 92vw;
+        width: 60vw;
     }
 
     .imageContainer {
         height: 260px;
     }
 }
+
 @media (max-width: 768px) {
 
     .overlay {
@@ -151,7 +200,7 @@
     .modal {
         width: 100%;
 
-        height: 90vh;
+        height: 70vh;
 
         border-radius: 24px 24px 0 0;
     }
@@ -171,4 +220,62 @@
     .price {
         font-size: 1.8rem;
     }
+}
+
+
+
+.toppingsTitle {
+    margin-top: 32px;
+    margin-bottom: 16px;
+    color: #4A2A16;
+    font-family: "Playfair Display", serif;
+    font-weight: 700;
+}
+
+.toppingsContainer {
+    border: 1px solid #DDD0B8;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #FAF5EB;
+}
+
+.toppingRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 20px;
+    border-bottom: 1px solid #DDD0B8;
+}
+
+.toppingRow:last-child {
+    border-bottom: none;
+}
+
+.toppingControls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.toppingButton {
+    width: 32px;
+    height: 32px;
+
+    border-radius: 50%;
+    border: none;
+
+    cursor: pointer;
+    background: #C65A1A;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.toppingValue {
+    min-width: 60px;
+    text-align: center;
+    font-weight: 600;
+    color: #4A2A16;
 }

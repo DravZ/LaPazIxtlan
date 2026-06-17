@@ -25,7 +25,7 @@ export const useScreenSize = (): ScreenSize => {
 
   return {
     isMobile: width < 768,
-    isTablet: width >= 768 && width < 992,
-    isDesktop: width >= 992,
+    isTablet: width >= 768 && width < 992, //992
+    isDesktop: width >= 992,    //992
   };
 };

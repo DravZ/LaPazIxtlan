@@ -1,6 +1,6 @@
 // pages/PanelPage.tsx
 
-import SecondaryPanel from "../components/SecondaryPanel";
+import SecondaryPanel from "../components/SecondaryPanel/SecondaryPanel";
 
 const PanelPage = () => {
   return (

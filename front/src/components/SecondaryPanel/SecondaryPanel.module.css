@@ -1,0 +1,163 @@
+/* SecondaryPanel.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Work+Sans:wght@400;500&display=swap');
+
+/* Variables de color basadas en la imagen */
+:root {
+  --color-bg: #FAF5EB;
+  --color-card-bg: #F2EADA; /* Ligeramente más oscuro para la tarjeta */
+  --color-text-dark: #3E1E05; /* Un marrón oscuro muy saturado */
+  --color-text-light: #8B7A6C; /* Para 'RESUMEN' y 'Subtotal' */
+  --color-accent-terracotta: #A54F1D; /* Color del botón de 'plus' */
+  --color-minus-bg: #DCCFB7; /* Color de fondo del botón de 'minus' */
+  --color-btn-minus-icon: #5C4B3E; /* Color del icono de 'minus' */
+  --color-order-btn: #A54F1D; /* Botón 'Ordenar' */
+  --color-order-btn-text: #FFFFFF;
+}
+
+.secondaryPanel {
+    background-color: var(--color-bg);
+    color: var(--color-text-dark);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Work Sans', sans-serif; /* Fuente base */
+    overflow-y: auto;
+}
+
+.subTitle {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--color-text-light);
+    margin-bottom: 2px;
+}
+
+.title {
+    font-family: 'Playfair Display', serif; /* Fuente para el título principal */
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--color-text-dark);
+}
+
+.divider {
+    border-top: 1px solid #DCCFB7; /* Color suave para las líneas */
+    width: 100%;
+}
+
+/* Tarjeta del plato */
+.orderCard {
+    background-color: var(--color-card-bg);
+    border-radius: 12px;
+    border: 1px solid transparent;
+}
+
+.dishImage {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.dishName {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 0px;
+    color: var(--color-text-dark);
+}
+
+.dishPrice {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 0;
+    color: var(--color-text-light);
+}
+
+/* Contadores */
+.counterBtn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: background-color 0.2s;
+}
+
+.counterBtn i {
+    color: inherit; /* Hereda el color */
+}
+
+.btnMinus {
+    background-color: var(--color-minus-bg);
+    color: var(--color-btn-minus-icon);
+}
+
+.btnPlus {
+    background-color: var(--color-accent-terracotta);
+    color: #ffffff;
+}
+
+.countValue {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--color-text-dark);
+}
+
+/* Resumen final */
+.panelFooter {
+    margin-top: auto;
+}
+
+.summaryLabel {
+    font-family: 'Work Sans', sans-serif;
+    color: var(--color-text-light);
+    font-size: 14px;
+}
+
+.summaryValue {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--color-text-dark);
+}
+
+.totalLabel {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--color-text-dark);
+}
+
+.totalValue {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--color-accent-terracotta); /* El total va en terracota */
+}
+
+/* Botón 'Ordenar' */
+.orderBtn {
+    background-color: var(--color-order-btn);
+    color: var(--color-order-btn-text);
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.orderBtn:hover {
+    background-color: #8C4218; /* Ligeramente más oscuro al pasar el ratón */
+}
+
+.orderBtn i {
+    font-size: 18px;
+}

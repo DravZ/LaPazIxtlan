@@ -1,24 +1,34 @@
-// layouts/DesktopLayout.tsx
-
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/Sidebar/Sidebar";
 import MainContent from "../components/menu/MainContent/MainContent";
-import SecondaryPanel from "../components/SecondaryPanel";
+import SecondaryPanel from "../components/SecondaryPanel/SecondaryPanel";
 
-const DesktopLayout = () => {
+import type { ProductMenu } from "../interfaces/ProductMenu";
+
+interface DesktopLayoutProps {
+  onSelectProduct: (
+    product: ProductMenu
+  ) => void;
+}
+
+const DesktopLayout = ({
+  onSelectProduct,
+}: DesktopLayoutProps) => {
   return (
-    <div className="container-fluid">
-      <div className="row vh-100">
+    <div className="container-fluid vh-100 overflow-hidden">
+      <div className="row h-100">
 
-        <div className="col-2 border-end p-0">
+        <div className="col-2 border-end p-0 h-100">
           <Sidebar />
         </div>
 
-        <div className="col-8 p-0">
-          <MainContent />
+        <div className="col-7 p-0 h-100">
+          <MainContent
+            onSelectProduct={onSelectProduct}
+          />
         </div>
 
-        <div className="col-2 border-start p-0">
-          <SecondaryPanel />
+        <div className="col-3 border-start p-0 h-100">
+          <SecondaryPanel viewType="true"/>
         </div>
 
       </div>
