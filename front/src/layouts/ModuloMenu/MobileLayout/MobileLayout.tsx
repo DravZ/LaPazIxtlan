@@ -5,7 +5,7 @@ import { useState } from "react";
 import MainContent from "../../../components/moduloMenu/menu/MainContent/MainContent";
 import SecondaryPanel from "../../../components/moduloMenu/SecondaryPanel/SecondaryPanel";
 import BottomNav from "../../../components/moduloMenu/BottonNav/BottomNav";
-import type { ProductMenu } from "../../../interfaces/ProductMenu";
+import type { ProductMenu } from "../../../interfaces/ModuloMenu/ProductMenu";
 
 import styles from "./MobileLayout.module.css";
 

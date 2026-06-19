@@ -1,7 +1,7 @@
 // components/MainContent.tsx
 import styles from "./CardOrden.module.css";
 import { Plus } from "lucide-react";
-import type { ProductMenu } from "../../../../interfaces/ProductMenu";
+import type { ProductMenu } from "../../../../interfaces/ModuloMenu/ProductMenu";
 interface Topping {
   name: string;
   quantity: number;
