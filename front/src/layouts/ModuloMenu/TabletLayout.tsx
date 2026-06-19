@@ -2,46 +2,34 @@
 
 import { useNavigate } from "react-router-dom";
 
-import Sidebar from "../components/Sidebar/Sidebar";
-import MainContent from "../components/menu/MainContent/MainContent";
-import type { ProductMenu } from "../interfaces/ProductMenu";
-import SecondaryPanel from "../components/SecondaryPanel/SecondaryPanel";
+import Sidebar from "../../components/moduloMenu/Sidebar/Sidebar";
+import MainContent from "../../components/moduloMenu/menu/MainContent/MainContent";
+import type { ProductMenu } from "../../interfaces/ProductMenu";
+import SecondaryPanel from "../../components/moduloMenu/SecondaryPanel/SecondaryPanel";
 import { useState } from "react";
 
 interface TabletLayoutProps {
-  onSelectProduct: (
-    product: ProductMenu
-  ) => void;
+  onSelectProduct: (product: ProductMenu) => void;
 }
-const TabletLayout = ({
-  onSelectProduct,
-}: TabletLayoutProps) => {
+const TabletLayout = ({ onSelectProduct }: TabletLayoutProps) => {
   const navigate = useNavigate();
 
-  const [view, setView] =
-    useState<"main" | "panel">("main");
+  const [view, setView] = useState<"main" | "panel">("main");
 
   return (
     <div className="container-fluid vh-100 overflow-hidden">
       <div className="row vh-100">
-
         <div className="col-3 border-end m-0 p-0">
-          <Sidebar
-            view={view}
-            setView={setView}
-          />
+          <Sidebar view={view} setView={setView} />
         </div>
 
         <div className="col-9 m-0 p-0 h-100">
           {view === "main" ? (
-            <MainContent
-              onSelectProduct={onSelectProduct}
-            />
+            <MainContent onSelectProduct={onSelectProduct} />
           ) : (
             <SecondaryPanel />
           )}
         </div>
-
       </div>
     </div>
   );
@@ -49,13 +37,8 @@ const TabletLayout = ({
   return (
     <div className="container-fluid">
       <div className="row vh-100">
-
         <div className="col-3 border-end">
-
-          <Sidebar
-            view={view}
-            setView={setView}
-          />
+          <Sidebar view={view} setView={setView} />
 
           <button
             className="btn btn-primary w-100 mt-3"
@@ -63,15 +46,11 @@ const TabletLayout = ({
           >
             Abrir Panel
           </button>
-
         </div>
 
         <div className="col-9">
-          <MainContent
-            onSelectProduct={onSelectProduct}
-          />
+          <MainContent onSelectProduct={onSelectProduct} />
         </div>
-
       </div>
     </div>
   );

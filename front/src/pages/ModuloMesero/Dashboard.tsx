@@ -2,16 +2,15 @@
 
 import { useState } from "react";
 
-import { useScreenSize } from "../hooks/useScreenSize";
+import { useScreenSize } from "../../hooks/useScreenSize";
 
-import DesktopLayout from "../layouts/ModuloMenu/DesktopLayout";
-import TabletLayout from "../layouts/ModuloMenu/TabletLayout";
-import MobileLayout from "../layouts/ModuloMenu/MobileLayout/MobileLayout";
+import ProductModal from "../../components/moduloMenu/ProductModal/ProductModal";
+import DesktopLayout from "../../layouts/ModuloMeseros/DesktopLayout";
+import TabletLayout from "../../layouts/ModuloMeseros/TabletLayout";
+import MobileLayout from "../../layouts/ModuloMeseros/MobileLayout/MobileLayout";
+import type { ProductMenu } from "../../interfaces/ProductMenu";
 
-import ProductModal from "../components/moduloMenu/ProductModal/ProductModal";
-import type { ProductMenu } from "../interfaces/ProductMenu";
-
-const Dashboard = () => {
+const DashboardMesero = () => {
   const { isDesktop, isTablet } = useScreenSize();
 
   const [selectedProduct, setSelectedProduct] = useState<ProductMenu | null>(
@@ -38,4 +37,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardMesero;

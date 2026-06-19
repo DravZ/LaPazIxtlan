@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import PanelPage from "./pages/PanelPage";
+import DashboardMesero from "./pages/ModuloMesero/Dashboard";
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/panel" element={<PanelPage />} />
+        <Route path="/mesero" element={<DashboardMesero />} />
         <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
       </Routes>
     </BrowserRouter>
