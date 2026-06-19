@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
 import PanelPage from "./pages/PanelPage";
 import DashboardMesero from "./pages/ModuloMesero/Dashboard";
+import Dashboard from "./pages/ModuloMenu/Dashboard";
 
 function App() {
   return (

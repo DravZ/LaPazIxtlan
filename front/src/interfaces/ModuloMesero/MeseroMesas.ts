@@ -1,4 +1,4 @@
-import type { ProductMenu } from "./ProductMenu";
+import type { ProductMenu } from "./menu/ProductMenu";
 
 export interface MeseroMesas {
   mesaNumber: number;

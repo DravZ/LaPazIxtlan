@@ -1,5 +1,5 @@
 import { Minus, Plus, ShoppingCart } from "lucide-react";
-import type { ProductMenu } from "../../../interfaces/ProductMenu";
+import type { ProductMenu } from "../../../interfaces/ModuloMenu/ProductMenu";
 import styles from "./ProductModal.module.css";
 import { useEffect, useState } from "react";
 
