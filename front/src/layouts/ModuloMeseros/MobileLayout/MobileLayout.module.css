@@ -1,0 +1,27 @@
+.container {
+    background-color: #DDD0B8;
+    /* Firefox */
+    scrollbar-width: none;
+
+    /* IE y Edge antiguo */
+    -ms-overflow-style: none;
+}
+
+.container::-webkit-scrollbar {
+    display: none;
+}
+
+.screenContainer {
+    background-color: #F5EDE0;
+    padding-bottom: 50px !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+/* Firefox */
+    scrollbar-width: none;
+
+    /* IE y Edge antiguo */
+    -ms-overflow-style: none;
+}
+
+.screenContainer::-webkit-scrollbar {
+    display: none;
+}

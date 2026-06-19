@@ -1,21 +1,16 @@
 // components/MainContent.tsx
 import CardProduct from "../CardProduct/CardProduct";
 import styles from "./MainContent.module.css";
-import type { ProductMenu } from "../../../interfaces/ProductMenu";
+import type { ProductMenu } from "../../../../interfaces/ProductMenu";
 import { useState } from "react";
 import { Info, User } from "lucide-react";
 
 interface MainContentProps {
-  onSelectProduct: (
-    product: ProductMenu
-  ) => void;
+  onSelectProduct: (product: ProductMenu) => void;
 }
 
-const MainContent = ({
-  onSelectProduct,
-}: MainContentProps) => {
-
-  const [category, setCategory] = useState("Todos")
+const MainContent = ({ onSelectProduct }: MainContentProps) => {
+  const [category, setCategory] = useState("Todos");
 
   const tacos: ProductMenu = {
     productName: "Tacos al Pastor",
@@ -23,7 +18,7 @@ const MainContent = ({
       "3 tacos de cerdo marinado en achiote con piña, cilantro y cebolla blanca.",
     price: 145,
     hasToppings: false,
-    img: "/menu/tacos.jpg"
+    img: "/menu/tacos.jpg",
   };
   const tacos2: ProductMenu = {
     productName: "Tacos al Pastor",
@@ -31,18 +26,18 @@ const MainContent = ({
       "3 tacos de cerdo marinado en achiote con piña, cilantro y cebolla blanca.",
     price: 145,
     hasToppings: true,
-    toppings: [{
-      name: "catsup",
-      quantity: 1
-    },
-    {
-      name: "tomate",
-      quantity: 1
-    }
+    toppings: [
+      {
+        name: "catsup",
+        quantity: 1,
+      },
+      {
+        name: "tomate",
+        quantity: 1,
+      },
     ],
-    img: "/menu/tacos.jpg"
+    img: "/menu/tacos.jpg",
   };
-
 
   return (
     <div className={`p-3 ` + styles.container}>
@@ -55,7 +50,9 @@ const MainContent = ({
         <div className="m-0 p-0 d-block d-md-none">
           <p className={"mt-2 mb-0 p-0 " + styles.subtitle}>RESTAURANTE</p>
           <p className={"mt-0 mb-0 p-0 " + styles.title}>La Pax Ixtlan</p>
-          <p className={"mt-0 mb-0 p-0 " + styles.subtitleCategory}>{category}</p>
+          <p className={"mt-0 mb-0 p-0 " + styles.subtitleCategory}>
+            {category}
+          </p>
 
           <div className="d-flex align-items-center mt-2">
             <div className={styles.about}>
@@ -79,13 +76,9 @@ const MainContent = ({
           <div className={styles.overlay}></div>
 
           <div className={styles.content}>
-            <span className={styles.subtitleBanner}>
-              Cocina de leña
-            </span>
+            <span className={styles.subtitleBanner}>Cocina de leña</span>
 
-            <h1 className={styles.titleBanner}>
-              Sabores de Oaxaca
-            </h1>
+            <h1 className={styles.titleBanner}>Sabores de Oaxaca</h1>
           </div>
         </div>
 
@@ -93,49 +86,61 @@ const MainContent = ({
           <div
             className={`${category == "Todos" ? styles.selectedItem : styles.item}`}
             onClick={() => {
-              setCategory("Todos")
+              setCategory("Todos");
             }}
-          >Todos</div>
-          <div className={`${category == "Entradas" ? styles.selectedItem : styles.item}`}
+          >
+            Todos
+          </div>
+          <div
+            className={`${category == "Entradas" ? styles.selectedItem : styles.item}`}
             onClick={() => {
-              setCategory("Entradas")
+              setCategory("Entradas");
             }}
-          >Entradas</div>
-          <div className={`${category == "Hamburguesas" ? styles.selectedItem : styles.item}`}
+          >
+            Entradas
+          </div>
+          <div
+            className={`${category == "Hamburguesas" ? styles.selectedItem : styles.item}`}
             onClick={() => {
-              setCategory("Hamburguesas")
+              setCategory("Hamburguesas");
             }}
-          >Hamburguesas</div>
-          <div className={`${category == "Especiales" ? styles.selectedItem : styles.item}`}
+          >
+            Hamburguesas
+          </div>
+          <div
+            className={`${category == "Especiales" ? styles.selectedItem : styles.item}`}
             onClick={() => {
-              setCategory("Especiales")
+              setCategory("Especiales");
             }}
-          >Especiales</div>
-          <div className={`${category == "Bebidas" ? styles.selectedItem : styles.item}`}
+          >
+            Especiales
+          </div>
+          <div
+            className={`${category == "Bebidas" ? styles.selectedItem : styles.item}`}
             onClick={() => {
-              setCategory("Bebidas")
+              setCategory("Bebidas");
             }}
-          >Bebidas</div>
+          >
+            Bebidas
+          </div>
         </div>
 
         <div className="row mt-0 mb-0 mx-0 p-0">
           <div className="col-lg-4 col-md-6 col-12 p-0">
-            <CardProduct
-              {...tacos2}
-              onClick={() =>
-                onSelectProduct(tacos2)
-              }
-            />
+            <CardProduct {...tacos2} onClick={() => onSelectProduct(tacos2)} />
           </div>
           <div className="col-lg-4 col-md-6 col-12 p-0">
-            <CardProduct productName="Tacos al Pastor"
+            <CardProduct
+              productName="Tacos al Pastor"
               description="3 tacos de cerdo marinado en achiote con piña, cilantro y cebolla blanca."
               price={145}
               hasToppings={false}
               img="/menu/tacos.jpg"
-            />          </div>
+            />{" "}
+          </div>
           <div className="col-lg-4 col-md-6 col-12 p-0">
-            <CardProduct productName="Tacos al Pastor"
+            <CardProduct
+              productName="Tacos al Pastor"
               description="3 tacos de cerdo marinado en achiote con piña, cilantro y cebolla blanca."
               price={145}
               hasToppings={false}
@@ -144,22 +149,21 @@ const MainContent = ({
           </div>
           {/*Hace un for en el que cree una variable tipo productMenu en cada ciclo 
           o alamacenarlos en un arreglo y enviarlo en el onClicl
-          */
-          }
+          */}
 
           <div className="col-lg-4 col-md-6 col-12 p-0">
-            <CardProduct productName="Tacos al Pastor"
+            <CardProduct
+              productName="Tacos al Pastor"
               description="3 tacos de cerdo marinado en achiote con piña, cilantro y cebolla blanca."
               price={145}
               hasToppings={false}
               img="/menu/tacos.jpg"
-              onClick={() =>
-                onSelectProduct(tacos)
-              }
+              onClick={() => onSelectProduct(tacos)}
             />
           </div>
           <div className="col-lg-4 col-md-6 col-12 p-0">
-            <CardProduct productName="Tacos al Pastor"
+            <CardProduct
+              productName="Tacos al Pastor"
               description="3 tacos de cerdo marinado en achiote con piña, cilantro y cebolla blanca."
               price={145}
               hasToppings={false}
