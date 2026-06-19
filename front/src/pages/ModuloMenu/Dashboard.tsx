@@ -7,7 +7,6 @@ import DesktopLayout from "../../layouts/ModuloMenu/DesktopLayout";
 import TabletLayout from "../../layouts/ModuloMenu/TabletLayout";
 import MobileLayout from "../../layouts/ModuloMenu/MobileLayout/MobileLayout";
 import ProductModal from "../../components/moduloMenu/ProductModal/ProductModal";
-import { LucideAArrowDown } from "lucide-react";
 
 
 

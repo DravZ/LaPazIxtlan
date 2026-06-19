@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import MainContent from "../../../components/moduloMenu/menu/MainContent/MainContent";
+import MainContent from "../../../components/moduloMenu/MainContent/MainContent";
 import SecondaryPanel from "../../../components/moduloMenu/SecondaryPanel/SecondaryPanel";
 import BottomNav from "../../../components/moduloMenu/BottonNav/BottomNav";
 import type { ProductMenu } from "../../../interfaces/ModuloMenu/ProductMenu";
@@ -26,7 +26,10 @@ const MobileLayout = ({ onSelectProduct }: MobileLayoutProps) => {
           </div>
         )}
 
-        {view === "panel" && <SecondaryPanel />}
+        {view === "panel" && 
+          <div className={styles.secondaryPanelContainer}>
+            <SecondaryPanel />
+          </div>}
       </div>
 
       <div style={{ maxWidth: "500px" }}>

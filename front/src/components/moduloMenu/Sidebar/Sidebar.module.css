@@ -3,23 +3,24 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    background-color:  #2C1A0E;
+    background-color: #2C1A0E;
 }
 
-.subtitle{
+.subtitle {
     font-family: "Nunito Sans", sans-serif;
     font-weight: 300;
     font-size: 0.7rem;
-    color: #93735C ;
+    color: #93735C;
 }
 
-.title{
+.title {
     font-family: "Playfair Display", serif;
     font-weight: 600;
     font-size: 1.8rem;
-    color: #FAF5EB ;
+    color: #FAF5EB;
 }
-.titleDivider{
+
+.titleDivider {
     border-bottom: 1px solid #7A5C3E;
 }
 
@@ -47,9 +48,22 @@
     transition: all 0.2s ease;
 }
 
+
 .aboutButton:hover {
     filter: brightness(1.08);
 }
+
+.aboutButtonIcon {
+    margin-right: 5px !important;
+}
+
+@media (min-width: 992px) and (max-width:1231px) {
+    .aboutButtonText {
+        width: 80px !important;
+        font-size: 0.8rem;
+    }
+}
+
 .categoryItem {
     font-family: "Nunito Sans", sans-serif;
     font-weight: 300;
@@ -63,6 +77,18 @@
 
     cursor: pointer;
     transition: all .2s ease;
+}
+
+@media (min-width: 1006px) and (max-width:1166px) {
+    .categoryItem {
+        font-size: 0.8rem;
+    }
+}
+@media (min-width: 992px) and (max-width:1006px) {
+    .categoryItem {
+        font-size: 0.8rem;
+        padding: 14px 17px;
+    }
 }
 
 .categoryItem:hover {

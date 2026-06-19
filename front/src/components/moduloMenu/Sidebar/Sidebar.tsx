@@ -1,7 +1,7 @@
 // components/Sidebar.tsx
 import { useState } from "react";
 import styles from "./Sidebar.module.css";
-import { Menu, ShoppingCart } from "lucide-react";
+import { Info, Menu, ShoppingCart } from "lucide-react";
 
 interface SidebarProps {
   view?: "main" | "panel";
@@ -79,8 +79,11 @@ const Sidebar = ({ view, setView }: SidebarProps) => {
         </p>
       </div>
 
-      <button className={styles.aboutButton}>
-        <span className="me-3">ⓘ</span>Acerca de nosotros
+      <button className={styles.aboutButton + " d-flex align-content-center justify-content-center" + 
+        " align-items-center"
+      }>
+        <span className={styles.aboutButtonIcon}><Info size={24}/></span>
+        <span className={styles.aboutButtonText}>Acerca de nosotros</span>
       </button>
     </div>
   );

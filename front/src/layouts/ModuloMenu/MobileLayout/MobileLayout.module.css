@@ -25,3 +25,9 @@
 .screenContainer::-webkit-scrollbar {
     display: none;
 }
+
+.secondaryPanelContainer{
+    height: 100vh;
+    padding-bottom: 50px !important;
+    background-color: #F5EDE0 !important;
+}
