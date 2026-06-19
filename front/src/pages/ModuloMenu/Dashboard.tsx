@@ -1,15 +1,14 @@
 // pages/Dashboard.tsx
 
 import { useState } from "react";
+import { useScreenSize } from "../../hooks/useScreenSize";
+import type { ProductMenu } from "../../interfaces/ModuloMenu/ProductMenu";
+import DesktopLayout from "../../layouts/ModuloMenu/DesktopLayout";
+import TabletLayout from "../../layouts/ModuloMenu/TabletLayout";
+import MobileLayout from "../../layouts/ModuloMenu/MobileLayout/MobileLayout";
+import ProductModal from "../../components/moduloMenu/ProductModal/ProductModal";
 
-import { useScreenSize } from "../hooks/useScreenSize";
 
-import DesktopLayout from "../layouts/ModuloMenu/DesktopLayout";
-import TabletLayout from "../layouts/ModuloMenu/TabletLayout";
-import MobileLayout from "../layouts/ModuloMenu/MobileLayout/MobileLayout";
-
-import ProductModal from "../components/moduloMenu/ProductModal/ProductModal";
-import type { ProductMenu } from "../interfaces/ProductMenu";
 
 const Dashboard = () => {
   const { isDesktop, isTablet } = useScreenSize();

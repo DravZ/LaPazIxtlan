@@ -1,7 +1,7 @@
 import Sidebar from "../../components/meseros/Sidebar/Sidebar";
 import MainContent from "../../components/meseros/Mesero/MainContent/MainContent";
 
-import type { ProductMenu } from "../../interfaces/ProductMenu";
+import type { ProductMenu } from "../../interfaces/ModuloMenu/ProductMenu";
 
 interface DesktopLayoutProps {
   onSelectProduct: (product: ProductMenu) => void;

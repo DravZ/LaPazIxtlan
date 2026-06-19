@@ -2,7 +2,7 @@ import Sidebar from "../../components/moduloMenu/Sidebar/Sidebar";
 import MainContent from "../../components/moduloMenu/menu/MainContent/MainContent";
 import SecondaryPanel from "../../components/moduloMenu/SecondaryPanel/SecondaryPanel";
 
-import type { ProductMenu } from "../../interfaces/ProductMenu";
+import type { ProductMenu } from "../../interfaces/ModuloMenu/ProductMenu";
 
 interface DesktopLayoutProps {
   onSelectProduct: (product: ProductMenu) => void;
