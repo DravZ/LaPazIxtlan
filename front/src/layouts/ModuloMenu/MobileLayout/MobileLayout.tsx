@@ -11,8 +11,11 @@ import styles from "./MobileLayout.module.css";
 
 interface MobileLayoutProps {
   onSelectProduct: (product: ProductMenu) => void;
+  onOrder: () => void;
 }
-const MobileLayout = ({ onSelectProduct }: MobileLayoutProps) => {
+const MobileLayout = ({ onSelectProduct,
+  onOrder
+ }: MobileLayoutProps) => {
   const [view, setView] = useState<"main" | "panel">("main");
 
   return (
@@ -28,7 +31,7 @@ const MobileLayout = ({ onSelectProduct }: MobileLayoutProps) => {
 
         {view === "panel" && 
           <div className={styles.secondaryPanelContainer}>
-            <SecondaryPanel />
+            <SecondaryPanel onOrder={onOrder} />
           </div>}
       </div>
 

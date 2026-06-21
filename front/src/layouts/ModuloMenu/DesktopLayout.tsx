@@ -6,9 +6,12 @@ import type { ProductMenu } from "../../interfaces/ModuloMenu/ProductMenu";
 
 interface DesktopLayoutProps {
   onSelectProduct: (product: ProductMenu) => void;
+  onOrder: () => void;
 }
 
-const DesktopLayout = ({ onSelectProduct }: DesktopLayoutProps) => {
+const DesktopLayout = ({ onSelectProduct,
+  onOrder
+}: DesktopLayoutProps) => {
   return (
     <div className="container-fluid vh-100 overflow-hidden">
       <div className="row h-100">
@@ -21,7 +24,12 @@ const DesktopLayout = ({ onSelectProduct }: DesktopLayoutProps) => {
         </div>
 
         <div className="col-3 border-start p-0 h-100">
-          <SecondaryPanel viewType="true" />
+          <SecondaryPanel
+            onOrder={() => {
+              console.log("DesktopLayout");
+              onOrder();
+            }}
+          />
         </div>
       </div>
     </div>

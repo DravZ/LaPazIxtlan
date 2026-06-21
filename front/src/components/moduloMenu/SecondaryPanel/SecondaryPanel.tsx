@@ -4,11 +4,13 @@ import styles from './SecondaryPanel.module.css'
 import PedidoCard from '../PedidoCard/PedidoCard';
 
 interface Props {
-  viewType?: string
+  viewType?: string;
+  onOrder?: () => void;
 }
 
 const SecondaryPanel = ({
-  viewType
+  viewType,
+  onOrder
 }: Props) => {
   return (
     <div className={styles.secondaryPanel}>
@@ -61,7 +63,7 @@ const SecondaryPanel = ({
               quantity={1000} />
           </main>
         </div>
-        
+
       </div>
 
       <footer className={`${styles.panelFooter} p-4`}>
@@ -77,7 +79,13 @@ const SecondaryPanel = ({
           <span className={styles.totalValue}>$145</span>
         </div>
 
-        <button className={`${styles.orderBtn} btn w-100 d-flex align-items-center justify-content-center`}>
+        <button
+          className={`${styles.orderBtn} btn w-100 d-flex 
+          align-items-center justify-content-center`}
+          onClick={() => {
+            console.log("SecondaryPanel");
+            onOrder?.();
+          }}>
           <span className='me-2'> <ShoppingCart size={20} /></span> Ordenar
         </button>
       </footer>

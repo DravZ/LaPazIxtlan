@@ -10,8 +10,11 @@ import { useState } from "react";
 
 interface TabletLayoutProps {
   onSelectProduct: (product: ProductMenu) => void;
+  onOrder: () => void;
 }
-const TabletLayout = ({ onSelectProduct }: TabletLayoutProps) => {
+const TabletLayout = ({ onSelectProduct,
+  onOrder
+ }: TabletLayoutProps) => {
   const navigate = useNavigate();
 
   const [view, setView] = useState<"main" | "panel">("main");
@@ -27,7 +30,7 @@ const TabletLayout = ({ onSelectProduct }: TabletLayoutProps) => {
           {view === "main" ? (
             <MainContent onSelectProduct={onSelectProduct} />
           ) : (
-            <SecondaryPanel />
+            <SecondaryPanel onOrder={onOrder} />
           )}
         </div>
       </div>
