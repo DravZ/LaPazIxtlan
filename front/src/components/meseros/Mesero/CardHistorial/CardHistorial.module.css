@@ -1,0 +1,82 @@
+.cardContainer {
+  background-color: #fffdf9; /* Fondo exacto de las tarjetas */
+  border-radius: 28px; /* Bordes notablemente redondeados */
+  border: 1px solid #f2eadc; /* Borde sutil del diseño */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02); /* Sombra muy suave */
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* IZQUIERDA: mesa + status */
+.leftGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* BADGE MESA */
+.badgeMesa {
+  background: #5c7f56; /* Verde militar idéntico */
+  color: white;
+  padding: 6px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* STATUS (Contenedor tipo cápsula como en la imagen) */
+.status {
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* COLORES Y FONDOS DE CADA ESTADO */
+.confirmada {
+  background-color: #e2eada;
+  color: #49683c;
+}
+
+.entregada {
+  background-color: #e1ede6;
+  color: #2e5943;
+}
+
+.descartada {
+  background-color: #f3e2da;
+  color: #924d32;
+}
+
+/* TIMER (Texto plano a la derecha sin fondo ni reloj) */
+.timerMesa {
+  color: #8c7f6e; /* Color café/grisáceo suave */
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+/* PRODUCTOS */
+.descriptionProduct {
+  margin-top: 20px;
+  color: #906843; /* Tono marrón del texto original */
+  font-size: 1.05rem;
+}
+
+.descriptionProduct p {
+  margin-bottom: 6px;
+}
+
+.withoutIngredients {
+  color: #bfa285;
+  font-size: 0.9rem;
+}
