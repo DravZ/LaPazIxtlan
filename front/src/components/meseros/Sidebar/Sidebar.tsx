@@ -1,6 +1,7 @@
 // components/Sidebar.tsx
 import { useState } from "react";
 import styles from "./Sidebar.module.css";
+import { AlertTriangle, Clock, UtensilsCrossed } from "lucide-react";
 
 interface SidebarProps {
   category: string;
@@ -26,7 +27,7 @@ const Sidebar = ({ category, setCategory }: SidebarProps) => {
               `}
           onClick={() => setCategory("Pendientes")}
         >
-          ⚠️ Pendientes
+          <span><AlertTriangle size={16} className="me-1"/></span> Pendientes
         </p>
 
         <p
@@ -36,7 +37,7 @@ const Sidebar = ({ category, setCategory }: SidebarProps) => {
               `}
           onClick={() => setCategory("Por entregar")}
         >
-          🍽️ Entregar
+          <span><UtensilsCrossed size={16} className="me-1"/></span> Entregar
         </p>
 
         <p
@@ -46,7 +47,7 @@ const Sidebar = ({ category, setCategory }: SidebarProps) => {
               `}
           onClick={() => setCategory("Historial")}
         >
-          🕑 Historial
+          <Clock size={16} className="me-1"/> Historial
         </p>
       </div>
 

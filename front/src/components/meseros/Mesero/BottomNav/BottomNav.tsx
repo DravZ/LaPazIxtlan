@@ -1,3 +1,4 @@
+import { AlertTriangle, Clock, UtensilsCrossed } from "lucide-react";
 import styles from "./BottomNav.module.css";
 
 interface Props {
@@ -15,7 +16,8 @@ const BottomNav = ({ category, setCategory }: Props) => {
           category === "Pendientes" ? styles.active : styles.inactive
         }`}
       >
-        <span className={styles.label}>⚠️ Pendientes</span>
+        <span className={styles.label}>
+          <span><AlertTriangle size={20} className="me-1"/></span> Pendientes</span>
       </button>
 
       {/* Por entregar */}
@@ -25,7 +27,8 @@ const BottomNav = ({ category, setCategory }: Props) => {
           category === "Por entregar" ? styles.active : styles.inactive
         }`}
       >
-        <span className={styles.label}>🍽️ Entregar</span>
+        <span className={styles.label}>
+          <UtensilsCrossed size={20} className="me-1"/>Entregar</span>
       </button>
 
       {/* Historial */}
@@ -35,7 +38,8 @@ const BottomNav = ({ category, setCategory }: Props) => {
           category === "Historial" ? styles.active : styles.inactive
         }`}
       >
-        <span className={styles.label}>🕑 Historial</span>
+        <span className={styles.label}>
+          <Clock size={20} className="me-1"/> Historial</span>
       </button>
     </div>
   );
