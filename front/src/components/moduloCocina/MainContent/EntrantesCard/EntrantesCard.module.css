@@ -1,0 +1,89 @@
+.card {
+  border: 2px solid #efdcc8;
+  border-radius: 18px;
+  overflow: hidden;    
+  background: #faf5ed;
+  
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 14px 18px;
+  margin: 0;
+  font-weight: 700;
+}
+.mesa{
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.productsList{
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.success {
+  background: #eef8ef;
+  color: #1f8b41;
+}
+
+.warning {
+  background: #f7eccf;
+  color: #d48806;
+}
+
+.danger {
+  background: #ffe6e4;
+  color: #cf1322;
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.body {
+  padding: 18px;
+}
+
+.body p {
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.body ul {
+  list-style: none;
+  padding-left: 18px;
+  margin-bottom: 18px;
+}
+
+.body li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #cf6215;
+  font-size: 0.9rem;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 600;
+}
+
+.readyButton {
+  width: calc(100% - 32px);
+  margin: 0 16px 16px;
+
+  border: none;
+  border-radius: 14px;
+
+  padding: 14px;
+
+  background: #bf4b21;
+  color: white;
+
+  font-weight: 700;
+}
