@@ -25,32 +25,32 @@
 }
 
 .aboutButton {
-  margin-top: auto;
+    margin-top: auto;
 
-  margin-left: 12px;
-  margin-right: 12px;
-  margin-bottom: 16px;
+    margin-left: 12px;
+    margin-right: 12px;
+    margin-bottom: 16px;
 
-  height: 52px;
+    height: 52px;
 
-  border: none;
-  border-radius: 18px;
+    border: none;
+    border-radius: 18px;
 
-  background-color: #4a592a;
-  color: #faf5eb;
+    background-color: #4A592A;
+    color: #FAF5EB;
 
-  font-family: "Nunito Sans", sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
 
-  cursor: pointer;
+    cursor: pointer;
 
-  transition: all 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 
 .aboutButton:hover {
-  filter: brightness(1.08);
+    filter: brightness(1.08);
 }
 
 .aboutButtonIcon {
@@ -65,18 +65,18 @@
 }
 
 .categoryItem {
-  font-family: "Nunito Sans", sans-serif;
-  font-weight: 300;
-  font-size: 1rem;
-  color: #93735c;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    color: #93735C;
 
-  padding: 14px 20px;
-  margin: 6px 10px;
+    padding: 14px 20px;
+    margin: 6px 10px;
 
-  border-radius: 20px;
+    border-radius: 20px;
 
-  cursor: pointer;
-  transition: all 0.2s ease;
+    cursor: pointer;
+    transition: all .2s ease;
 }
 
 @media (min-width: 1006px) and (max-width:1166px) {
@@ -92,39 +92,39 @@
 }
 
 .categoryItem:hover {
-  background-color: #3a1f10;
+    background-color: #3A1F10;
 }
 
 .selectedItem {
-  background-color: #5a2811;
-  color: #d96a1c;
+    background-color: #5A2811;
+    color: #D96A1C;
 }
 
 .cartContainer {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  margin-right: 6px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    margin-right: 6px;
 }
 
 .badge {
-  position: absolute;
+    position: absolute;
 
-  top: -6px;
-  right: -8px;
+    top: -6px;
+    right: -8px;
 
-  width: 14px;
-  height: 14px;
+    width: 14px;
+    height: 14px;
 
-  border-radius: 50%;
+    border-radius: 50%;
 
-  background-color: #b34f24;
-  color: white;
+    background-color: #B34F24;
+    color: white;
 
-  font-size: 9px;
-  font-weight: bold;
+    font-size: 9px;
+    font-weight: bold;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
