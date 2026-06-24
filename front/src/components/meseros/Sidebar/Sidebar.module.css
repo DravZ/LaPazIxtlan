@@ -3,7 +3,7 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  background-color: #2c1a0e;
+  background-color: #172619;
 }
 
 .subtitle {
@@ -66,12 +66,12 @@
 }
 
 .categoryItem:hover {
-  background-color: #3a1f10;
+  background-color: #2a3a25;
 }
 
 .selectedItem {
-  background-color: #5a2811;
-  color: #d96a1c;
+  background-color: #2b402b;
+  color: #5c7a54;
 }
 
 .cartContainer {

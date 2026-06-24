@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import Sidebar from "../../components/meseros/Sidebar/Sidebar";
 import MainContent from "../../components/meseros/Mesero/MainContent/MainContent";
 
@@ -8,15 +10,17 @@ interface DesktopLayoutProps {
 }
 
 const DesktopLayout = ({ onSelectProduct }: DesktopLayoutProps) => {
+  const [category, setCategory] = useState("Pendientes");
+
   return (
     <div className="container-fluid vh-100 overflow-hidden">
       <div className="row h-100">
         <div className="col-2 border-end p-0 h-100">
-          <Sidebar />
+          <Sidebar category={category} setCategory={setCategory} />
         </div>
 
         <div className="col-10 p-0 h-100">
-          <MainContent />
+          <MainContent category={category} />
         </div>
       </div>
     </div>

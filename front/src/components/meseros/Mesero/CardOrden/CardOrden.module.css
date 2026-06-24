@@ -1,63 +1,105 @@
 .cardContainer {
   background-color: #f8f3ea;
   border-radius: 24px;
-  overflow: hidden;
   border: 1px solid #e5ded1;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  padding: 24px;
   height: 100%;
 }
 
-.titleProduct {
-  color: #4a2a16;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badgeMesa {
+  background: #63855a;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 999px;
   font-weight: 700;
-  margin-bottom: 12px;
-  font-size: 1.5rem;
-  font-family: "Playfair Display", serif;
+  font-size: 1.1rem;
+}
+
+.timerMesa {
+  background: #f1e6d9;
+  color: #c65a1a;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 0.9rem;
 }
 
 .descriptionProduct {
-  color: #8a5a35;
-  font-size: 1rem;
-  line-height: 1.5;
-  margin: 0;
-  font-family: "Nunito Sans", sans-serif;
+  margin-top: 20px;
+  color: #4a2a16;
+  font-size: 1.1rem;
 }
 
-@media (max-width: 768px) {
-  .descriptionProduct {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.descriptionProduct p {
+  margin-bottom: 8px;
 }
 
-.priceProduct {
-  color: #c65a1a;
-  font-size: 1.5rem;
-  font-weight: 700;
-  font-family: "Playfair Display", serif;
-}
+.buttonContainer {
+  margin-top: 30px;
 
-.addButton {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  background-color: #c65a1a;
-  color: white;
-  font-size: 2rem;
-  line-height: 1;
   display: flex;
-  align-items: center;
   justify-content: center;
-  cursor: pointer;
+  gap: 12px;
 }
 
-.imageProduct {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.confirmButton {
+  flex: 1;
+  max-width: 260px;
+
+  height: 56px;
+
+  border: none;
+  border-radius: 20px;
+
+  background: #63855a;
+  color: white;
+
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.cancelButton {
+  flex: 1;
+  max-width: 260px;
+
+  height: 56px;
+
+  border-radius: 20px;
+
+  background: transparent;
+  border: 1px solid #d8cec1;
+
+  color: #8a5a35;
+
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.confirmButton:hover,
+.cancelButton:hover {
+  opacity: 0.9;
+}
+
+.withoutIngredients {
+  color: #8a5a35;
+  font-size: 0.9rem;
+}
+
+.totalContainer {
+  margin-top: 1rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 1.1rem;
+  font-weight: 600;
+
+  color: #4a2a16;
 }

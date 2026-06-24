@@ -1,9 +1,14 @@
-import type { ProductMenu } from "./menu/ProductMenu";
+import type { ProductMenu } from "../ModuloMenu/ProductMenu";
 
 export interface MeseroMesas {
   mesaNumber: number;
   timer: number;
   price: number;
   confirm: boolean;
-  products: ProductMenu[];
+  products: OrderItem[];
+}
+
+export interface OrderItem {
+  quantity: number;
+  product: ProductMenu;
 }

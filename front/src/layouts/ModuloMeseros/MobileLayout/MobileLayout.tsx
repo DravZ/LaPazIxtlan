@@ -1,10 +1,7 @@
-// layouts/MobileLayout.tsx
-
 import { useState } from "react";
 
-import MainContent from "../../../components/moduloMenu/menu/MainContent/MainContent";
-import SecondaryPanel from "../../../components/moduloMenu/SecondaryPanel/SecondaryPanel";
-import BottomNav from "../../../components/moduloMenu/BottonNav/BottomNav";
+import MainContent from "../../../components/meseros/Mesero/MainContent/MainContent";
+import BottomNav from "../../../components/meseros/Mesero/BottomNav/BottomNav";
 import type { ProductMenu } from "../../../interfaces/ModuloMenu/ProductMenu";
 
 import styles from "./MobileLayout.module.css";
@@ -12,25 +9,22 @@ import styles from "./MobileLayout.module.css";
 interface MobileLayoutProps {
   onSelectProduct: (product: ProductMenu) => void;
 }
+
 const MobileLayout = ({ onSelectProduct }: MobileLayoutProps) => {
-  const [view, setView] = useState<"main" | "panel">("main");
+  const [category, setCategory] = useState("Pendientes");
 
   return (
     <>
       <div className={styles.container + " pb-0"}>
-        {view === "main" && (
-          <div style={{ maxWidth: "500px", width: "100%" }} className="mx-auto">
-            <div className={styles.screenContainer + " m-0 p-0"}>
-              <MainContent onSelectProduct={onSelectProduct} />
-            </div>
+        <div style={{ maxWidth: "500px", width: "100%" }} className="mx-auto">
+          <div className={styles.screenContainer + " m-0 p-0"}>
+            <MainContent category={category} />
           </div>
-        )}
-
-        {view === "panel" && <SecondaryPanel />}
+        </div>
       </div>
 
       <div style={{ maxWidth: "500px" }}>
-        <BottomNav currentView={view} setCurrentView={setView} />
+        <BottomNav category={category} setCategory={setCategory} />
       </div>
     </>
   );
