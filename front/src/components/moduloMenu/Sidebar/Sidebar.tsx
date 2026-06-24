@@ -2,6 +2,7 @@
 import { useState } from "react";
 import styles from "./Sidebar.module.css";
 import { Info, Menu, ShoppingCart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface SidebarProps {
   view?: "main" | "panel";
@@ -9,6 +10,7 @@ interface SidebarProps {
 }
 const Sidebar = ({ view, setView }: SidebarProps) => {
   const [selected, setSelected] = useState("");
+  const navigate = useNavigate();
   return (
     <div className={`pt-3 ${styles.sidebar}`}>
       <div className={styles.titleDivider}>
@@ -79,7 +81,11 @@ const Sidebar = ({ view, setView }: SidebarProps) => {
         </p>
       </div>
 
-      <button className={styles.aboutButton + " d-flex align-content-center justify-content-center" + 
+      <button 
+        onClick={
+          () => navigate("/about")
+        }
+      className={styles.aboutButton + " d-flex align-content-center justify-content-center" + 
         " align-items-center"
       }>
         <span className={styles.aboutButtonIcon}><Info size={24}/></span>
