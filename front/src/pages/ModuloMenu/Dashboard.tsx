@@ -7,7 +7,7 @@ import DesktopLayout from "../../layouts/ModuloMenu/DesktopLayout";
 import TabletLayout from "../../layouts/ModuloMenu/TabletLayout";
 import MobileLayout from "../../layouts/ModuloMenu/MobileLayout/MobileLayout";
 import ProductModal from "../../components/moduloMenu/ProductModal/ProductModal";
-import { LucideAArrowDown } from "lucide-react";
+import ConfirmOrderModal from "../../components/moduloMenu/ConfirmOrderModal/ConfirmOrderModal";
 
 
 
@@ -18,17 +18,41 @@ const Dashboard = () => {
     null,
   );
 
+  const [showOrderModal, setShowOrderModal] =
+    useState(false);
+  const [orderStage, setOrderStage] =
+    useState<1 | 2>(1);
+
   const layoutProps = {
     onSelectProduct: setSelectedProduct,
   };
 
   return (
     <>
-      {isDesktop && <DesktopLayout {...layoutProps} />}
+      {isDesktop && <DesktopLayout {...layoutProps}
+        onOrder={() => {
+          console.log("Dashboard");
+          setShowOrderModal(true);
+        }} />}
 
-      {isTablet && <TabletLayout {...layoutProps} />}
+      {isTablet && <TabletLayout {...layoutProps}
+        onOrder={() =>
+          setShowOrderModal(true)
+        } />}
 
-      {!isDesktop && !isTablet && <MobileLayout {...layoutProps} />}
+      {!isDesktop && !isTablet && <MobileLayout {...layoutProps}
+        onOrder={() =>
+          setShowOrderModal(true)
+        } />}
+
+      <ConfirmOrderModal isOpen={showOrderModal}
+        stage={orderStage}
+        setStage={setOrderStage}
+        onClose={() => {
+          setShowOrderModal(false);
+          setOrderStage(1);
+        }}
+      />
 
       <ProductModal
         product={selectedProduct}

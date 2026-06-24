@@ -1,9 +1,10 @@
 // components/MainContent.tsx
 import CardProduct from "../CardProduct/CardProduct";
 import styles from "./MainContent.module.css";
-import type { ProductMenu } from "../../../../interfaces/ModuloMenu/ProductMenu";
+import type { ProductMenu } from "../../../interfaces/ModuloMenu/ProductMenu";
 import { useState } from "react";
 import { Info, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface MainContentProps {
   onSelectProduct: (product: ProductMenu) => void;
@@ -11,6 +12,8 @@ interface MainContentProps {
 
 const MainContent = ({ onSelectProduct }: MainContentProps) => {
   const [category, setCategory] = useState("Todos");
+
+  const navigate = useNavigate();
 
   const tacos: ProductMenu = {
     productName: "Tacos al Pastor",
@@ -55,7 +58,10 @@ const MainContent = ({ onSelectProduct }: MainContentProps) => {
           </p>
 
           <div className="d-flex align-items-center mt-2">
-            <div className={styles.about}>
+            <div className={styles.about}
+              onClick={
+                () => navigate("/about")
+              }>
               <Info size={15} className="me-1" />
               Acerca de nosotros
             </div>

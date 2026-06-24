@@ -3,15 +3,18 @@
 import { useNavigate } from "react-router-dom";
 
 import Sidebar from "../../components/moduloMenu/Sidebar/Sidebar";
-import MainContent from "../../components/moduloMenu/menu/MainContent/MainContent";
+import MainContent from "../../components/moduloMenu/MainContent/MainContent";
 import type { ProductMenu } from "../../interfaces/ModuloMenu/ProductMenu";
 import SecondaryPanel from "../../components/moduloMenu/SecondaryPanel/SecondaryPanel";
 import { useState } from "react";
 
 interface TabletLayoutProps {
   onSelectProduct: (product: ProductMenu) => void;
+  onOrder: () => void;
 }
-const TabletLayout = ({ onSelectProduct }: TabletLayoutProps) => {
+const TabletLayout = ({ onSelectProduct,
+  onOrder
+ }: TabletLayoutProps) => {
   const navigate = useNavigate();
 
   const [view, setView] = useState<"main" | "panel">("main");
@@ -27,7 +30,7 @@ const TabletLayout = ({ onSelectProduct }: TabletLayoutProps) => {
           {view === "main" ? (
             <MainContent onSelectProduct={onSelectProduct} />
           ) : (
-            <SecondaryPanel />
+            <SecondaryPanel onOrder={onOrder} />
           )}
         </div>
       </div>
