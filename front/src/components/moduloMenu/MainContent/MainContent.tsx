@@ -1,7 +1,7 @@
 // components/MainContent.tsx
 import CardProduct from "../CardProduct/CardProduct";
 import styles from "./MainContent.module.css";
-import type { ProductMenu } from "../../../../interfaces/ModuloMenu/ProductMenu";
+import type { ProductMenu } from "../../../interfaces/ModuloMenu/ProductMenu";
 import { useState } from "react";
 import { Info, User } from "lucide-react";
 

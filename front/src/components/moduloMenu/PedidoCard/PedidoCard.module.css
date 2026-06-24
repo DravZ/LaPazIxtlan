@@ -1,0 +1,131 @@
+.mainContainer {
+    /* Habilita el monitoreo del ancho del contenedor */
+    container-type: inline-size;
+
+    /* (Opcional) Le da un nombre para identificarlo luego */
+    container-name: mainContainer;
+    width: 100% !important;
+}
+
+
+/* Tarjeta del plato */
+.orderCard {
+    background-color: var(--color-card-bg);
+    border-radius: 12px;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    width: 100% !important;
+}
+
+.dishImage {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.infoOrderContainer {
+    display: flex;
+    width: 100% !important;
+}
+
+.quantityContainer {
+    display: flex;
+    align-items: center;
+}
+
+.dishName {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 0px;
+    margin-right: 5px;
+    color: var(--color-text-dark);
+}
+
+/* Cuando el contenedor mida menos de 400px de ancho */
+@container mainContainer (max-width: 300px) {
+    .orderCard {
+        display: block;
+        align-items: center;
+        padding: 0;
+    }
+
+    .dishImage {
+        width: 100% !important;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    .infoOrderContainer {
+        display: block;
+        padding: 1rem;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        justify-items: center;
+    }
+
+    .quantityContainer {
+        margin-top: 4px;
+    }
+
+    .dishName {
+        
+        margin-right: 0;
+    }
+}
+
+.dishPrice {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 0;
+    color: var(--color-text-light);
+}
+
+
+/* Contadores */
+.counterBtn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: background-color 0.2s;
+}
+
+.counterBtn i {
+    color: inherit;
+    /* Hereda el color */
+}
+
+.btnMinus {
+    background-color: var(--color-minus-bg);
+    color: var(--color-btn-minus-icon);
+}
+
+.btnPlus {
+    background-color: var(--color-accent-terracotta);
+    color: #ffffff;
+}
+
+.countValue {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--color-text-dark);
+}
+
+.toppingsText {
+    font-size: 12px;
+    color: var(--color-text-light);
+
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
