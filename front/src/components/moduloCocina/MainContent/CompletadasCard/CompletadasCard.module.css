@@ -1,0 +1,61 @@
+.card {
+    background: #faf5ed;
+
+    border: 1px solid #ead9c5;
+    border-radius: 18px;
+
+    padding: 14px 18px;
+
+    transition: all .2s ease;
+    font-family: "Nunito Sans", sans-serif;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,.05);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 8px;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mesa {
+    background: #bf5a22;
+    color: white;
+
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+.time {
+    color: #8f7a67;
+
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.checkIcon {
+    color: #bf5a22;
+    flex-shrink: 0;
+}
+
+.products {
+    color: #7a5a43;
+
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    line-height: 1.5;
+}
