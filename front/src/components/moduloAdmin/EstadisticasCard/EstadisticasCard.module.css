@@ -1,0 +1,36 @@
+.cardContainer {
+    background-color: #faf5ed;
+    border: solid 1px #d2c6b9;
+    border-radius: 10px
+}
+
+.icoContainer {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+}
+
+.title {
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: #7A5C3E;
+}
+
+.estadistica {
+    font-family: "Playfair Display", serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: #2C1A0E;
+}
+
+.descripcion{
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 400;
+    font-size: 0.7rem;
+    color: #7A5C3E;
+}

@@ -1,0 +1,186 @@
+.overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(43, 19, 8, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+
+.modalContent {
+  background-color: #FAF5EB;
+  width: 100%;
+  max-width: 500px;
+  max-height: 85vh;
+  border-radius: 20px;
+  padding: 32px;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid #E7D6C3;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.subtitle {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: #D96A1C;
+  font-weight: 700;
+}
+
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: #2B1308;
+  margin: 4px 0 0 0;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: #7C6757;
+  cursor: pointer;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputGroup label {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  color: #7C6757;
+  font-weight: 600;
+}
+
+.inputGroup input, .inputGroup select, .inputGroup textarea {
+  background-color: #E7D6C3;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  padding: 12px 16px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 15px;
+  color: #2B1308;
+}
+
+.inputGroup input:focus, .inputGroup select:focus, .inputGroup textarea:focus {
+  outline: none;
+  border-color: #BF4B21;
+  background-color: #FFF8F0;
+}
+
+.uploadArea {
+  border: 1px dashed #7C6757;
+  background-color: #E7D6C3;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #7C6757;
+  cursor: pointer;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 14px;
+}
+
+.footerActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.btnCancel {
+  flex: 1;
+  height: 48px;
+  background-color: #E7D6C3;
+  color: #7C6757;
+  border: none;
+  border-radius: 16px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btnSave {
+  flex: 1;
+  height: 48px;
+  background-color: #2E5936;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Modales Atómicos de Confirmación */
+.deleteModal {
+  max-width: 400px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.deleteIconWrapper {
+  width: 56px;
+  height: 56px;
+  background-color: #FFF8F0;
+  border: 1px solid #E7D6C3;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #C53929;
+  margin-bottom: 16px;
+}
+
+.deleteTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: #2B1308;
+  margin-bottom: 8px;
+}
+
+.deleteDescription {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 14px;
+  color: #7C6757;
+  margin-bottom: 16px;
+}
+
+.btnConfirm {
+  flex: 1;
+  height: 48px;
+  background-color: #BF4B21;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}

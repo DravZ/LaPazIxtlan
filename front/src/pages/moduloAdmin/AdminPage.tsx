@@ -1,11 +1,11 @@
 // pages/Dashboard.tsx
 import { useScreenSize } from "../../hooks/useScreenSize";
-import DesktopLayout from "../../layouts/moduloCocina/DesktopLayout";
-import MobileLayout from "../../layouts/moduloCocina/MobileLayout/MobileLayout";
+import DesktopLayout from "../../layouts/moduloAdmin/DesktopLayout";
+import MobileLayout from "../../layouts/moduloAdmin/MobileLayout/MobileLayout";
 
 
 
-const DashboardCocina = () => {
+const DashboardAdmin = () => {
   const { isDesktop, isTablet } = useScreenSize();
 
   return (
@@ -17,4 +17,4 @@ const DashboardCocina = () => {
   );
 };
 
-export default DashboardCocina;
+export default DashboardAdmin;

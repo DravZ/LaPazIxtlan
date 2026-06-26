@@ -1,0 +1,36 @@
+.container {
+  background-color: #F5EDE0;
+  height: 100%;
+  overflow-y: auto;
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* IE y Edge antiguo */
+  -ms-overflow-style: none;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.subtitle {
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: #7A5C3E;
+}
+
+.title {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  font-size: 2rem;
+  color: #2C1A0E;
+}
+
+.subtitleCategory {
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #B54A1C;
+}
+

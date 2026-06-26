@@ -1,0 +1,93 @@
+.card {
+  background-color: #FFF8F0;
+  border: 1px solid #E7D6C3;
+  border-radius: 20px;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform .2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.leftSide {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatarCircle {
+  width: 48px;
+  height: 48px;
+  background-color: #2E5936;
+  color: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #2B1308;
+  margin: 0;
+}
+
+.roleShift {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  color: #7C6757;
+  margin-top: 2px;
+}
+
+.empId {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #A38D7C;
+  letter-spacing: 0.5px;
+  margin-top: 1px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btnIcon {
+  background-color: #E7D6C3;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7C6757;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btnIcon:hover { 
+  background-color: #D6C2AE; 
+  color: #2B1308; 
+}
+
+.btnDelete:hover { 
+  background-color: #C53929; 
+  color: white; 
+}
