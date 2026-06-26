@@ -17,6 +17,21 @@ const MobileLayout = ({ onSelectProduct }: MobileLayoutProps) => {
     <>
       <div className={styles.container + " pb-0"}>
         <div style={{ maxWidth: "500px", width: "100%" }} className="mx-auto">
+          {/* NUEVA CABECERA MÓVIL DIRECTO DESDE LA IMAGEN */}
+          <div className="pt-4 px-4 pb-2">
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
+                <p className={`${styles.brandSubtitle} m-0 p-0`}>RESTAURANTE</p>
+                <h2 className={`${styles.brandTitle} m-0 p-0`}>
+                  La Paz Ixtlan
+                </h2>
+              </div>
+              <span className={styles.badgeMesero}>Mesero</span>
+            </div>
+            {/* Categoría debajo en formato grande */}
+            <h1 className={`${styles.categoryTitle} mt-3 mb-1`}>{category}</h1>
+          </div>
+
           <div className={styles.screenContainer + " m-0 p-0"}>
             <MainContent category={category} />
           </div>
