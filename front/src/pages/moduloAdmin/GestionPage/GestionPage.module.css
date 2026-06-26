@@ -1,0 +1,22 @@
+.containerBtnSection{
+    background-color: #E8D4B0;
+    padding: 2px;
+    margin: 0;
+    border-radius: 7px;
+}
+.btnSectionSelected{
+    width: 50%;
+    background-color: #2A5C35;
+    color: #faf5ed;
+    padding: 3px 0;
+    border-radius: 7px;
+    border: none;
+}
+.btnSection{
+    width: 50%;
+    background-color: transparent;
+    color: #7C6757;
+    padding: 3px 0;
+    border-radius: 7px;
+    border: none;
+}

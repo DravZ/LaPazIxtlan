@@ -1,0 +1,76 @@
+.bottomNav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    max-width: 450px;
+    height: 50px;
+    margin: 0 auto 7px auto;
+
+    background-color: #111E14;
+
+    border-radius: 20px;
+
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+
+    z-index: 1000;
+}
+
+.navButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    border: none;
+    background: none;
+    padding: 0;
+
+    transition: color 0.2s ease;
+
+    cursor: pointer;
+}
+
+.active {
+    color: #ffffff;
+}
+
+.inactive {
+    color: #9A775B;
+}
+
+.label {
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.cartIconContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.badge {
+    position: absolute;
+
+    top: -8px;
+    right: -8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 16px;
+    height: 16px;
+
+    border-radius: 50%;
+
+    background-color: #b34f24;
+    color: white;
+
+    font-size: 10px;
+    font-weight: bold;
+}

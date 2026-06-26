@@ -1,0 +1,134 @@
+.card {
+  background-color: #FFF8F0;
+  border: 1px solid #E7D6C3;
+  border-radius: 20px;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform .2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.leftSide {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.image {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #2B1308;
+  margin: 0;
+}
+
+.category {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  color: #A38D7C;
+}
+
+.price {
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #BF4B21;
+}
+
+.rightSide {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.switchWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.statusAvailable {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11px;
+  color: #3A8D47;
+  font-weight: 600;
+}
+
+.statusUnavail {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11px;
+  color: #A38D7C;
+  font-weight: 600;
+}
+
+/* Custom Minimal Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #E7D6C3;
+  transition: .2s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px; width: 18px;
+  left: 3px; bottom: 3px;
+  background-color: white;
+  transition: .2s;
+  border-radius: 50%;
+}
+
+input:checked + .slider { background-color: #2E5936; }
+input:checked + .slider:before { transform: translateX(20px); }
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btnIcon {
+  background-color: #E7D6C3;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7C6757;
+  cursor: pointer;
+  transition: background-color .2s ease;
+}
+
+.btnIcon:hover { background-color: #D6C2AE; color: #2B1308; }
+.btnDelete:hover { background-color: #C53929; color: white; }

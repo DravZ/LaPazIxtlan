@@ -1,0 +1,119 @@
+.card {
+  background-color: #FFF8F0;
+  border: 1px solid #E7D6C3;
+  border-radius: 20px;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform .2s ease, box-shadow .2s ease;
+  cursor: default;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(43, 19, 8, 0.05);
+}
+
+.leftSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+  border-right: 1px solid #E7D6C3;
+  padding-right: 24px;
+}
+
+.tableInfo {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.tableLabel {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #2B1308;
+}
+
+.tableNumber {
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+  font-size: 24px;
+  color: #2B1308;
+}
+
+.timestamp {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 12px;
+  color: #A38D7C;
+  margin-top: -4px;
+}
+
+.centerSection {
+  flex: 1;
+  padding: 0 32px;
+}
+
+.productsSummary {
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: #5B3A29;
+  margin: 0;
+}
+
+.orderId {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  color: #A38D7C;
+  text-transform: lowercase;
+}
+
+/* Badges */
+.badge {
+  padding: 6px 18px;
+  border-radius: 16px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: #FFFFFF;
+  min-width: 100px;
+  text-align: center;
+}
+
+.statusPendiente {
+  background-color: #E8A300;
+}
+
+.statusEnCocina {
+  background-color: #3A1F10; /* Marrón oscuro para proceso */
+}
+
+.statusLista {
+  background-color: #3A8D47;
+}
+
+.statusDescartada {
+  background-color: #C53929;
+}
+
+/* Responsivo sutil */
+@media (max-width: 768px) {
+  .card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px;
+  }
+  .leftSection {
+    border: none;
+    padding: 0;
+    flex-direction: row;
+    gap: 12px;
+  }
+  .centerSection {
+    padding: 0;
+  }
+}
