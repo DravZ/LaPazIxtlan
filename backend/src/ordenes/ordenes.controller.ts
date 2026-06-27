@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { OrdenesService } from './ordenes.service';
-import { CreateOrdenDto } from './dto/create-orden.dto';
+import { CreateOrdenDto, DetalleOrdenDto } from './dto/create-orden.dto';
 import { UpdateOrdenDto } from './dto/update-orden.dto';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('ordenes')
 export class OrdenesController {

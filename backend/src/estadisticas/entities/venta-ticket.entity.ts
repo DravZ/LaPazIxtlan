@@ -10,4 +10,7 @@ export class VentaTicket {
 
   @Column({ type: 'timestamp' })
   fecha_venta!: Date;
+
+  @Column({ name: 'metodo_pago', type: 'varchar', length: 50, nullable: true })
+metodo_pago!: string;
 }

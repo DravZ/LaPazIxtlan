@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { CreateOrdenDto } from './dto/create-orden.dto';
+import { CreateOrdenDto, DetalleOrdenDto } from './dto/create-orden.dto';
 import { UpdateOrdenDto } from './dto/update-orden.dto';
 import { DataSource, Repository } from 'typeorm';
 import { Orden } from './entities/orden.entity';
@@ -39,8 +39,8 @@ export class OrdenesService {
 
       const detalles = createOrdeneDto.detalles.map(detalle => {
         return queryRunner.manager.create(DetalleOrden, {
-          id_orden: ordenGuardada.id_orden,
-          id_producto: detalle.id_producto,
+          orden: ordenGuardada, 
+          producto: { id_producto: detalle.id_producto }, 
           cantidad_solicitada: detalle.cantidad_solicitada,
           notas_preparacion: detalle.notas_preparacion,
         });
@@ -109,8 +109,21 @@ export class OrdenesService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} ordene`;
+  async findOne(id: number) {
+    const orden = await this.ordenRepository.findOne({
+      where: { id_orden: id },
+      relations: {
+        detalles: {
+          producto: true, 
+        },
+      },
+    });
+
+    if (!orden) {
+      throw new NotFoundException(`La orden con ID ${id} no existe`);
+    }
+
+    return orden;
   }
 
   async update(id: number, updateOrdenDto: UpdateOrdenDto) {
@@ -136,7 +149,24 @@ export class OrdenesService {
     };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} orden`;
+
+  async remove(id: number) {
+  const queryRunner = this.dataSource.createQueryRunner();
+  await queryRunner.connect();
+  await queryRunner.startTransaction();
+
+  try {
+    await queryRunner.manager.delete(DetalleOrden, { id_orden: id });
+
+    const resultado = await queryRunner.manager.delete(Orden, { id_orden: id });
+
+    await queryRunner.commitTransaction();
+    return { mensaje: 'Orden y sus detalles eliminados correctamente' };
+  } catch (error: any) {
+    await queryRunner.rollbackTransaction();
+    throw new InternalServerErrorException('Error al eliminar la orden: ' + error.message);
+  } finally {
+    await queryRunner.release();
   }
+}
 }

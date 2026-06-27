@@ -6,7 +6,9 @@ export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const rolesRequeridos = this.reflector.get<string[]>('roles', context.getHandler());
+    
+    const rolesRequeridos = this.reflector.get<string[]>('roles', context.getHandler()) || 
+                            this.reflector.get<string[]>('roles', context.getClass());
     
     if (!rolesRequeridos) {
       return true;
@@ -19,7 +21,7 @@ export class RolesGuard implements CanActivate {
       return false;
     }
 
-    const tienePermiso = rolesRequeridos.includes(usuario.rol);
+    const tienePermiso = rolesRequeridos.includes(String(usuario.rol));
 
     if (!tienePermiso) {
       throw new ForbiddenException('Necesitas permisos superiores para hacer esto.');

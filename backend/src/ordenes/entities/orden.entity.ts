@@ -14,8 +14,8 @@ export class Orden {
   @Column({ type: 'varchar', length: 20 })
   estado!: string; // 'Recibida', 'En proceso', 'Lista', 'Entregada', 'Pagada', 'Cancelada'
 
-  @Column({ type: 'varchar', length: 20, nullable: true })
-  numero_mesa!: string;
+  @Column({ type: 'int'})
+  numero_mesa!: number;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   motivo_cancelacion!: string;

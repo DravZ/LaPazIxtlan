@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -34,25 +34,48 @@ export class MenuService {
       nombre_producto: createMenuDto.nombre_producto,
       descripcion: createMenuDto.descripcion,
       precio: createMenuDto.precio,
-      categoria: { id_categoria: createMenuDto.id_categoria }, 
+      categoria: { id_categoria: createMenuDto.id_categoria } as any, 
     });
 
     return await this.productoRepository.save(nuevoProducto);
   }
 
-  findAll() {
-    return `This action returns all menu`;
+  async findAll() {
+    return await this.productoRepository.find({
+      relations: {
+        categoria: true, 
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} menu`;
+  async findOne(id: number) {
+    const producto = await this.productoRepository.findOne({
+      where: { id_producto: id },
+      relations: {
+        categoria: true,
+      },
+    });
+    
+    if (!producto) {
+      throw new NotFoundException(`El producto con ID ${id} no existe`);
+    }
+    return producto;
   }
 
-  update(id: number, updateMenuDto: UpdateMenuDto) {
-    return `This action updates a #${id} menu`;
+  async update(id: number, updateMenuDto: UpdateMenuDto) {
+    const producto = await this.findOne(id);
+    
+    const productoActualizado = Object.assign(producto, updateMenuDto);
+    
+    if (updateMenuDto.id_categoria) {
+      productoActualizado.categoria = { id_categoria: updateMenuDto.id_categoria } as any;
+    }
+    return await this.productoRepository.save(productoActualizado);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} menu`;
+  async remove(id: number) {
+    
+    const producto = await this.findOne(id);
+    return await this.productoRepository.remove(producto);
   }
 }
