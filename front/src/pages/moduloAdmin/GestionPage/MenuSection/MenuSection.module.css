@@ -1,0 +1,35 @@
+.menuContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.btnAddPlatillo {
+  background-color: #2E5936;
+  color: #FFFFFF;
+  border: none;
+  height: 48px;
+  border-radius: 16px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btnAddPlatillo:hover {
+  background-color: #1F3D24;
+  transform: translateY(-2px);
+}
+
+.cardsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}

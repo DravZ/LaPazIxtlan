@@ -1,6 +1,7 @@
 .sidebar {
   height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   background-color: #172619;
@@ -19,48 +20,43 @@
   font-size: 1.8rem;
   color: #faf5eb;
 }
+
 .titleDivider {
   border-bottom: 1px solid #7a5c3e;
 }
 
 .aboutButton {
   margin-top: auto;
-
   margin-left: 12px;
   margin-right: 12px;
   margin-bottom: 16px;
-
   height: 52px;
-
   border: none;
   border-radius: 18px;
-
   background-color: #4a592a;
   color: #faf5eb;
-
   font-family: "Nunito Sans", sans-serif;
   font-size: 1rem;
   font-weight: 600;
-
   cursor: pointer;
-
   transition: all 0.2s ease;
 }
 
 .aboutButton:hover {
   filter: brightness(1.08);
 }
+
 .categoryItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-family: "Nunito Sans", sans-serif;
   font-weight: 300;
   font-size: 1rem;
   color: #93735c;
-
   padding: 14px 20px;
   margin: 6px 10px;
-
   border-radius: 20px;
-
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -71,33 +67,30 @@
 
 .selectedItem {
   background-color: #2b402b;
-  color: #5c7a54;
+  color: #faf5eb;
 }
 
-.cartContainer {
+.iconContainer {
   position: relative;
   display: inline-flex;
   align-items: center;
-  margin-right: 6px;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 }
 
 .badge {
   position: absolute;
-
-  top: -6px;
-  right: -8px;
-
+  top: -4px;
+  right: -4px;
   width: 14px;
   height: 14px;
-
   border-radius: 50%;
-
   background-color: #b34f24;
   color: white;
-
   font-size: 9px;
   font-weight: bold;
-
   display: flex;
   align-items: center;
   justify-content: center;

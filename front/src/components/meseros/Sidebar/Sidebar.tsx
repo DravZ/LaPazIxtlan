@@ -1,14 +1,19 @@
-// components/Sidebar.tsx
-import { useState } from "react";
 import styles from "./Sidebar.module.css";
-import { AlertTriangle, Clock, UtensilsCrossed } from "lucide-react";
+import { ClipboardList, ShoppingCart, Clock } from "lucide-react";
 
 interface SidebarProps {
   category: string;
   setCategory: (value: string) => void;
+  badgePendientes?: number;
+  badgeEntregar?: number;
 }
 
-const Sidebar = ({ category, setCategory }: SidebarProps) => {
+const Sidebar = ({
+  category,
+  setCategory,
+  badgePendientes = 1,
+  badgeEntregar = 0,
+}: SidebarProps) => {
   return (
     <div className={`pt-3 ${styles.sidebar}`}>
       <div className={styles.titleDivider}>
@@ -17,37 +22,52 @@ const Sidebar = ({ category, setCategory }: SidebarProps) => {
         <h2 className={styles.title + " ps-3 ms-2 mt-0 mb-4"}>Ixtlan</h2>
       </div>
 
-      <div className="">
+      <div>
         <p className={styles.subtitle + " mt-3 ms-4"}>OPERACIONES</p>
 
+        {/* PENDIENTES */}
         <p
           className={`${styles.categoryItem} ${
             category === "Pendientes" ? styles.selectedItem : ""
-          }
-              `}
+          }`}
           onClick={() => setCategory("Pendientes")}
         >
-          <span><AlertTriangle size={16} className="me-1"/></span> Pendientes
+          <div className={styles.iconContainer}>
+            <ClipboardList size={20} />
+            {badgePendientes > 0 && (
+              <span className={styles.badge}>{badgePendientes}</span>
+            )}
+          </div>
+          Pendientes
         </p>
 
+        {/* ENTREGAR */}
         <p
           className={`${styles.categoryItem} ${
             category === "Por entregar" ? styles.selectedItem : ""
-          }
-              `}
+          }`}
           onClick={() => setCategory("Por entregar")}
         >
-          <span><UtensilsCrossed size={16} className="me-1"/></span> Entregar
+          <div className={styles.iconContainer}>
+            <ShoppingCart size={20} />
+            {badgeEntregar > 0 && (
+              <span className={styles.badge}>{badgeEntregar}</span>
+            )}
+          </div>
+          Entregar
         </p>
 
+        {/* HISTORIAL */}
         <p
           className={`${styles.categoryItem} ${
             category === "Historial" ? styles.selectedItem : ""
-          }
-              `}
+          }`}
           onClick={() => setCategory("Historial")}
         >
-          <Clock size={16} className="me-1"/> Historial
+          <div className={styles.iconContainer}>
+            <Clock size={20} />
+          </div>
+          Historial
         </p>
       </div>
 

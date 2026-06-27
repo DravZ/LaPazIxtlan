@@ -1,0 +1,178 @@
+.overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(43, 19, 8, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  padding: 16px;
+}
+
+.modalContent {
+  background-color: #FAF5EB;
+  border: 1px solid #E7D6C3;
+  width: 100%;
+  max-width: 460px;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 12px 40px rgba(43, 19, 8, 0.08);
+  animation: fadeInScale 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid #E7D6C3;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.subtitle {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: #D96A1C;
+  font-weight: 700;
+}
+
+.title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 26px;
+  color: #2B1308;
+  margin: 4px 0 0 0;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: #7C6757;
+  cursor: pointer;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputGroup label {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  color: #7C6757;
+  font-weight: 600;
+}
+
+.inputGroup input, .inputGroup select {
+  background-color: #E7D6C3;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  padding: 12px 16px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 15px;
+  color: #2B1308;
+}
+
+.inputGroup input:focus, .inputGroup select:focus {
+  outline: none;
+  border-color: #BF4B21;
+  background-color: #FFF8F0;
+}
+
+.inputGroup input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.footerActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.btnCancel {
+  flex: 1;
+  height: 48px;
+  background-color: #E7D6C3;
+  color: #7C6757;
+  border: none;
+  border-radius: 16px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btnRegister {
+  flex: 1;
+  height: 48px;
+  background-color: #2E5936;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Modal de Confirmación Eliminación */
+.deleteModal {
+  max-width: 380px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.deleteIconWrapper {
+  width: 56px;
+  height: 56px;
+  background-color: #FFF8F0;
+  border: 1px solid #E7D6C3;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #C53929;
+  margin-bottom: 16px;
+}
+
+.deleteTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #2B1308;
+  margin-bottom: 8px;
+}
+
+.deleteDescription {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 14px;
+  color: #7C6757;
+  margin-bottom: 20px;
+}
+
+.btnConfirm {
+  flex: 1;
+  height: 48px;
+  background-color: #BF4B21;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
