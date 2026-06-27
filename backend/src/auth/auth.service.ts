@@ -16,9 +16,9 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     const usuario = await this.usuarioRepository.findOne({
-      where: { nombre_completo: loginDto.usuario },
+      where: { nombre_completo: loginDto.nombre_completo },
       relations: {
-        rol:true,
+        id_rol: true, 
       }
     });
 
@@ -26,7 +26,7 @@ export class AuthService {
       throw new UnauthorizedException('Usuario no encontrado');
     }
 
-    const isValid = loginDto.password === usuario.password_cifrada;
+    const isValid = await bcrypt.compare(loginDto.password, usuario.password_cifrada);
 
     if (!isValid) {
       throw new UnauthorizedException('Contraseña incorrecta');
@@ -35,12 +35,12 @@ export class AuthService {
     const payload = {
       id: usuario.id_usuario,
       nombre: usuario.nombre_completo,
-      rol: usuario.rol.nombre_rol,
+      rol: usuario.id_rol?.nombre_rol || usuario.id_rol, 
     };
 
     return {
       mensaje: '¡Bienvenido a La Paz Ixtlán!',
-      token: this.jwtService.sign(payload),
+      token: this.jwtService.sign(payload), 
     };
   }
 

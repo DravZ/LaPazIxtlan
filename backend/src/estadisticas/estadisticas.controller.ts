@@ -3,7 +3,9 @@ import { EstadisticasService } from './estadisticas.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'), RolesGuard)
 @Roles('Administrador')
 @Controller('estadisticas')

@@ -9,6 +9,7 @@ import { UsuariosModule } from './usuarios/usuarios.module';
 import { AuthModule } from './auth/auth.module';
 import { InventarioModule } from './inventario/inventario.module';
 import { EstadisticasModule } from './estadisticas/estadisticas.module';
+import { CategoriasMenuModule } from './categorias-menu/categorias-menu.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { EstadisticasModule } from './estadisticas/estadisticas.module';
     InventarioModule,
     AuthModule,
     EstadisticasModule,
+    CategoriasMenuModule,
   ],
   controllers: [AppController],
   providers: [AppService],

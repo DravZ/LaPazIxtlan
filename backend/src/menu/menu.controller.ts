@@ -5,7 +5,9 @@ import { UpdateMenuDto } from './dto/update-menu.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
