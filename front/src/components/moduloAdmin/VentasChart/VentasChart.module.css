@@ -1,0 +1,54 @@
+.chartCard {
+  background-color: #FFF8F0; /* Fondo crema característico */
+  border: 1px solid #E7D6C3;
+  border-radius: 24px;
+  padding: 24px;
+  width: 100%;
+  max-width: 100%; /* Tamaño ideal de lectura  680px*/
+  box-shadow: 0 4px 20px rgba(43, 19, 8, 0.02);
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #2B1308;
+  margin: 0;
+}
+
+.subtitle {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 14px;
+  color: #7C6757;
+  margin: 4px 0 0 0;
+}
+
+.chartWrapper {
+    padding: 0;
+  max-width: 680px;
+  height: 240px; /* Altura perfecta controlada para no romper layouts */
+}
+
+/* --- Estilos para la etiqueta flotante (Tooltip) del Mockup --- */
+.customTooltip {
+  background-color: #2B1308; /* Fondo chocolate oscuro */
+  border-radius: 8px;
+  padding: 4px 12px;
+  box-shadow: 0 4px 12px rgba(43, 19, 8, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tooltipValue {
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: #FFF8F0;
+  letter-spacing: 0.5px;
+}

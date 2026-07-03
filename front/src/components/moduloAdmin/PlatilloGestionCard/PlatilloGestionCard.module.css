@@ -6,11 +6,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: transform .2s ease;
+  transition: transform .2s ease, box-shadow .2s ease;
+  width: 100%;
 }
 
 .card:hover {
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(43, 19, 8, 0.03);
 }
 
 .leftSide {
@@ -19,16 +21,32 @@
   gap: 16px;
 }
 
-.image {
+.imageWrapper {
   width: 64px;
   height: 64px;
   border-radius: 16px;
+  overflow: hidden;
+  background-color: #EDE1D1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+}
+
+.imageFallback {
+  font-size: 24px;
 }
 
 .info {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .name {
@@ -37,6 +55,7 @@
   font-size: 18px;
   color: #2B1308;
   margin: 0;
+  line-height: 1.2;
 }
 
 .category {
@@ -62,13 +81,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  min-width: 65px;
 }
 
 .statusAvailable {
   font-family: 'Nunito Sans', sans-serif;
   font-size: 11px;
-  color: #3A8D47;
+  color: #2E5936;
   font-weight: 600;
 }
 
@@ -93,7 +113,7 @@
   position: absolute;
   cursor: pointer;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #E7D6C3;
+  background-color: #EDE1D1;
   transition: .2s;
   border-radius: 24px;
 }
@@ -106,6 +126,7 @@
   background-color: white;
   transition: .2s;
   border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(43, 19, 8, 0.1);
 }
 
 input:checked + .slider { background-color: #2E5936; }
@@ -117,18 +138,54 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 
 .btnIcon {
-  background-color: #E7D6C3;
+  background-color: #EDE1D1;
   border: none;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #7C6757;
   cursor: pointer;
-  transition: background-color .2s ease;
+  transition: all .2s ease;
 }
 
 .btnIcon:hover { background-color: #D6C2AE; color: #2B1308; }
-.btnDelete:hover { background-color: #C53929; color: white; }
+.btnDelete:hover { background-color: #BF4B21; color: white; }
+
+/* ==========================================================================
+   Media Query para Dispositivos Móviles (Breakpoints inferiores a 600px)
+   ========================================================================== */
+@media (max-width: 600px) {
+  .card {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .leftSide {
+    width: 100%;
+  }
+
+  /* Fila inferior para acciones distribuidas limpiamente */
+  .rightSide {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0;
+    padding-top: 12px;
+    border-top: 1px dashed #E7D6C3; /* Separador sutil integrado al estilo */
+  }
+
+  .switchWrapper {
+    flex-direction: row; /* En móvil se lee mejor de forma horizontal */
+    align-items: center;
+    gap: 10px;
+  }
+
+  .btnIcon {
+    width: 42px; /* Un poco más grande en móvil para facilitar el toque táctil */
+    height: 42px;
+  }
+}

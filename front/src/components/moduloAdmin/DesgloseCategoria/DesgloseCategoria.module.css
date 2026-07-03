@@ -1,0 +1,98 @@
+.containerCard {
+  background-color: #FFF8F0;
+  border: 1px solid #E7D6C3;
+  border-radius: 24px;
+  padding: 32px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(43, 19, 8, 0.01);
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #2B1308;
+  margin: 0;
+}
+
+.subtitle {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  color: #7C6757;
+  margin: 4px 0 0 0;
+}
+
+/* Layout dividido: Gráfica a la izquierda, Leyendas estiradas a la derecha */
+.contentLayout {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.chartWrapper {
+  width: 170px;
+  height: 170px;
+  flex-shrink: 0;
+}
+
+.legendContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1; /* Ocupa todo el espacio horizontal restante */
+}
+
+.legendRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.legendLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.colorDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.categoryName {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2B1308;
+}
+
+.percentageValue {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: right;
+}
+
+/* Adaptabilidad para pantallas móviles o layouts colapsados */
+@media (max-width: 650px) {
+  .contentLayout {
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .chartWrapper {
+    width: 160px;
+    height: 160px;
+  }
+
+  .legendContainer {
+    width: 100%;
+  }
+}
