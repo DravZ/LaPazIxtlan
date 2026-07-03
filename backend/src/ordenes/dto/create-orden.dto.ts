@@ -1,4 +1,4 @@
-import { IsInt, IsString, IsArray, ValidateNested, IsOptional, IsPositive, IsNumber, IsNotEmpty } from 'class-validator';
+import { IsInt, IsString, IsArray, ValidateNested, IsOptional, IsPositive, IsNotEmpty } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -32,18 +32,20 @@ export class DetalleOrdenDto {
 export class CreateOrdenDto {
   @ApiProperty({ 
     example: 2, 
-    description: 'ID del mesero que está tomando la orden en la app' 
+    description: 'ID del mesero que está tomando la orden en la app',
+    required: false 
   })
   @IsInt()
-  id_mesero!: number;
+  @IsOptional() 
+  id_mesero?: number;
 
   @ApiProperty({ 
     example: 5, 
-    description: 'El número de la mesa que hace el pedido' 
+    description: 'El ID de la mesa que hace el pedido' 
   })
-  @IsNumber()
+  @IsInt()
   @IsNotEmpty()
-  numero_mesa?: number;
+  id_mesa!: number;
 
   @ApiProperty({ 
     type: [DetalleOrdenDto], 

@@ -1,21 +1,19 @@
-import { IsString, IsIn, IsArray, ValidateNested, IsOptional } from 'class-validator';
+import { IsArray, ValidateNested, IsOptional, IsEnum } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { DetalleOrdenDto } from './create-orden.dto'; 
+import { EstadoOrden } from '../entities/orden.entity';
 
 export class UpdateOrdenDto {
   @ApiProperty({
-    example: 'En proceso',
+    example: EstadoOrden.EN_PREPARACION,
     description: 'El nuevo estado en el que se encuentra la orden',
-    enum: ['Recibida', 'En proceso', 'Lista', 'Entregada', 'Pagada', 'Cancelada'],
+    enum: EstadoOrden, 
     required: false 
   })
   @IsOptional() 
-  @IsString()
-  @IsIn(['Recibida', 'En proceso', 'Lista', 'Entregada', 'Pagada', 'Cancelada'], {
-    message: 'El estado no es válido',
-  })
-  estado?: string; 
+  @IsEnum(EstadoOrden, { message: 'El estado proporcionado no es válido en el flujo del sistema' })
+  estado?: EstadoOrden; 
 
   @ApiProperty({
     type: [DetalleOrdenDto],

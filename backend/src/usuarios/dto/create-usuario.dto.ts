@@ -1,6 +1,6 @@
-import { IsString, IsNotEmpty, IsNumber, IsBoolean, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsBoolean, IsOptional, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-
+import { RolPersonal } from '../entities/usuario.entity'; 
 export class CreateUsuarioDto  {
   @ApiProperty({
     example: 'Juan Mendoza',
@@ -11,6 +11,14 @@ export class CreateUsuarioDto  {
   nombre_completo!: string;
 
   @ApiProperty({
+    example: 'juan_m',
+    description: 'Nombre de usuario corto para iniciar sesión (username)'
+  })
+  @IsString()
+  @IsNotEmpty({ message: 'El nombre de usuario es obligatorio' })
+  username!: string;
+
+  @ApiProperty({
     example: 'admin123',
     description: 'Contraseña de acceso (será encriptada automáticamente)'
   })
@@ -19,12 +27,13 @@ export class CreateUsuarioDto  {
   password!: string;
 
   @ApiProperty({
-    example: 1,
-    description: 'ID del rol asignado (Ej. 1 = Admin, 2 = Cajero, 3 = Mesero)'
+    example: RolPersonal.MESERO,
+    enum: RolPersonal,
+    description: 'Rol del empleado dentro del restaurante (Administrador, Mesero, Cocina)'
   })
-  @IsNumber()
-  @IsNotEmpty({ message: 'Debes asignar un id_rol válido' })
-  id_rol!: number;
+  @IsEnum(RolPersonal, { message: 'El rol debe ser Administrador, Mesero o Cocina' })
+  @IsNotEmpty({ message: 'Debes asignar un rol válido' })
+  rol!: RolPersonal;
 
   @ApiProperty({
     example: true,

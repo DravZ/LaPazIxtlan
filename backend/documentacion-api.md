@@ -1,4 +1,4 @@
-# Documentación de Endpoints
+# Documentación de Endpoints en http://localhost:3000/api/docs#/
 
 **Nota sobre Seguridad:** Los endpoints que indican **[Protegido]** requieren enviar el token JWT en los headers de la petición HTTP.
 **Header requerido:** `Authorization: <tu_token_aqui>`

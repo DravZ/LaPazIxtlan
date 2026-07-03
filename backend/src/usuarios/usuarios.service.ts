@@ -31,8 +31,9 @@ async create(datosUsuarios: any) {
       select: {
         id_usuario: true,
         nombre_completo: true,
-        id_rol: true,
-        activo: true,
+        username: true,
+        rol: true,
+        activo:true
       },
     });
   }
@@ -43,35 +44,31 @@ async create(datosUsuarios: any) {
       select: {
         id_usuario: true,
         nombre_completo: true,
-        id_rol: true,
+        rol: true,
         activo: true,
       },
     });
   }
 
   async update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-  const { id_rol, password, ...rest } = updateUsuarioDto;
+    const { password, ...rest } = updateUsuarioDto as any; 
 
-  const usuario = await this.usuarioRepository.preload({
-    id_usuario: id,
-    ...rest,
-  });
+    const usuario = await this.usuarioRepository.preload({
+      id_usuario: id,
+      ...rest,
+    });
 
-  if (!usuario) {
-    throw new NotFoundException(`El usuario #${id} no existe`);
+    if (!usuario) {
+      throw new NotFoundException(`El usuario #${id} no existe`);
+    }
+
+    if (password) {
+      const salt = await bcrypt.genSalt();
+      usuario.password_cifrada = await bcrypt.hash(password, salt);
+    }
+
+    return await this.usuarioRepository.save(usuario);
   }
-
-  if (password) {
-    const salt = await bcrypt.genSalt();
-    usuario.password_cifrada = await bcrypt.hash(password, salt);
-  }
-
-  if (id_rol) {
-    usuario.id_rol = { id_rol: id_rol } as any; 
-  }
-
-  return await this.usuarioRepository.save(usuario);
-}
 
   async remove(id: number) {
     await this.usuarioRepository.delete(id);
