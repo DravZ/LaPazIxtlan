@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';                          
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MenuModule } from './menu/menu.module'; 
@@ -10,10 +12,16 @@ import { AuthModule } from './auth/auth.module';
 import { InventarioModule } from './inventario/inventario.module';
 import { EstadisticasModule } from './estadisticas/estadisticas.module';
 import { CategoriasMenuModule } from './categorias-menu/categorias-menu.module';
+import { MesasModule } from './mesas/mesas.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads/',
+    }),
     
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -26,7 +34,7 @@ import { CategoriasMenuModule } from './categorias-menu/categorias-menu.module';
         password: configService.get<string>('DB_PASSWORD', ''), 
         database: configService.get<string>('DB_DATABASE'),
         autoLoadEntities: true,
-        synchronize: false,
+        synchronize: false, 
       }),
     }),
     
@@ -37,6 +45,7 @@ import { CategoriasMenuModule } from './categorias-menu/categorias-menu.module';
     AuthModule,
     EstadisticasModule,
     CategoriasMenuModule,
+    MesasModule,
   ],
   controllers: [AppController],
   providers: [AppService],

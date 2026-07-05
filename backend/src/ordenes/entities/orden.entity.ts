@@ -1,28 +1,56 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Usuario } from '../../usuarios/entities/usuario.entity';
+import { Mesa } from '../../mesas/entities/mesa.entity';
 import { DetalleOrden } from './detalle-orden.entity';
+
+
+export enum EstadoOrden {
+  PENDIENTE = 'Pendiente',
+  EN_PREPARACION = 'En Preparación',
+  LISTA = 'Lista',
+  ENTREGADA = 'Entregada',
+  DESCARTADA = 'Descartada',
+}
 
 @Entity('ordenes')
 export class Orden {
   @PrimaryGeneratedColumn()
   id_orden!: number;
 
-  @ManyToOne(() => Usuario)
+  @Column({
+    type: 'enum',
+    enum: EstadoOrden,
+    default: EstadoOrden.PENDIENTE,
+  })
+  estado!: EstadoOrden;
+
+  @ManyToOne(() => Mesa)
+  @JoinColumn({ name: 'id_mesa' })
+  mesa!: Mesa;
+
+  @ManyToOne(() => Usuario, { nullable: true })
   @JoinColumn({ name: 'id_mesero' })
-  mesero!: Usuario;
-
-  @Column({ type: 'varchar', length: 20 })
-  estado!: string; // 'Recibida', 'En proceso', 'Lista', 'Entregada', 'Pagada', 'Cancelada'
-
-  @Column({ type: 'int'})
-  numero_mesa!: number;
+  mesero?: Usuario;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  motivo_cancelacion!: string;
+  motivo_cancelacion?: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  fecha_creacion!: Date;
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  total!: number;
 
-  @OneToMany(() => DetalleOrden, detalle => detalle.orden)
+
+  @CreateDateColumn({ type: 'timestamp' })
+  hora_creacion!: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
+  hora_confirmacion?: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
+  hora_lista?: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
+  hora_entregada?: Date;
+
+  @OneToMany(() => DetalleOrden, detalle => detalle.orden, { cascade: true })
   detalles!: DetalleOrden[];
 }

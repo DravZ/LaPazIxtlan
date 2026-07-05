@@ -2,22 +2,22 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CategoriaMenu } from './entities/categoria-menu.entity';
 import { Repository } from 'typeorm';
 import { MenuProducto } from './entities/menu-producto.entity';
+import { CategoriasMenu } from 'src/categorias-menu/entities/categorias-menu.entity';
 
 @Injectable()
 export class MenuService {
   constructor(
-    @InjectRepository(CategoriaMenu)
-    private readonly categriaRepsotory: Repository<CategoriaMenu>,
+    @InjectRepository(CategoriasMenu)
+    private readonly categoriaRepsotory: Repository<CategoriasMenu>,
 
     @InjectRepository(MenuProducto)
     private readonly productoRepository: Repository <MenuProducto>,
   ){}
 
   async obtenerMenuCompleto() {
-    return await this.categriaRepsotory.find({
+    return await this.categoriaRepsotory.find({
       relations: {
         productos: true,
       },
@@ -29,12 +29,11 @@ export class MenuService {
     });
   }
 
-  async create(createMenuDto: CreateMenuDto) {
+  async create(createMenuDto: CreateMenuDto, imagenUrl?: string) {
     const nuevoProducto = this.productoRepository.create({
-      nombre_producto: createMenuDto.nombre_producto,
-      descripcion: createMenuDto.descripcion,
-      precio: createMenuDto.precio,
-      categoria: { id_categoria: createMenuDto.id_categoria } as any, 
+      ...createMenuDto,
+      imagen_url: imagenUrl,
+      categoria: { id_categoria: createMenuDto.id_categoria },
     });
 
     return await this.productoRepository.save(nuevoProducto);
@@ -63,14 +62,17 @@ export class MenuService {
   }
 
   async update(id: number, updateMenuDto: UpdateMenuDto) {
-    const producto = await this.findOne(id);
-    
-    const productoActualizado = Object.assign(producto, updateMenuDto);
-    
-    if (updateMenuDto.id_categoria) {
-      productoActualizado.categoria = { id_categoria: updateMenuDto.id_categoria } as any;
+    const productoPreCargado = await this.productoRepository.preload({
+      id_producto: id,
+      ...updateMenuDto,
+      ...(updateMenuDto.id_categoria && { categoria: { id_categoria: updateMenuDto.id_categoria } }),
+    });
+
+    if (!productoPreCargado) {
+      throw new NotFoundException(`El producto con ID ${id} no existe`);
     }
-    return await this.productoRepository.save(productoActualizado);
+
+    return await this.productoRepository.save(productoPreCargado);
   }
 
   async remove(id: number) {

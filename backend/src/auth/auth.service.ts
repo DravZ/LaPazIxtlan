@@ -17,9 +17,6 @@ export class AuthService {
   async login(loginDto: LoginDto) {
     const usuario = await this.usuarioRepository.findOne({
       where: { nombre_completo: loginDto.nombre_completo },
-      relations: {
-        id_rol: true, 
-      }
     });
 
     if (!usuario) {
@@ -35,7 +32,7 @@ export class AuthService {
     const payload = {
       id: usuario.id_usuario,
       nombre: usuario.nombre_completo,
-      rol: usuario.id_rol?.nombre_rol || usuario.id_rol, 
+      rol: usuario.rol
     };
 
     return {

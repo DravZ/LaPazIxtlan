@@ -1,19 +1,18 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { CreateOrdenDto, DetalleOrdenDto } from './dto/create-orden.dto';
 import { UpdateOrdenDto } from './dto/update-orden.dto';
 import { DataSource, Repository } from 'typeorm';
-import { Orden } from './entities/orden.entity';
-import { DetalleOrden } from './entities/detalle-orden.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Orden, EstadoOrden } from './entities/orden.entity';
+import { DetalleOrden } from './entities/detalle-orden.entity';
 import { OrdenesGateway } from './ordenes.gateway';
-import { BadRequestException } from '@nestjs/common';
 import { Receta } from 'src/inventario/entities/receta.entity';
 import { InventarioInsumo } from 'src/inventario/entities/inventario-insumo.entity';
+import { MenuProducto } from 'src/menu/entities/menu-producto.entity';
 
 
 @Injectable()
 export class OrdenesService {
-
   constructor (
     private readonly dataSource: DataSource,
     
@@ -23,34 +22,55 @@ export class OrdenesService {
     private readonly ordenesGateway: OrdenesGateway,
   ) {}
 
-  async create(createOrdeneDto: CreateOrdenDto) {
+  async create(createOrdenDto: CreateOrdenDto) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
       const nuevaOrden = queryRunner.manager.create(Orden, {
-        mesero: { id_usuario: createOrdeneDto.id_mesero },
-        numero_mesa: createOrdeneDto.numero_mesa,
-        estado: 'Recibida',
+        mesero: createOrdenDto.id_mesero ? { id_usuario: createOrdenDto.id_mesero } : undefined, 
+        mesa: { id_mesa: createOrdenDto.id_mesa }, 
+        estado: EstadoOrden.PENDIENTE,
+        total: 0 
       });
       
-      const ordenGuardada = await queryRunner.manager.save(nuevaOrden);
+      let ordenGuardada = await queryRunner.manager.save(nuevaOrden);
+      let totalOrden = 0; 
+      const detallesAGuardar: DetalleOrden[] = [];
 
-      const detalles = createOrdeneDto.detalles.map(detalle => {
-        return queryRunner.manager.create(DetalleOrden, {
-          orden: ordenGuardada, 
-          producto: { id_producto: detalle.id_producto }, 
-          cantidad_solicitada: detalle.cantidad_solicitada,
-          notas_preparacion: detalle.notas_preparacion,
+      for (const detalleDto of createOrdenDto.detalles) {
+        const producto = await queryRunner.manager.findOne(MenuProducto, {
+          where: { id_producto: detalleDto.id_producto }
         });
-      });
 
-      await queryRunner.manager.save(DetalleOrden, detalles);
+        if (!producto) {
+          throw new BadRequestException(`El producto con ID ${detalleDto.id_producto} no existe.`);
+        }
 
-      for (const detalle of detalles) {
+        const precioUnitario = Number(producto.precio);
+        
+        totalOrden += precioUnitario * detalleDto.cantidad_solicitada;
+
+        const nuevoDetalle = queryRunner.manager.create(DetalleOrden, {
+          orden: ordenGuardada, 
+          producto: { id_producto: detalleDto.id_producto }, 
+          cantidad_solicitada: detalleDto.cantidad_solicitada,
+          notas_preparacion: detalleDto.notas_preparacion,
+          precio_unitario: precioUnitario 
+        });
+
+        detallesAGuardar.push(nuevoDetalle);
+      }
+
+      const detallesGuardados = await queryRunner.manager.save(DetalleOrden, detallesAGuardar);
+
+      ordenGuardada.total = totalOrden;
+      await queryRunner.manager.save(Orden, ordenGuardada);
+
+      for (const detalle of detallesGuardados) {
         const recetas = await queryRunner.manager.find(Receta, {
-          where: { id_producto: detalle.id_producto },
+          where: { id_producto: detalle.producto.id_producto },
         });
 
         for (const receta of recetas) {
@@ -77,18 +97,22 @@ export class OrdenesService {
 
       this.ordenesGateway.server.emit('nuevaComanda', {
         id_orden: ordenGuardada.id_orden,
-        numero_mesa: ordenGuardada.numero_mesa,
+        id_mesa: ordenGuardada.mesa.id_mesa,
         estado: ordenGuardada.estado,
         mensaje: '¡Llegó un nuevo pedido!',
       });
 
       return { 
         mensaje: '¡Orden Recibida!', 
-        orden: ordenGuardada.id_orden 
+        orden: ordenGuardada.id_orden,
+        total: totalOrden
       };
 
     } catch (error:any) {
       await queryRunner.rollbackTransaction();
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
       throw new InternalServerErrorException('Error al guardar la comanda: ' + error.message);
     } finally {
       await queryRunner.release();
@@ -96,16 +120,25 @@ export class OrdenesService {
   }
 
   async findAll() {
-   return await this.ordenRepository.find({
+    const ordenes = await this.ordenRepository.find({
       relations: {
         mesero: true, 
+        mesa: true,
         detalles: {
           producto: true, 
+          toppings: true,
         },
       },
       order: {
-        fecha_creacion: 'DESC', 
+        hora_creacion: 'DESC', 
       }
+    });
+
+    return ordenes.map(orden => {
+      if (orden.mesero) {
+        delete (orden.mesero as any).password_cifrada;
+      }
+      return orden;
     });
   }
 
@@ -113,8 +146,11 @@ export class OrdenesService {
     const orden = await this.ordenRepository.findOne({
       where: { id_orden: id },
       relations: {
+        mesero: true,
+        mesa: true,
         detalles: {
           producto: true, 
+          toppings: true,
         },
       },
     });
@@ -123,13 +159,20 @@ export class OrdenesService {
       throw new NotFoundException(`La orden con ID ${id} no existe`);
     }
 
+    if (orden.mesero) {
+      delete (orden.mesero as any).password_cifrada;
+    }
+
     return orden;
   }
 
   async update(id: number, updateOrdenDto: UpdateOrdenDto) {
+    const { estado, nuevosDetalles, ...datosOrden } = updateOrdenDto as any;
+
     const orden = await this.ordenRepository.preload({
       id_orden: id,
-      ...updateOrdenDto,
+      ...datosOrden,
+      estado: estado ? (estado as EstadoOrden) : undefined,
     });
 
     if (!orden) {
@@ -144,29 +187,28 @@ export class OrdenesService {
     });
 
     return {
-      mensaje: `La orden #${id} ahora está: ${updateOrdenDto.estado}`,
+      mensaje: `La orden #${id} ahora está: ${orden.estado}`,
       orden,
     };
   }
 
-
   async remove(id: number) {
-  const queryRunner = this.dataSource.createQueryRunner();
-  await queryRunner.connect();
-  await queryRunner.startTransaction();
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-  try {
-    await queryRunner.manager.delete(DetalleOrden, { id_orden: id });
+    try {
+      await queryRunner.manager.delete(DetalleOrden, { orden: { id_orden: id } });
 
-    const resultado = await queryRunner.manager.delete(Orden, { id_orden: id });
+      await queryRunner.manager.delete(Orden, { id_orden: id });
 
-    await queryRunner.commitTransaction();
-    return { mensaje: 'Orden y sus detalles eliminados correctamente' };
-  } catch (error: any) {
-    await queryRunner.rollbackTransaction();
-    throw new InternalServerErrorException('Error al eliminar la orden: ' + error.message);
-  } finally {
-    await queryRunner.release();
+      await queryRunner.commitTransaction();
+      return { mensaje: 'Orden y sus detalles eliminados correctamente' };
+    } catch (error: any) {
+      await queryRunner.rollbackTransaction();
+      throw new InternalServerErrorException('Error al eliminar la orden: ' + error.message);
+    } finally {
+      await queryRunner.release();
+    }
   }
-}
 }

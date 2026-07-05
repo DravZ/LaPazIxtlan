@@ -1,5 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { Rol } from './rol.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
+export enum RolPersonal {
+  ADMIN = 'Administrador',
+  MESERO = 'Mesero',
+  COCINA = 'Cocina',
+}
 
 @Entity('usuarios')
 export class Usuario {
@@ -9,13 +14,18 @@ export class Usuario {
   @Column({ type: 'varchar', length: 150 })
   nombre_completo!: string;
 
+  @Column({ type: 'varchar', length: 50, unique: true })
+  username!: string; 
+
   @Column({ type: 'varchar', length: 255 })
-  password_cifrada!: string;
+  password_cifrada!: string; 
+
+  @Column({
+    type: 'enum',
+    enum: RolPersonal,
+  })
+  rol!: RolPersonal;
 
   @Column({ type: 'boolean', default: true })
   activo!: boolean;
-
-  @ManyToOne(() => Rol, (rol) => rol.usuarios)
-  @JoinColumn({ name: 'id_rol' })
-  id_rol!: Rol;
 }

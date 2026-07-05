@@ -1,5 +1,17 @@
-import { IsString, IsNumber, IsOptional, IsPositive, MinLength } from 'class-validator';
+import { IsString, IsNumber, IsOptional, IsPositive, MinLength, IsArray, ValidateNested } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger'; // ¡La importación mágica!
+import { Type } from 'class-transformer';
+
+export class CreateToppingDto {
+  @ApiProperty({ example: 'Extra Queso' })
+  @IsString()
+  nombre!: string;
+
+  @ApiProperty({ example: 15.50, required: false })
+  @IsNumber()
+  @IsOptional()
+  precio_extra?: number;
+}
 
 export class CreateMenuDto {
   @ApiProperty({ 
@@ -13,7 +25,7 @@ export class CreateMenuDto {
   @ApiProperty({ 
     example: 'Orden de 5 tacos con doble tortilla, piña y cilantro', 
     description: 'Detalles de los ingredientes o preparación',
-    required: false // Le avisa a Swagger que este campo es opcional
+    required: false 
   })
   @IsOptional()
   @IsString()
@@ -34,4 +46,24 @@ export class CreateMenuDto {
   @IsNumber({}, { message: 'El ID de la categoría debe ser un número' })
   @IsPositive()
   id_categoria!: number;
+
+  @ApiProperty({ 
+    type: 'string', 
+    format: 'binary', 
+    description: 'Foto del platillo (JPG, PNG)', 
+    required: false 
+  })
+  @IsOptional()
+  imagen?: any;
+
+  @ApiProperty({ 
+    type: [CreateToppingDto], 
+    description: 'Lista de toppings opcionales para este platillo',
+    required: false 
+  })
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true }) 
+  @Type(() => CreateToppingDto)   
+  toppings?: CreateToppingDto[];
 }
