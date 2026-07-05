@@ -1,0 +1,224 @@
+.card {
+  background-color: #FFF8F0;
+  border: 1px solid #E7D6C3;
+  border-radius: 20px;
+  padding: 20px 28px;
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+  transition: all 0.2s ease;
+}
+
+/* Borde resaltado sutil para órdenes con estatus Listo */
+.cardListaBorder {
+  border: 1px solid #2E5936;
+  box-shadow: 0 4px 14px rgba(46, 89, 54, 0.04);
+}
+
+/* Columna de Círculo Secuencial */
+.secuencialWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.circleIndicator {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: #EDE1D1;
+  color: #5A4A42;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circleLista {
+  background-color: #2E5936;
+  color: #FFFFFF;
+}
+
+/* Bloque central de Info */
+.mainInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.topMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mesaTitle {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #2B1308;
+}
+
+.statusBadge {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.badgePendiente { background-color: #F1E5CE; color: #B27D12; }
+.badgeCocina { background-color: #DCE3F5; color: #3B4B74; }
+.badgeLista { background-color: #E6EFEA; color: #2E5936; }
+.badgeEntregada { background-color: #EAE6E2; color: #7C6757; }
+
+.metaText {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  color: #A38D7C;
+}
+
+/* Sección de productos y leyendas opcionales */
+.productosContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.itemProductoRow {
+  display: flex;
+  flex-direction: column;
+}
+
+.productoText {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #3E2B20;
+  margin: 0;
+}
+
+.cantidadHighlight {
+  font-weight: 700;
+  color: #2B1308;
+}
+
+/* Leyenda de toppings en itálica discreta inferior */
+.toppingsLegend {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  font-style: italic;
+  color: #A38D7C;
+  margin: 2px 0 0 0;
+}
+
+/* Contenedor de precios */
+.priceContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.totalText {
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #9A5237;
+}
+
+.ivaText {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 12px;
+  color: #A38D7C;
+}
+
+/* Columna Lateral Izquierda (Acción) */
+.actionsSide {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  min-width: 160px;
+  flex-shrink: 0;
+}
+
+.btnAccion {
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 14px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.btnEnProceso {
+  background-color: #3C6E71;
+  color: #FFFFFF;
+}
+
+.btnEnProceso:hover {
+  background-color: #2D5356;
+}
+
+.btnProceder {
+  background-color: #2E5936;
+  color: #FFFFFF;
+}
+
+.btnProceder:hover {
+  background-color: #203E26;
+}
+
+.folioSubtext {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #C1B2A6;
+}
+
+/* ==========================================================================
+   Media Query Responsiva para Móviles
+   ========================================================================== */
+@media (max-width: 768px) {
+  .card {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .secuencialWrapper {
+    justify-content: flex-start;
+  }
+
+  .actionsSide {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px dashed #E7D6C3;
+    padding-top: 14px;
+    margin-top: 4px;
+  }
+
+  .btnAccion {
+    width: auto;
+    min-width: 165px;
+  }
+}
+
+/* Nueva regla agregada para el borde azul cuando se selecciona */
+.cardSelectedBlue {
+  border: 2px solid #0056b3 !important;
+  box-shadow: 0 4px 14px rgba(0, 86, 179, 0.15) !important;
+}

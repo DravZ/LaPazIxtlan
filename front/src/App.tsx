@@ -4,6 +4,7 @@ import Dashboard from "./pages/ModuloMenu/Dashboard";
 import AboutPage from "./pages/ModuloAbout/AboutPage";
 import DashboardCocina from "./pages/moduloCocina/CocineroPage";
 import DashboardAdmin from "./pages/moduloAdmin/AdminPage";
+import DashboardCaja from "./pages/moduloCaja/Dashboard";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/mesero" element={<DashboardMesero />} />
         <Route path="/cocinero" element={<DashboardCocina />} />
         <Route path="/admin" element={<DashboardAdmin />} />
+        <Route path="/caja" element={<DashboardCaja />} />
         <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
       </Routes>
     </BrowserRouter>
