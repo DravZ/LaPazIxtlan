@@ -1,0 +1,152 @@
+.containerCard {
+  background-color: #FFF8F0;
+  border: 1px solid #E7D6C3;
+  border-radius: 24px;
+  padding: 32px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(43, 19, 8, 0.01);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #2B1308;
+  margin: 0;
+}
+
+.subtitle {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  color: #7C6757;
+  margin: 4px 0 0 0;
+}
+
+/* Conmutador de Píldoras (Tabs) */
+.pillControl {
+  display: flex;
+  background-color: #EDE1D1;
+  border-radius: 12px;
+  padding: 3px;
+}
+
+.pillBtn {
+  background: none;
+  border: none;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 9px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #7C6757;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Estados Activos Diferenciados por Color según Mockup */
+.activeMas {
+  background-color: #2E5936;
+  color: #FFFFFF !important;
+}
+
+.activeMenos {
+  background-color: #BF4B21; /* Óxido / Naranja de la marca */
+  color: #FFFFFF !important;
+}
+
+/* Filas e Índices */
+.listWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rowItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.indexLabel {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #A38D7C;
+  width: 16px;
+  text-align: right;
+}
+
+.barContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.topInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.productName {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2B1308;
+}
+
+.udsLabel {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #2B1308;
+}
+
+/* Estilo y Relleno de las Barras */
+.progressTrack {
+  width: 100%;
+  height: 6px;
+  background-color: #EDE1D1;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressBar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.barMas {
+  background-color: #2E5936;
+}
+
+.barMenos {
+  background-color: #BF4B21;
+}
+
+/* Responsividad */
+@media (max-width: 576px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .pillControl {
+    width: 100%;
+  }
+  .pillBtn {
+    flex: 1;
+  }
+}

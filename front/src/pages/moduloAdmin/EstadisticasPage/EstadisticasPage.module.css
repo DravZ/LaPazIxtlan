@@ -1,0 +1,123 @@
+.filterContainer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 8px 0;
+    flex-wrap: wrap;
+    /* Soporte responsivo automático para móvil */
+}
+
+/* --- Estilos del Select Personalizado --- */
+.selectWrapper {
+    position: relative;
+    min-width: 140px;
+    height: 44px;
+}
+
+/* Ocultamos el select nativo pero mantenemos su funcionalidad e interactividad por debajo */
+.timeSelect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+
+}
+
+.selectTrigger {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #D8D9C7;
+    border: 1px solid #2E5936;
+    border-radius: 24px;
+    padding: 0 16px 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #3E2416;
+    /* Tono chocolate oscuro */
+    pointer-events: none;
+    /* Deja pasar los clicks al select real debajo */
+    transition: all 0.2s ease;
+}
+
+.selectWrapper:hover .selectTrigger {
+    background-color: #d1d2be;
+    border: 1px solid #346b3e;
+}
+
+.icon {
+    color: #6D594B;
+    transition: transform 0.2s ease;
+}
+
+/* --- Estilos del Control Segmentado (Pills) --- */
+.segmentControl {
+    display: flex;
+    background-color: #d1d2be;
+    border-radius: 24px;
+    padding: 4px;
+    align-items: center;
+}
+
+.segmentBtn {
+    background: none;
+    border: none;
+    height: 36px;
+    padding: 0 20px;
+    border-radius: 20px;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #346b3e;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+}
+
+.segmentBtn:hover {
+    color: #3E2416;
+}
+
+/* Estado Activo - Variante Verde de la Marca */
+.activeSegment {
+    background-color: #2E5936;
+    /* Verde institucional */
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 12px rgba(46, 89, 54, 0.15);
+}
+
+/* Adaptación para pantallas móviles */
+@media (max-width: 992px) {
+    .filterContainer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .selectWrapper {
+        width: 100%;
+    }
+
+    .segmentControl {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .segmentBtn {
+        flex: 1;
+        text-align: center;
+        padding: 0 8px;
+        font-size: 13px;
+    }
+}
