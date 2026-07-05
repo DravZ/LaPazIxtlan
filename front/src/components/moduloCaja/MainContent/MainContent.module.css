@@ -1,0 +1,65 @@
+.sectionContainer {
+  max-height: 100%;
+  overflow-y: scroll;
+  background-color: #EDE4D6;
+  padding-bottom: 100px !important;
+/* Firefox */
+  scrollbar-width: none;
+
+  /* Internet Explorer y Edge antiguo */
+  -ms-overflow-style: none;
+}
+
+/* Chrome, Edge (Chromium), Safari */
+.sectionContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 100px;
+}
+
+.sectionTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #2B1308;
+  margin: 0 0 4px 0;
+}
+
+.sectionSubtitle {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  color: #7C6757;
+  margin: 0;
+}
+
+.badgeCount {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4A6B53;
+  background-color: #E6EFEA;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #C2DCcc;
+}
+
+.cardsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  overflow: auto;
+}
+
+@media (max-width: 768px) {
+  .headerRow {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+}

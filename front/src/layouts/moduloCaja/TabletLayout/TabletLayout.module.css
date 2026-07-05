@@ -1,0 +1,33 @@
+.container{
+    background-color: #FAF5EB;
+    margin: 0;
+    padding: 0;
+}
+
+.subtitle {
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: #7A5C3E;
+}
+
+.title {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: #2C1A0E;
+}
+
+.chip {
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #2E7D8A;
+  background-color: #E4E8E1;
+  height: fit-content;
+  padding: 5px 12px;
+  border-radius: 12px;
+  border: solid 1px #2E7D8A;
+}
+
+

@@ -1,0 +1,295 @@
+/* Contenedor Principal (Estado Activo) */
+.containerA {
+  background-color: #FAF5EB;
+  border: 1px solid #E7D6C3;
+  width: 100%;
+  height: 100%; /* Toma el 100% de la altura del padre */
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(43, 19, 8, 0.01);
+  overflow: hidden; /* Evita que el contenedor rompa esquinas */
+}
+
+/* Estado Vacío (Toma el 100% de la altura) */
+.emptyState {
+  background-color: #FAF5EB;
+  border: 1px solid #E7D6C3;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.emptyCenterContent {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 2rem;
+}
+
+/* BLOQUE 1 */
+.bloqueHeader {
+  flex-shrink: 0; /* No se encoge */
+}
+
+/* BLOQUE 2: El que se estira y genera Scroll si es necesario */
+.dataTicketContainer {
+  flex-grow: 1; /* Ocupa todo el espacio restante */
+  overflow-y: auto; /* Scroll vertical inteligente */
+  min-height: 0; /* Crucial para flexbox interno en scrolling */
+}
+
+/* Opcional: Personalización limpia del scrollbar para que sea sutil */
+.dataTicketContainer::-webkit-scrollbar {
+  width: 6px;
+}
+.dataTicketContainer::-webkit-scrollbar-thumb {
+  background-color: #E7D6C3;
+  border-radius: 10px;
+}
+
+/* BLOQUE 3 */
+.bloqueFooter {
+  flex-shrink: 0; /* No se encoge, siempre visible abajo */
+}
+
+/* --- Tipografías y Textos Comunes --- */
+.subtitle {
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: #7A5C3E;
+}
+
+.title {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  font-size: 2rem;
+  color: #2C1A0E;
+}
+
+/* Componentes del Estado Vacío */
+.emptyContent {
+  text-align: center;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.emptyIcon {
+  color: #C1B2A6;
+}
+
+.emptyTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #2B1308;
+  margin: 0;
+}
+
+.emptySubtitle {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  color: #A38D7C;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Cabecera Ticket Interno */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.folioText {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 12px;
+  color: #A38D7C;
+}
+
+.metaRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: #7C6757;
+  gap: 2px;
+}
+
+.meseroText {
+  font-weight: 600;
+}
+
+.divider {
+  border: 0;
+  border-top: 1px dashed #312d28;
+  margin: 15px 0;
+  width: 100%;
+}
+
+/* Lista Desglosada de Productos */
+.productosList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 15px;
+  border: 1px solid  #e7e3e0;
+  border-radius: 12px;
+}
+
+.productDiv{
+    border-bottom: 1px solid  #e7e3e0;
+}
+.productPrice{
+    font-family: "Playfair Display", serif;
+  font-weight: 600;
+  color: #2C1A0E;
+}
+
+.productoItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.prodMainRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prodNombre {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 15px;
+  color: #3E2B20;
+  font-weight: 600;
+}
+
+.prodCantidad {
+  color: #2B1308;
+  font-weight: 700;
+}
+
+.toppingsLegend {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  font-style: italic;
+  color: #A38D7C;
+  margin: 2px 0 0 0;
+}
+
+/* Métodos de Pago */
+.paymentSelectorContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.sectionLabel {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #7C6757;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.methodGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.methodBtn {
+  background-color: #EDE1D1;
+  border: 1px solid transparent;
+  padding: 12px;
+  border-radius: 14px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #5A4A42;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.methodBtn:hover {
+  background-color: #b6d2d6;
+  color: #2B1308;
+}
+
+.methodBtnActive {
+  background-color: #cddcde;
+  color: #30838C;
+  border: 1px solid #30838C;
+}
+
+/* Resumen Financiero */
+.financialSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  border: 1px solid #d0dce4;
+  background-color: #F2ECE3;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 14px;
+  color: #7C6757;
+  font-weight: 600;
+}
+
+.totalRow {
+  font-size: 19px;
+  font-weight: 700;
+  color: #2d1b14;
+
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+}
+
+.total{
+  color: #30838C;
+}
+
+/* Botón Confirmar */
+.btnConfirmar {
+  width: 100%;
+  padding: 14px;
+  background-color: #30838C;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 16px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.btnConfirmar:hover {
+  background-color: #203E26;
+}
+
+.divProductList{
+    border: 1px solid #203E26;
+    border-radius: 15px;
+}
