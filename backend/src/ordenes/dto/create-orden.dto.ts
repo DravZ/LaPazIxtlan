@@ -2,6 +2,16 @@ import { IsInt, IsString, IsArray, ValidateNested, IsOptional, IsPositive, IsNot
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
+export class ToppingOrdenDto {
+  @ApiProperty({ 
+    example: 5, 
+    description: 'ID del topping o extra a agregar' 
+  })
+  @IsInt()
+  @IsPositive()
+  id_topping!: number;
+}
+
 export class DetalleOrdenDto {
   @ApiProperty({ 
     example: 15, 
@@ -27,6 +37,17 @@ export class DetalleOrdenDto {
   @IsString()
   @IsOptional()
   notas_preparacion?: string; 
+
+@ApiProperty({ 
+    type: [ToppingOrdenDto], 
+    description: 'Lista de extras agregados a este platillo',
+    required: false 
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ToppingOrdenDto)
+  @IsOptional()
+  toppings?: ToppingOrdenDto[];
 }
 
 export class CreateOrdenDto {

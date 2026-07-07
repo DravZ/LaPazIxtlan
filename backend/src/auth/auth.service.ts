@@ -16,7 +16,7 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     const usuario = await this.usuarioRepository.findOne({
-      where: { nombre_completo: loginDto.nombre_completo },
+      where: { username: loginDto.username },
     });
 
     if (!usuario) {
@@ -32,6 +32,7 @@ export class AuthService {
     const payload = {
       id: usuario.id_usuario,
       nombre: usuario.nombre_completo,
+      username: usuario.username,
       rol: usuario.rol
     };
 
@@ -41,9 +42,9 @@ export class AuthService {
     };
   }
 
-  async validarUsuario(nombre_completo: string, passwordPlana: string) {
+  async validarUsuario(username: string, passwordPlana: string) {
   
-    const usuario = await this.usuarioRepository.findOne({ where: { nombre_completo } });
+    const usuario = await this.usuarioRepository.findOne({ where: { username } });
 
     if (!usuario) {
       throw new UnauthorizedException('Credenciales incorrectas');

@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MenuProducto } from './entities/menu-producto.entity';
 import { CategoriasMenu } from 'src/categorias-menu/entities/categorias-menu.entity';
+import { Topping } from './entities/topping.entity';
 
 @Injectable()
 export class MenuService {
@@ -14,6 +15,9 @@ export class MenuService {
 
     @InjectRepository(MenuProducto)
     private readonly productoRepository: Repository <MenuProducto>,
+
+    @InjectRepository(Topping) 
+    private readonly toppingRepository: Repository<Topping>,
   ){}
 
   async obtenerMenuCompleto() {
@@ -43,6 +47,7 @@ export class MenuService {
     return await this.productoRepository.find({
       relations: {
         categoria: true, 
+        toppings: true,
       },
     });
   }
@@ -52,6 +57,7 @@ export class MenuService {
       where: { id_producto: id },
       relations: {
         categoria: true,
+        toppings: true,
       },
     });
     
@@ -79,5 +85,9 @@ export class MenuService {
     
     const producto = await this.findOne(id);
     return await this.productoRepository.remove(producto);
+  }
+
+  async obtenerTodosLosToppings() {
+    return await this.toppingRepository.find();
   }
 }

@@ -4,6 +4,7 @@ export enum RolPersonal {
   ADMIN = 'Administrador',
   MESERO = 'Mesero',
   COCINA = 'Cocina',
+  CAJA = 'Cajero'
 }
 
 @Entity('usuarios')

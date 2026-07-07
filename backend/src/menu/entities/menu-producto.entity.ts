@@ -27,6 +27,8 @@ export class MenuProducto {
   @JoinColumn({ name: 'id_categoria' })
   categoria!: CategoriasMenu;
 
-  @OneToMany(() => Topping, (topping) => topping.producto)
+  @OneToMany(() => Topping, (topping) => topping.producto, {
+    cascade:true,
+  })
   toppings!: Topping[];
 }
