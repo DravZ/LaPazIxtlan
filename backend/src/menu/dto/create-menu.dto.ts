@@ -8,7 +8,7 @@ export class CreateToppingDto {
   nombre!: string;
 
   @ApiProperty({ example: 15.50, required: false })
-  @IsNumber()
+  @Type(() => Number)
   @IsOptional()
   precio_extra?: number;
 }
@@ -35,6 +35,7 @@ export class CreateMenuDto {
     example: 65.50, 
     description: 'Precio final de venta al público' 
   })
+  @Type(() => Number)
   @IsNumber({}, { message: 'El precio debe ser un número' })
   @IsPositive({ message: 'El precio no puede ser negativo' })
   precio!: number;
@@ -43,6 +44,7 @@ export class CreateMenuDto {
     example: 2, 
     description: 'ID de la categoría a la que pertenece (Ej. 1 = Bebidas, 2 = Tacos)' 
   })
+  @Type(() => Number)
   @IsNumber({}, { message: 'El ID de la categoría debe ser un número' })
   @IsPositive()
   id_categoria!: number;

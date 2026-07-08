@@ -18,12 +18,16 @@ export class EstadisticasController {
   constructor(private readonly estadisticasService: EstadisticasService) {}
 
   @Get('dashboard')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(RolPersonal.ADMIN) 
   @ApiOperation({ summary: 'Ver el resumen general de ventas (Dashboard)' })
   async obtenerEstadisticas() {
     return await this.estadisticasService.getDashboardStats();
   }
 
   @Post('caja/pagar')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(RolPersonal.ADMIN, RolPersonal.CAJA) 
   @ApiOperation({ summary: 'Cobrar una orden y generar Ticket' })
   async cobrarOrdenCaja(@Body() pagarOrdenDto: PagarOrdenDto) {
     return await this.estadisticasService.cobrarOrden(pagarOrdenDto);

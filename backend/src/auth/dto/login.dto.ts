@@ -3,11 +3,11 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class LoginDto {
   @ApiProperty({
-    example: 'Juan Mendoza',
-    description: 'El nombre de usuario único registrado en el sistema'
+    example: 'juan_perez',
+    description: 'El nombre de usuario único (username) registrado en el sistema'
   })
   @IsString({ message: 'El usuario debe ser texto' })
-  nombre_completo!: string;
+  username!: string;
 
   @ApiProperty({
     example: 'admin123',

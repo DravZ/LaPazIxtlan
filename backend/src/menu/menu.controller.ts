@@ -60,4 +60,10 @@ export class MenuController {
   remove(@Param('id') id: string) {
     return this.menuService.remove(+id);
   }
+
+  @Get('extras/toppings')
+  @ApiOperation({ summary: 'Ver la lista de todos los toppings/extras disponibles' })
+  findAllToppings() {
+    return this.menuService.obtenerTodosLosToppings();
+  }
 }
