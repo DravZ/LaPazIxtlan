@@ -1,6 +1,6 @@
 // layouts/MobileLayout.tsx
 
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 
 import MainContent from "../../../components/moduloMenu/MainContent/MainContent";
 import SecondaryPanel from "../../../components/moduloMenu/SecondaryPanel/SecondaryPanel";
@@ -10,11 +10,15 @@ import type { ProductMenu } from "../../../interfaces/ModuloMenu/ProductMenu";
 import styles from "./MobileLayout.module.css";
 
 interface MobileLayoutProps {
-  onSelectProduct: (product: ProductMenu) => void;
+  onSelectProduct: (product: number) => void;
   onOrder: () => void;
+  category: string;
+  setCategory: Dispatch<SetStateAction<string>>;
 }
 const MobileLayout = ({ onSelectProduct,
-  onOrder
+  onOrder,
+  category,
+  setCategory
  }: MobileLayoutProps) => {
   const [view, setView] = useState<"main" | "panel">("main");
 
@@ -24,7 +28,10 @@ const MobileLayout = ({ onSelectProduct,
         {view === "main" && (
           <div style={{ maxWidth: "500px", width: "100%" }} className="mx-auto">
             <div className={styles.screenContainer + " m-0 p-0"}>
-              <MainContent onSelectProduct={onSelectProduct} />
+              <MainContent 
+                category= {category}
+                setCategory={setCategory}
+              onSelectProduct={onSelectProduct} />
             </div>
           </div>
         )}

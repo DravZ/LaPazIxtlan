@@ -14,7 +14,7 @@ import ConfirmOrderModal from "../../components/moduloMenu/ConfirmOrderModal/Con
 const Dashboard = () => {
   const { isDesktop, isTablet } = useScreenSize();
 
-  const [selectedProduct, setSelectedProduct] = useState<ProductMenu | null>(
+  const [selectedProduct, setSelectedProduct] = useState<number | null>(
     null,
   );
 
@@ -27,20 +27,30 @@ const Dashboard = () => {
     onSelectProduct: setSelectedProduct,
   };
 
+  const [category, setCategory] = useState("Todos");
+
+  console.log("selectedProduct:", selectedProduct);
+
   return (
     <>
       {isDesktop && <DesktopLayout {...layoutProps}
+        category= {category}
+        setCategory={setCategory}
         onOrder={() => {
           console.log("Dashboard");
           setShowOrderModal(true);
         }} />}
 
       {isTablet && <TabletLayout {...layoutProps}
+        category= {category}
+        setCategory={setCategory}
         onOrder={() =>
           setShowOrderModal(true)
         } />}
 
       {!isDesktop && !isTablet && <MobileLayout {...layoutProps}
+        category= {category}
+        setCategory={setCategory}
         onOrder={() =>
           setShowOrderModal(true)
         } />}
@@ -55,7 +65,7 @@ const Dashboard = () => {
       />
 
       <ProductModal
-        product={selectedProduct}
+        productId={selectedProduct}
         onClose={() => setSelectedProduct(null)}
       />
     </>

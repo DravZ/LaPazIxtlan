@@ -1,9 +1,10 @@
 // components/MainContent.tsx
 import styles from "./CardProduct.module.css";
 import { Plus } from "lucide-react";
+
 interface Topping {
     name: string;
-    quantity: number;
+    //quantity: number;
 }
 
 interface CardProductProps {
@@ -35,19 +36,24 @@ const CardProduct = ({
                 {/* Contenido */}
                 <div className="row m-0 p-0">
                     <div className="p-4 col-md-12 col-6 m-0 p-0">
-                        <h3 className={styles.titleProduct}>
-                            {productName || "Nombre del producto"}
-                        </h3>
+                        
+                        {/* Contenedor con altura fija para el título */}
+                        <div className={styles.titleWrapper}>
+                            <h3 className={styles.titleProduct}>
+                                {productName || "Nombre del producto"}
+                            </h3>
+                        </div>
 
-                        <p className={styles.descriptionProduct + " mb-0"}>
-                            {description || "Descripcion del producto"}
-                        </p>
+                        {/* Contenedor con altura fija para la descripción */}
+                        <div className={styles.descriptionWrapper}>
+                            <p className={styles.descriptionProduct + " mb-0"}>
+                                {description || "Descripcion del producto"}
+                            </p>
+                        </div>
 
-                        <div className="d-flex justify-content-between align-items-center mt-lg-3 mt-md-2 
-                            mt-1">
-                            <span className={styles.priceProduct}
-                            >
-                                {"$" + price || "$0.00"}
+                        <div className="d-flex justify-content-between align-items-center mt-lg-3 mt-md-2 mt-1">
+                            <span className={styles.priceProduct}>
+                                {price !== undefined && price !== null ? `$${price}` : "$0.00"}
                             </span>
 
                             <button className={styles.addButton}>
@@ -63,7 +69,6 @@ const CardProduct = ({
                             alt="Tacos al pastor"
                             className={styles.imageProduct}
                         />
-
                     </div>
                 </div>
             </div>

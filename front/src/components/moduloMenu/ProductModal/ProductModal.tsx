@@ -1,26 +1,67 @@
 import { Minus, Plus, ShoppingCart } from "lucide-react";
-import type { ProductMenu } from "../../../interfaces/ModuloMenu/ProductMenu";
 import styles from "./ProductModal.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { getProductDetailsById } from "../../../controllers/menu.controller";
+import { useOrderMenu } from "../../../context/moduloMenu/OrderMenuContext";
 
 interface ProductModalProps {
-  product: ProductMenu | null;
+  productId: number | null;
   onClose: () => void;
 }
 
-const ProductModal = ({ product, onClose }: ProductModalProps) => {
-  const [cantidad, setCantidad] = useState(1);
+const ProductModal = ({ productId, onClose }: ProductModalProps) => {
 
+  const [product, setProduct] = useState<any>(null);
+  const [cantidad, setCantidad] = useState(1);
   const [toppings, setToppings] = useState(product?.toppings || []);
+  const { addProduct } = useOrderMenu();
+
+  useEffect(() => {
+    if (productId !== null) {
+      const loadProduct = async () => {
+        try {
+          const data = await getProductDetailsById(productId);
+          console.log("Producto:", data);
+          setProduct(data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      loadProduct();
+    } else {
+      setProduct(null);
+    }
+  }, [productId]);
 
   useEffect(() => {
     setCantidad(1);
     setToppings(product?.toppings || []);
   }, [product]);
 
-  if (!product) return null;
+  const precio = useMemo(() => {
+    if (!product) return 0;
 
-  const precio = Number(product.price) * cantidad;
+    let precioUnitario = Number(product.precio);
+
+    // Sumar toppings que están en modo "Extra"
+    const extras = toppings.reduce((total: number, topping: any) => {
+      if (topping.quantity === 2) {
+        return total + Number(topping.precio_extra);
+      }
+
+      return total;
+    }, 0);
+
+    // Precio del producto + extras de toppings
+    const precioConToppings = precioUnitario + extras;
+
+    // Multiplicar por cantidad de productos
+    return precioConToppings * cantidad;
+
+  }, [product, toppings, cantidad]);
+
+  if (!product) return null;
 
   return (
     <div className={styles.overlay} onClick={onClose}>
@@ -36,37 +77,39 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
         </button>
 
         <div className={styles.imageContainer}>
-          <img src={product.img} alt={product.productName} />
+          <img src={product.imagen_url} alt={product.nombre_producto} />
         </div>
 
         <div className={styles.body}>
           <div className={styles.content}>
-            <span className={styles.category}>ESPECIALES</span>
+            <span className={styles.category}>
+              {product.categoria?.nombre_categoria?.toUpperCase()}
+            </span>
 
-            <h2 className={styles.productName}>{product.productName}</h2>
+            <h2 className={styles.productName}>{product.nombre_producto}</h2>
 
-            <p className={styles.description}>{product.description}</p>
+            <p className={styles.description}>{product.descripcion}</p>
 
             {product.hasToppings && (
               <>
                 <h4 className={styles.toppingsTitle}>Personaliza tu orden</h4>
 
                 <div className={styles.toppingsContainer}>
-                  {toppings.map((topping) => (
-                    <div key={topping.name} className={styles.toppingRow}>
-                      <span>{topping.name}</span>
+                  {toppings.map((topping: any) => (
+                    <div key={topping.id_topping} className={styles.toppingRow}>
+                      <span>{topping.nombre}</span>
 
                       <div className={styles.toppingControls}>
                         <button
                           className={styles.toppingButton}
                           onClick={() => {
-                            setToppings((prev) =>
-                              prev.map((t) =>
-                                t.name === topping.name
+                            setToppings((prev: any) =>
+                              prev.map((t: any) =>
+                                t.nombre === topping.nombre
                                   ? {
-                                      ...t,
-                                      quantity: Math.max(0, t.quantity - 1),
-                                    }
+                                    ...t,
+                                    quantity: Math.max(0, t.quantity - 1),
+                                  }
                                   : t,
                               ),
                             );
@@ -86,13 +129,13 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
                         <button
                           className={styles.toppingButton}
                           onClick={() => {
-                            setToppings((prev) =>
-                              prev.map((t) =>
-                                t.name === topping.name
+                            setToppings((prev: any) =>
+                              prev.map((t: any) =>
+                                t.nombre === topping.nombre
                                   ? {
-                                      ...t,
-                                      quantity: Math.min(2, t.quantity + 1),
-                                    }
+                                    ...t,
+                                    quantity: Math.min(2, t.quantity + 1),
+                                  }
                                   : t,
                               ),
                             );
@@ -110,7 +153,7 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
 
           <div className={styles.footer}>
             <div className={styles.priceRow}>
-              <span className={styles.price}>${product.price}</span>
+              <span className={styles.price}>${precio}</span>
 
               <div className={styles.quantity}>
                 <button
@@ -135,7 +178,25 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
               </div>
             </div>
 
-            <button className={styles.addButton}>
+            <button className={styles.addButton}
+              onClick={() => {
+
+                const orden = {
+                  id_producto: product.id_producto,
+                  nombre_producto: product.nombre_producto,
+                  descripcion: product.descripcion,
+                  imagen_url: product.imagen_url,
+                  categoria: product.categoria,
+                  precio_unitario: Number(product.precio),
+                  cantidad,
+                  toppings,
+                };
+
+                addProduct(orden);
+
+                onClose();
+              }}
+            >
               <ShoppingCart size={20} />
               <span className="my-0 py-0 mx-2"></span>
               Añadir al Pedido · ${precio}

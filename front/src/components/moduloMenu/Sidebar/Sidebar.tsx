@@ -1,16 +1,53 @@
 // components/Sidebar.tsx
-import { useState } from "react";
+import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import styles from "./Sidebar.module.css";
 import { Info, Menu, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { getCategorias } from "../../../controllers/categorias.controller";
+import { useOrderMenu } from "../../../context/moduloMenu/OrderMenuContext";
 
 interface SidebarProps {
   view?: "main" | "panel";
   setView?: React.Dispatch<React.SetStateAction<"main" | "panel">>;
+  category: string;
+  setCategory: Dispatch<SetStateAction<string>>;
 }
-const Sidebar = ({ view, setView }: SidebarProps) => {
-  const [selected, setSelected] = useState("");
+
+const Sidebar = ({
+  view,
+  setView,
+  category,
+  setCategory
+}: SidebarProps) => {
+
+  const [categoryList, setCategoryList] = useState<any[]>([]);
   const navigate = useNavigate();
+
+  const { orden } = useOrderMenu();
+
+  const totalItems = useMemo(() => {
+    return orden.reduce(
+      (total: number, item: any) => total + item.cantidad,
+      0
+    );
+  }, [orden]);
+
+  useEffect(() => {
+    const cargarCategorias = async () => {
+      try {
+        const categorias = await getCategorias();
+
+        setCategoryList(categorias);
+
+        console.log(categorias);
+      } catch (error) {
+        console.error("Error al cargar categorías:", error);
+      }
+    };
+
+    cargarCategorias();
+  }, []);
+
   return (
     <div className={`pt-3 ${styles.sidebar}`}>
       <div className={styles.titleDivider}>
@@ -18,12 +55,14 @@ const Sidebar = ({ view, setView }: SidebarProps) => {
         <h2 className={styles.title + " ps-3 ms-2 mb-0"}>La Paz</h2>
         <h2 className={styles.title + " ps-3 ms-2 mt-0 mb-4"}>Ixtlan</h2>
       </div>
+
       {view && setView ? (
         <div className="d-block d-lg-none">
           <p className={styles.subtitle + " mt-3 ms-4"}>NAVEGACIÓN</p>
+
           <p
             className={`${styles.categoryItem}
-    ${view === "main" ? styles.selectedItem : ""}`}
+              ${view === "main" ? styles.selectedItem : ""}`}
             onClick={() => setView("main")}
           >
             <Menu size={20} /> Menú
@@ -31,65 +70,63 @@ const Sidebar = ({ view, setView }: SidebarProps) => {
 
           <p
             className={`${styles.categoryItem}
-    ${view === "panel" ? styles.selectedItem : ""}`}
+              ${view === "panel" ? styles.selectedItem : ""}`}
             onClick={() => setView("panel")}
           >
             <span className={styles.cartContainer}>
               <ShoppingCart size={20} />
 
-              <span className={styles.badge}>1</span>
+              {totalItems > 0 && (
+                <span className={styles.badge}>
+                  {totalItems}
+                </span>
+              )}
             </span>
+
             Pedido
           </p>
         </div>
       ) : (
         <></>
       )}
+
       <div className="d-none d-lg-block">
         <p className={styles.subtitle + " mt-3 ms-4"}>CATEGORÍAS</p>
 
         <p
           className={`${styles.categoryItem}
-              ${selected === "Entradas" ? styles.selectedItem : ""}`}
-          onClick={() => setSelected("Entradas")}
+              ${category === "Todos" ? styles.selectedItem : ""}`}
+          onClick={() => setCategory("Todos")}
         >
-          🌿 Entradas
+          Todas
         </p>
 
-        <p
-          className={`${styles.categoryItem}
-              ${selected === "Hamburguesas" ? styles.selectedItem : ""}`}
-          onClick={() => setSelected("Hamburguesas")}
-        >
-          🍔 Hamburguesas
-        </p>
-
-        <p
-          className={`${styles.categoryItem}
-              ${selected === "Especiales" ? styles.selectedItem : ""}`}
-          onClick={() => setSelected("Especiales")}
-        >
-          ⭐ Especiales
-        </p>
-
-        <p
-          className={`${styles.categoryItem}
-              ${selected === "Bebidas" ? styles.selectedItem : ""}`}
-          onClick={() => setSelected("Bebidas")}
-        >
-          🥤 Bebidas
-        </p>
+        {categoryList.map((c) => (
+          <p
+            key={c.id_categoria}
+            className={`${styles.categoryItem}
+              ${category === c.nombre_categoria ? styles.selectedItem : ""}`}
+            onClick={() => setCategory(c.nombre_categoria)}
+          >
+            {c.nombre_categoria}
+          </p>
+        ))}
       </div>
 
-      <button 
-        onClick={
-          () => navigate("/about")
+      <button
+        onClick={() => navigate("/about")}
+        className={
+          styles.aboutButton +
+          " d-flex align-content-center justify-content-center align-items-center"
         }
-      className={styles.aboutButton + " d-flex align-content-center justify-content-center" + 
-        " align-items-center"
-      }>
-        <span className={styles.aboutButtonIcon}><Info size={24}/></span>
-        <span className={styles.aboutButtonText}>Acerca de nosotros</span>
+      >
+        <span className={styles.aboutButtonIcon}>
+          <Info size={24} />
+        </span>
+
+        <span className={styles.aboutButtonText}>
+          Acerca de nosotros
+        </span>
       </button>
     </div>
   );

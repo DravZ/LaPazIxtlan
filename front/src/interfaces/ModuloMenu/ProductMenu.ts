@@ -4,10 +4,12 @@ interface Topping {
 }
 
 export interface ProductMenu {
+    /*
     productName: string;
     description: string;
     price: number;
     hasToppings: boolean;
     toppings?: Topping[];
-    img: string;
+    img: string;*/
+    id: number
 }

@@ -2,45 +2,44 @@
 import CardProduct from "../CardProduct/CardProduct";
 import styles from "./MainContent.module.css";
 import type { ProductMenu } from "../../../interfaces/ModuloMenu/ProductMenu";
-import { useState } from "react";
 import { Info, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { getCategorias } from "../../../controllers/categorias.controller";
+import { getAllMenu } from "../../../controllers/menu.controller";
 
 interface MainContentProps {
-  onSelectProduct: (product: ProductMenu) => void;
+  onSelectProduct: (product: number) => void;
+  category: string;
+  setCategory: Dispatch<SetStateAction<string>>;
 }
 
-const MainContent = ({ onSelectProduct }: MainContentProps) => {
-  const [category, setCategory] = useState("Todos");
+const MainContent = ({ onSelectProduct,
+  category,
+  setCategory
+ }: MainContentProps) => {
+  const [categoryList, setCategoryList] = useState<any[]>([]);
+
+  const [menu, setMenu] = useState<any[]>([]);
 
   const navigate = useNavigate();
 
-  const tacos: ProductMenu = {
-    productName: "Tacos al Pastor",
-    description:
-      "3 tacos de cerdo marinado en achiote con piña, cilantro y cebolla blanca.",
-    price: 145,
-    hasToppings: false,
-    img: "/menu/tacos.jpg",
-  };
-  const tacos2: ProductMenu = {
-    productName: "Tacos al Pastor",
-    description:
-      "3 tacos de cerdo marinado en achiote con piña, cilantro y cebolla blanca.",
-    price: 145,
-    hasToppings: true,
-    toppings: [
-      {
-        name: "catsup",
-        quantity: 1,
-      },
-      {
-        name: "tomate",
-        quantity: 1,
-      },
-    ],
-    img: "/menu/tacos.jpg",
-  };
+  useEffect(() => {
+    const cargarCategorias = async () => {
+      try {
+        const categorias = await getCategorias();
+        const menu = await getAllMenu();
+
+
+        setCategoryList(categorias);
+        setMenu(menu);
+      } catch (error) {
+        console.error("Error al cargar categorías:", error);
+      }
+    };
+
+    cargarCategorias();
+  }, []);
 
   return (
     <div className={`p-3 ` + styles.container}>
@@ -97,85 +96,44 @@ const MainContent = ({ onSelectProduct }: MainContentProps) => {
           >
             Todos
           </div>
-          <div
-            className={`${category == "Entradas" ? styles.selectedItem : styles.item}`}
-            onClick={() => {
-              setCategory("Entradas");
-            }}
-          >
-            Entradas
-          </div>
-          <div
-            className={`${category == "Hamburguesas" ? styles.selectedItem : styles.item}`}
-            onClick={() => {
-              setCategory("Hamburguesas");
-            }}
-          >
-            Hamburguesas
-          </div>
-          <div
-            className={`${category == "Especiales" ? styles.selectedItem : styles.item}`}
-            onClick={() => {
-              setCategory("Especiales");
-            }}
-          >
-            Especiales
-          </div>
-          <div
-            className={`${category == "Bebidas" ? styles.selectedItem : styles.item}`}
-            onClick={() => {
-              setCategory("Bebidas");
-            }}
-          >
-            Bebidas
-          </div>
+          {
+            categoryList.map((c) => (
+              <div
+                key={c.id_categoria}
+                className={
+                  category === c.nombre_categoria
+                    ? styles.selectedItem
+                    : styles.item
+                }
+                onClick={() => setCategory(c.nombre_categoria)}
+              >
+                {c.nombre_categoria}
+              </div>
+            ))
+          }
         </div>
 
         <div className="row mt-0 mb-0 mx-0 p-0">
-          <div className="col-lg-4 col-md-6 col-12 p-0">
-            <CardProduct {...tacos2} onClick={() => onSelectProduct(tacos2)} />
-          </div>
-          <div className="col-lg-4 col-md-6 col-12 p-0">
-            <CardProduct
-              productName="Tacos al Pastor"
-              description="3 tacos de cerdo marinado en achiote con piña, cilantro y cebolla blanca."
-              price={145}
-              hasToppings={false}
-              img="/menu/tacos.jpg"
-            />{" "}
-          </div>
-          <div className="col-lg-4 col-md-6 col-12 p-0">
-            <CardProduct
-              productName="Tacos al Pastor"
-              description="3 tacos de cerdo marinado en achiote con piña, cilantro y cebolla blanca."
-              price={145}
-              hasToppings={false}
-              img="/menu/tacos.jpg"
-            />
-          </div>
-          {/*Hace un for en el que cree una variable tipo productMenu en cada ciclo 
-          o alamacenarlos en un arreglo y enviarlo en el onClicl
-          */}
-
-          <div className="col-lg-4 col-md-6 col-12 p-0">
-            <CardProduct
-              productName="Tacos al Pastor"
-              description="3 tacos de cerdo marinado en achiote con piña, cilantro y cebolla blanca."
-              price={145}
-              hasToppings={false}
-              img="/menu/tacos.jpg"
-              onClick={() => onSelectProduct(tacos)}
-            />
-          </div>
-          <div className="col-lg-4 col-md-6 col-12 p-0">
-            <CardProduct
-              productName="Tacos al Pastor"
-              description="3 tacos de cerdo marinado en achiote con piña, cilantro y cebolla blanca."
-              price={145}
-              hasToppings={false}
-              img="/menu/tacos.jpg"
-            />
-          </div>
+          {
+            menu.map((m) => (
+              (m.nombre_categoria == category) || (category == "Todos") ? (
+                <div
+                  key={m.id_producto}
+                  className="col-lg-4 col-md-6 col-12 p-0">
+                  <CardProduct
+                    productName={m.nombre_producto}
+                    description={m.descripcion}
+                    price={m.precio}
+                    img={m.imagen_url}
+                    hasToppings={false}
+                    onClick={() => {
+                      console.log(m.id_producto)
+                      onSelectProduct(m.id_producto)}} />
+                </div>
+              ) :
+                null
+            ))
+          }
         </div>
       </div>
     </div>
