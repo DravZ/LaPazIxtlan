@@ -5,11 +5,7 @@ import MainContent from "../../components/meseros/Mesero/MainContent/MainContent
 
 import type { ProductMenu } from "../../interfaces/ModuloMenu/ProductMenu";
 
-interface DesktopLayoutProps {
-  onSelectProduct: (product: ProductMenu) => void;
-}
-
-const DesktopLayout = ({ onSelectProduct }: DesktopLayoutProps) => {
+const DesktopLayout = () => {
   const [category, setCategory] = useState("Pendientes");
 
   return (
