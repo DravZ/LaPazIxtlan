@@ -1,7 +1,8 @@
 import { IsString, IsNotEmpty, IsBoolean, IsOptional, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { RolPersonal } from '../entities/usuario.entity'; 
-export class CreateUsuarioDto  {
+import { RolPersonal, TurnoPersonal } from '../entities/usuario.entity'; 
+
+export class CreateUsuarioDto {
   @ApiProperty({
     example: 'Juan Mendoza',
     description: 'Nombre del usuario o empleado a registrar en el sistema'
@@ -31,9 +32,18 @@ export class CreateUsuarioDto  {
     enum: RolPersonal,
     description: 'Rol del empleado dentro del restaurante (Administrador, Mesero, Cocina)'
   })
-  @IsEnum(RolPersonal, { message: 'El rol debe ser Administrador, Mesero o Cocina' })
+  @IsEnum(RolPersonal, { message: 'El rol debe ser Administrador, Mesero, Cocina o Cajero' })
   @IsNotEmpty({ message: 'Debes asignar un rol válido' })
   rol!: RolPersonal;
+
+  @ApiProperty({
+    example: TurnoPersonal.MATUTINO,
+    enum: TurnoPersonal,
+    description: 'Turno asignado al empleado (Matutino o Vespertino)'
+  })
+  @IsEnum(TurnoPersonal, { message: 'El turno debe ser Matutino o Vespertino' })
+  @IsNotEmpty({ message: 'Debes asignar un turno válido' })
+  turno!: TurnoPersonal;
 
   @ApiProperty({
     example: true,

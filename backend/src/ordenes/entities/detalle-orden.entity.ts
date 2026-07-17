@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Orden } from './orden.entity';
 import { MenuProducto } from '../../menu/entities/menu-producto.entity';
-import { Topping } from '../../menu/entities/topping.entity'; 
+import { DetalleOrdenTopping } from './detalle-orden-topping.entity';
 
 @Entity('detalle_orden')
 export class DetalleOrden {
@@ -25,11 +25,6 @@ export class DetalleOrden {
   @JoinColumn({ name: 'id_producto' })
   producto!: MenuProducto;
 
-  @ManyToMany(() => Topping)
-  @JoinTable({
-    name: 'detalle_orden_toppings',
-    joinColumn: { name: 'id_detalle', referencedColumnName: 'id_detalle' },
-    inverseJoinColumn: { name: 'id_topping', referencedColumnName: 'id_topping' },
-  })
-  toppings!: Topping[];
+  @OneToMany(() => DetalleOrdenTopping, detalleTopping => detalleTopping.detalleOrden, { cascade: true })
+  detallesToppings!: DetalleOrdenTopping[];
 }

@@ -4,6 +4,7 @@ import { CreateOrdenDto, DetalleOrdenDto } from './dto/create-orden.dto';
 import { UpdateOrdenDto } from './dto/update-orden.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+
 @Controller('ordenes')
 @ApiTags('Órdenes y Comandas') 
 @Controller('ordenes')

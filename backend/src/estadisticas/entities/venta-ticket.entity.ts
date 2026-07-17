@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Mesa } from '../../mesas/entities/mesa.entity';
 import { Orden } from '../../ordenes/entities/orden.entity';
 
 @Entity('ventas_tickets')
@@ -15,7 +16,10 @@ export class VentaTicket {
   @Column({ name: 'metodo_pago', type: 'varchar', length: 50, default: 'Efectivo' })
   metodo_pago!: string;
 
-  @OneToOne(() => Orden)
-  @JoinColumn({ name: 'id_orden' })
-  orden!: Orden;
+  @ManyToOne(() => Mesa)
+  @JoinColumn({ name: 'id_mesa' })
+  mesa!: Mesa;
+
+  @OneToMany(() => Orden, orden => orden.ticket)
+  ordenes!: Orden[];
 }
