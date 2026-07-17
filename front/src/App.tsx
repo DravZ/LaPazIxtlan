@@ -6,12 +6,14 @@ import DashboardCocina from "./pages/moduloCocina/CocineroPage";
 import DashboardAdmin from "./pages/moduloAdmin/AdminPage";
 import DashboardCaja from "./pages/moduloCaja/Dashboard";
 import { OrderMenuProvider } from "./context/moduloMenu/OrderMenuContext";
+import { NotificationProvider } from "./context/notifications/NotificationContext";
 
 function App() {
   return (
-    <BrowserRouter>
+    <NotificationProvider>
+      <BrowserRouter>
       <Routes>
-        <Route path="/" element={
+        <Route path="/:id" element={
           <OrderMenuProvider>
             <Dashboard />
           </OrderMenuProvider>
@@ -21,9 +23,14 @@ function App() {
         <Route path="/cocinero" element={<DashboardCocina />} />
         <Route path="/admin" element={<DashboardAdmin />} />
         <Route path="/caja" element={<DashboardCaja />} />
-        <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
+        <Route path="*" element={
+          <OrderMenuProvider>
+            <Dashboard />
+          </OrderMenuProvider>
+        } />
       </Routes>
     </BrowserRouter>
+    </NotificationProvider>
   );
 }
 

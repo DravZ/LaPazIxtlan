@@ -37,7 +37,6 @@ const Dashboard = () => {
         category= {category}
         setCategory={setCategory}
         onOrder={() => {
-          console.log("Dashboard");
           setShowOrderModal(true);
         }} />}
 
