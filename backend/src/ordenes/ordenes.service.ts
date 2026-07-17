@@ -1,15 +1,16 @@
 import { Injectable, InternalServerErrorException, NotFoundException, BadRequestException } from '@nestjs/common';
-import { CreateOrdenDto, DetalleOrdenDto } from './dto/create-orden.dto';
+import { CreateOrdenDto } from './dto/create-orden.dto';
 import { UpdateOrdenDto } from './dto/update-orden.dto';
 import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Orden, EstadoOrden } from './entities/orden.entity';
 import { DetalleOrden } from './entities/detalle-orden.entity';
+import { DetalleOrdenTopping, EstadoTopping } from './entities/detalle-orden-topping.entity';
 import { OrdenesGateway } from './ordenes.gateway';
 import { Receta } from 'src/inventario/entities/receta.entity';
 import { InventarioInsumo } from 'src/inventario/entities/inventario-insumo.entity';
 import { MenuProducto } from 'src/menu/entities/menu-producto.entity';
-
+import { Topping } from 'src/menu/entities/topping.entity';
 
 @Injectable()
 export class OrdenesService {
@@ -48,16 +49,40 @@ export class OrdenesService {
           throw new BadRequestException(`El producto con ID ${detalleDto.id_producto} no existe.`);
         }
 
-        const precioUnitario = Number(producto.precio);
+        const precioBase = Number(producto.precio);
+        let costoExtras = 0;
+        const nuevosToppings: DetalleOrdenTopping[] = [];
+
+        if (detalleDto.toppings && detalleDto.toppings.length > 0) {
+          for (const topDto of detalleDto.toppings) {
+            const toppingDb = await queryRunner.manager.findOne(Topping, { where: { id_topping: topDto.id_topping } });
+            
+            if (!toppingDb) {
+              throw new BadRequestException(`El ingrediente/topping con ID ${topDto.id_topping} no existe.`);
+            }
+
+            if (topDto.estado === EstadoTopping.EXTRA) {
+              costoExtras += Number(toppingDb.precio_extra);
+            }
+
+            const nuevoDetalleTopping = queryRunner.manager.create(DetalleOrdenTopping, {
+              topping: { id_topping: topDto.id_topping },
+              estado: topDto.estado
+            });
+            nuevosToppings.push(nuevoDetalleTopping);
+          }
+        }
         
-        totalOrden += precioUnitario * detalleDto.cantidad_solicitada;
+        const precioTotalUnitario = precioBase + costoExtras;
+        totalOrden += precioTotalUnitario * detalleDto.cantidad_solicitada;
 
         const nuevoDetalle = queryRunner.manager.create(DetalleOrden, {
           orden: ordenGuardada, 
           producto: { id_producto: detalleDto.id_producto }, 
           cantidad_solicitada: detalleDto.cantidad_solicitada,
           notas_preparacion: detalleDto.notas_preparacion,
-          precio_unitario: precioUnitario 
+          precio_unitario: precioTotalUnitario, 
+          detallesToppings: nuevosToppings // Gracias a cascade: true, se guardan solos
         });
 
         detallesAGuardar.push(nuevoDetalle);
@@ -75,7 +100,6 @@ export class OrdenesService {
 
         for (const receta of recetas) {
           const cantidadADescontar = receta.cantidad_requerida * detalle.cantidad_solicitada;
-
           const insumo = await queryRunner.manager.findOne(InventarioInsumo, {
             where: { id_insumo: receta.id_insumo },
           });
@@ -83,7 +107,6 @@ export class OrdenesService {
           if (!insumo) {
             throw new BadRequestException(`Falta configurar el insumo #${receta.id_insumo} en la base de datos.`);
           }
-
           if (insumo.stock_actual < cantidadADescontar) {
             throw new BadRequestException(`¡Sin stock suficiente de ${insumo.nombre_insumo}! Requerido: ${cantidadADescontar}, Disponible: ${insumo.stock_actual}`);
           }
@@ -126,7 +149,9 @@ export class OrdenesService {
         mesa: true,
         detalles: {
           producto: true, 
-          toppings: true,
+          detallesToppings: {
+            topping: true 
+          },
         },
       },
       order: {
@@ -150,7 +175,9 @@ export class OrdenesService {
         mesa: true,
         detalles: {
           producto: true, 
-          toppings: true,
+          detallesToppings: {
+            topping: true
+          },
         },
       },
     });
@@ -168,17 +195,13 @@ export class OrdenesService {
 
   async update(id: number, updateOrdenDto: UpdateOrdenDto) {
     const { estado, nuevosDetalles, ...datosOrden } = updateOrdenDto as any;
-
     const orden = await this.ordenRepository.preload({
       id_orden: id,
       ...datosOrden,
       estado: estado ? (estado as EstadoOrden) : undefined,
     });
 
-    if (!orden) {
-      throw new NotFoundException(`La orden #${id} no existe en la base de datos`);
-    }
-
+    if (!orden) throw new NotFoundException(`La orden #${id} no existe en la base de datos`);
     await this.ordenRepository.save(orden);
 
     this.ordenesGateway.server.emit('cambioEstadoComanda', {
@@ -186,10 +209,7 @@ export class OrdenesService {
       estado: orden.estado,
     });
 
-    return {
-      mensaje: `La orden #${id} ahora está: ${orden.estado}`,
-      orden,
-    };
+    return { mensaje: `La orden #${id} ahora está: ${orden.estado}`, orden };
   }
 
   async remove(id: number) {
@@ -199,9 +219,7 @@ export class OrdenesService {
 
     try {
       await queryRunner.manager.delete(DetalleOrden, { orden: { id_orden: id } });
-
       await queryRunner.manager.delete(Orden, { id_orden: id });
-
       await queryRunner.commitTransaction();
       return { mensaje: 'Orden y sus detalles eliminados correctamente' };
     } catch (error: any) {

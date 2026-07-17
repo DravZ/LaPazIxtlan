@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, Jo
 import { Usuario } from '../../usuarios/entities/usuario.entity';
 import { Mesa } from '../../mesas/entities/mesa.entity';
 import { DetalleOrden } from './detalle-orden.entity';
+import { VentaTicket } from '../../estadisticas/entities/venta-ticket.entity';
 
 
 export enum EstadoOrden {
@@ -31,6 +32,10 @@ export class Orden {
   @ManyToOne(() => Usuario, { nullable: true })
   @JoinColumn({ name: 'id_mesero' })
   mesero?: Usuario;
+
+  @ManyToOne(() => VentaTicket, ticket => ticket.ordenes, { nullable: true })
+  @JoinColumn({ name: 'id_ticket' })
+  ticket?: VentaTicket;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   motivo_cancelacion?: string;

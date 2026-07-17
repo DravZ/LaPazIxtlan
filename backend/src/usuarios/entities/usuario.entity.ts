@@ -7,6 +7,11 @@ export enum RolPersonal {
   CAJA = 'Cajero'
 }
 
+export enum TurnoPersonal {
+  MATUTINO = 'Matutino',
+  VESPERTINO = 'Vespertino'
+}
+
 @Entity('usuarios')
 export class Usuario {
   @PrimaryGeneratedColumn()
@@ -26,6 +31,13 @@ export class Usuario {
     enum: RolPersonal,
   })
   rol!: RolPersonal;
+
+  @Column({
+    type: 'enum',
+    enum: TurnoPersonal,
+    default: TurnoPersonal.MATUTINO 
+  })
+  turno!: TurnoPersonal;
 
   @Column({ type: 'boolean', default: true })
   activo!: boolean;

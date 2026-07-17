@@ -3,69 +3,85 @@ import { DataSource } from 'typeorm';
 import { Orden, EstadoOrden } from '../ordenes/entities/orden.entity';
 import { DetalleOrden } from '../ordenes/entities/detalle-orden.entity';
 import { VentaTicket } from './entities/venta-ticket.entity';
-import { PagarOrdenDto } from './dto/pagar-orden.dto';
+import { IsNull, Not } from 'typeorm';
+import { PagarMesaDto } from './dto/pagar-mesa.dto';
+import { EstadoMesa, Mesa } from 'src/mesas/entities/mesa.entity';
 
 @Injectable()
 export class EstadisticasService {
   constructor(private readonly dataSource: DataSource) {}
 
-  async cobrarOrden(pagarOrdenDto: PagarOrdenDto) {
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+  async cobrarMesa(pagarMesaDto: PagarMesaDto) {
+  const queryRunner = this.dataSource.createQueryRunner();
+  await queryRunner.connect();
+  await queryRunner.startTransaction();
 
-    try {
-      const orden = await queryRunner.manager.findOne(Orden, {
-        where: { id_orden: pagarOrdenDto.id_orden },
-      });
+  try {
+    const mesa = await queryRunner.manager.findOne(Mesa,{ 
+      where: { id_mesa: pagarMesaDto.id_mesa },
+    });
 
-      if (!orden) {
-        throw new NotFoundException(`La orden #${pagarOrdenDto.id_orden} no existe.`);
-      }
+    if (!mesa) throw new NotFoundException(`La mesa #${pagarMesaDto.id_mesa} no existe.`);
 
-      const ticketExistente = await queryRunner.manager.findOne(VentaTicket, {
-        where: { orden: { id_orden: orden.id_orden } },
-      });
+    const ordenesPendientes = await queryRunner.manager.find(Orden, {
+      where: { 
+        mesa: { id_mesa: pagarMesaDto.id_mesa },
+        ticket: IsNull(),
+        estado: Not(EstadoOrden.DESCARTADA)
+      },
+    });
 
-      if (ticketExistente) {
-        throw new BadRequestException(`La orden #${orden.id_orden} ya fue cobrada con el ticket #${ticketExistente.id_ticket}.`);
-      }
+    if (ordenesPendientes.length === 0) {
+      throw new BadRequestException(`La mesa #${pagarMesaDto.id_mesa} no tiene cuentas pendientes por cobrar.`);
+    }
 
-      if (orden.estado === EstadoOrden.DESCARTADA) {
-        throw new BadRequestException('No puedes cobrar una orden que fue descartada.');
-      }
+    let totalCuenta = 0;
+    ordenesPendientes.forEach(orden => {
+      totalCuenta += Number(orden.total);
+    });
 
-      const nuevoTicket = queryRunner.manager.create(VentaTicket, {
-        total_venta: orden.total,
-        metodo_pago: pagarOrdenDto.metodo_pago,
-        orden: { id_orden: orden.id_orden },
-      });
+    const nuevoTicket = queryRunner.manager.create(VentaTicket, {
+      total_venta: totalCuenta,
+      metodo_pago: pagarMesaDto.metodo_pago,
+      mesa: { id_mesa: mesa.id_mesa },
+    });
 
-      const ticketGuardado = await queryRunner.manager.save(nuevoTicket);
+    const ticketGuardado = await queryRunner.manager.save(nuevoTicket);
 
+    for (const orden of ordenesPendientes) {
+      orden.ticket = ticketGuardado;
       if (orden.estado !== EstadoOrden.ENTREGADA) {
         orden.estado = EstadoOrden.ENTREGADA;
         orden.hora_entregada = new Date();
-        await queryRunner.manager.save(orden);
       }
-
-      await queryRunner.commitTransaction();
-
-      return {
-        mensaje: '¡Cobro realizado con éxito!',
-        ticket: ticketGuardado,
-      };
-
-    } catch (error: any) {
-      await queryRunner.rollbackTransaction();
-      if (error instanceof NotFoundException || error instanceof BadRequestException) {
-        throw error;
-      }
-      throw new InternalServerErrorException('Error al procesar el pago: ' + error.message);
-    } finally {
-      await queryRunner.release();
+      await queryRunner.manager.save(Orden, orden);
     }
+
+    mesa.estado = EstadoMesa.LIBRE;
+    await queryRunner.manager.save(Mesa, mesa);
+
+    await queryRunner.commitTransaction();
+
+    return {
+      mensaje: '¡Cuenta cobrada con éxito! Mesa liberada.',
+      ticket: {
+        id_ticket: ticketGuardado.id_ticket,
+        total_pagado: ticketGuardado.total_venta,
+        metodo: ticketGuardado.metodo_pago,
+        ordenes_cobradas: ordenesPendientes.length
+      }
+    };
+
+  } catch (error: any) {
+    await queryRunner.rollbackTransaction();
+    if (error instanceof NotFoundException || error instanceof BadRequestException) {
+      throw error;
+    }
+    throw new InternalServerErrorException('Error al procesar el pago de la mesa: ' + error.message);
+  } finally {
+    await queryRunner.release();
   }
+}
 
   async getDashboardStats() {
     const platilloMasVendido = await this.dataSource.getRepository(DetalleOrden)
@@ -167,4 +183,66 @@ export class EstadisticasService {
     };
   }
 
+  async obtenerHistorialTickets() {
+    return await this.dataSource.manager.find(VentaTicket, {
+      relations: {
+        mesa: true,
+        ordenes: true 
+      },
+      order: { fecha_venta: 'DESC' }
+    });
+  }
+
+  async obtenerPreCuenta(id_mesa: number) {
+    const mesa = await this.dataSource.manager.findOne(Mesa, {
+      where: { id_mesa: id_mesa },
+    });
+
+    if (!mesa) throw new NotFoundException(`La mesa #${id_mesa} no existe.`);
+
+    const ordenesPendientes = await this.dataSource.manager.find(Orden, {
+      where: {
+        mesa: { id_mesa: id_mesa },
+        ticket: IsNull(),
+        estado: Not(EstadoOrden.DESCARTADA)
+      },
+      
+      relations: {
+        detalles: {
+          producto: true
+        }
+      }
+    });
+
+    if (ordenesPendientes.length === 0) {
+      return { 
+        id_mesa: Number(id_mesa),
+        mensaje: `La mesa #${id_mesa} no tiene cuentas pendientes.` 
+      };
+    }
+
+    let totalCuenta = 0;
+  
+    const desglose: any[] = [];
+
+    ordenesPendientes.forEach(orden => {
+      totalCuenta += Number(orden.total);
+      
+      if (orden.detalles) {
+        orden.detalles.forEach(detalle => {
+          desglose.push({
+            platillo: detalle.producto?.nombre_producto,
+            cantidad: detalle.cantidad_solicitada,
+          });
+        });
+      }
+    });
+
+    return {
+      id_mesa: Number(id_mesa),
+      estado_mesa: mesa.estado,
+      total_a_pagar: `$${totalCuenta.toFixed(2)}`,
+      articulos_consumidos: desglose
+    };
+  }
 }
