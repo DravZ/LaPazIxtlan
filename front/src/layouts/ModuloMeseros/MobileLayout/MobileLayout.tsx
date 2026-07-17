@@ -6,11 +6,8 @@ import type { ProductMenu } from "../../../interfaces/ModuloMenu/ProductMenu";
 
 import styles from "./MobileLayout.module.css";
 
-interface MobileLayoutProps {
-  onSelectProduct: (product: ProductMenu) => void;
-}
 
-const MobileLayout = ({ onSelectProduct }: MobileLayoutProps) => {
+const MobileLayout = () => {
   const [category, setCategory] = useState("Pendientes");
 
   return (

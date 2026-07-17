@@ -61,7 +61,7 @@ const PersonalSection = () => {
       <div className='row m-0 p-0 mt-3'>
         <div className={styles.personalContainer}>
           <button className={styles.btnAddPersonal} onClick={handleOpenAdd}>
-            <UserPlus size={18} className="me-2" /> Agregar Mesero
+            <UserPlus size={18} className="me-2" /> Agregar Personal
           </button>
 
           <div className={styles.cardsGrid}>

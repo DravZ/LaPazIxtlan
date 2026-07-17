@@ -13,26 +13,14 @@ import type { ProductMenu } from "../../interfaces/ModuloMenu/ProductMenu";
 const DashboardMesero = () => {
   const { isDesktop, isTablet } = useScreenSize();
 
-  const [selectedProduct, setSelectedProduct] = useState<ProductMenu | null>(
-    null,
-  );
-
-  const layoutProps = {
-    onSelectProduct: setSelectedProduct,
-  };
-
   return (
     <>
-      {isDesktop && <DesktopLayout {...layoutProps} />}
+      {isDesktop && <DesktopLayout  />}
 
-      {isTablet && <TabletLayout {...layoutProps} />}
+      {isTablet && <TabletLayout  />}
 
-      {!isDesktop && !isTablet && <MobileLayout {...layoutProps} />}
+      {!isDesktop && !isTablet && <MobileLayout />}
 
-      <ProductModal
-        product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-      />
     </>
   );
 };

@@ -19,6 +19,9 @@
   padding: 32px;
   box-shadow: 0 12px 40px rgba(43, 19, 8, 0.08);
   animation: fadeInScale 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+  max-height: 80vh !important;
+  overflow-y: scroll;
 }
 
 .header {
@@ -175,4 +178,34 @@
 @keyframes fadeInScale {
   from { opacity: 0; transform: scale(0.96); }
   to { opacity: 1; transform: scale(1); }
+}
+
+
+.errorToast {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 8px;
+  margin-bottom: 6px;
+
+  background: #fff1f2;
+  border: 1px solid #fda4af;
+  border-left: 4px solid #dc2626;
+  border-radius: 10px;
+
+  color: #b91c1c;
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  animation: fadeInError 0.2s ease;
+}
+
+@keyframes fadeInError {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
