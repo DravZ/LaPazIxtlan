@@ -194,14 +194,28 @@ export class OrdenesService {
   }
 
   async update(id: number, updateOrdenDto: UpdateOrdenDto) {
-    const { estado, nuevosDetalles, ...datosOrden } = updateOrdenDto as any;
+    const { estado, nuevosDetalles, id_mesero, motivo_cancelacion, ...datosOrden } = updateOrdenDto as any;
+    
     const orden = await this.ordenRepository.preload({
       id_orden: id,
       ...datosOrden,
+      motivo_cancelacion: motivo_cancelacion,
       estado: estado ? (estado as EstadoOrden) : undefined,
+      mesero: id_mesero ? { id_usuario: id_mesero } : undefined,
     });
 
     if (!orden) throw new NotFoundException(`La orden #${id} no existe en la base de datos`);
+    
+    const ahora = new Date();
+
+    if (estado === EstadoOrden.EN_PREPARACION && !orden.hora_confirmacion) {
+      orden.hora_confirmacion = ahora;
+    } else if (estado === EstadoOrden.LISTA && !orden.hora_lista) {
+      orden.hora_lista = ahora;
+    } else if (estado === EstadoOrden.ENTREGADA && !orden.hora_entregada) {
+      orden.hora_entregada = ahora;
+    }
+
     await this.ordenRepository.save(orden);
 
     this.ordenesGateway.server.emit('cambioEstadoComanda', {
@@ -209,7 +223,7 @@ export class OrdenesService {
       estado: orden.estado,
     });
 
-    return { mensaje: `La orden #${id} ahora está: ${orden.estado}`, orden };
+    return { mensaje: `La orden #${id} fue actualizada correctamente.`, orden };
   }
 
   async remove(id: number) {
