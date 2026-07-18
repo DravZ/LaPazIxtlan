@@ -44,4 +44,13 @@ export class UpdateOrdenDto {
   @IsOptional()
   @IsInt()
   id_mesero?: number;
+
+  @ApiProperty({
+    example: 5,
+    description: 'ID de la nueva mesa por si el cliente se cambia',
+    required: false
+  })
+  @IsOptional()
+  @IsInt()
+  id_mesa?: number;
 }

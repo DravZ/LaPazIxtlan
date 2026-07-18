@@ -82,7 +82,7 @@ export class OrdenesService {
           cantidad_solicitada: detalleDto.cantidad_solicitada,
           notas_preparacion: detalleDto.notas_preparacion,
           precio_unitario: precioTotalUnitario, 
-          detallesToppings: nuevosToppings // Gracias a cascade: true, se guardan solos
+          detallesToppings: nuevosToppings 
         });
 
         detallesAGuardar.push(nuevoDetalle);
@@ -121,6 +121,7 @@ export class OrdenesService {
       this.ordenesGateway.server.emit('nuevaComanda', {
         id_orden: ordenGuardada.id_orden,
         id_mesa: ordenGuardada.mesa.id_mesa,
+        id_mesero: createOrdenDto.id_mesero,
         estado: ordenGuardada.estado,
         mensaje: '¡Llegó un nuevo pedido!',
       });
@@ -194,7 +195,7 @@ export class OrdenesService {
   }
 
   async update(id: number, updateOrdenDto: UpdateOrdenDto) {
-    const { estado, nuevosDetalles, id_mesero, motivo_cancelacion, ...datosOrden } = updateOrdenDto as any;
+    const { estado, nuevosDetalles, id_mesero, id_mesa, motivo_cancelacion, ...datosOrden } = updateOrdenDto as any;
     
     const orden = await this.ordenRepository.preload({
       id_orden: id,
@@ -202,6 +203,7 @@ export class OrdenesService {
       motivo_cancelacion: motivo_cancelacion,
       estado: estado ? (estado as EstadoOrden) : undefined,
       mesero: id_mesero ? { id_usuario: id_mesero } : undefined,
+      mesa: id_mesa ? { id_mesa: id_mesa } : undefined,
     });
 
     if (!orden) throw new NotFoundException(`La orden #${id} no existe en la base de datos`);
@@ -221,6 +223,8 @@ export class OrdenesService {
     this.ordenesGateway.server.emit('cambioEstadoComanda', {
       id_orden: id,
       estado: orden.estado,
+      id_mesero: orden.mesero?.id_usuario,
+      id_mesa: orden.mesa?.id_mesa,
     });
 
     return { mensaje: `La orden #${id} fue actualizada correctamente.`, orden };
