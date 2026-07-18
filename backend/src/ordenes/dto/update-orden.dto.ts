@@ -1,8 +1,9 @@
-import { IsArray, ValidateNested, IsOptional, IsEnum } from 'class-validator';
+import { IsArray, ValidateNested, IsOptional, IsEnum, IsString, IsInt} from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { DetalleOrdenDto } from './create-orden.dto'; 
 import { EstadoOrden } from '../entities/orden.entity';
+
 
 export class UpdateOrdenDto {
   @ApiProperty({
@@ -16,6 +17,15 @@ export class UpdateOrdenDto {
   estado?: EstadoOrden; 
 
   @ApiProperty({
+    example: 'El cliente cambió de opinión',
+    description: 'Motivo por el cual se canceló la orden',
+    required: false
+  })
+  @IsOptional()
+  @IsString()
+  motivo_cancelacion?: string;
+
+  @ApiProperty({
     type: [DetalleOrdenDto],
     description: 'Nuevos productos a agregar a la orden',
     required: false
@@ -25,4 +35,22 @@ export class UpdateOrdenDto {
   @ValidateNested({ each: true })
   @Type(() => DetalleOrdenDto)
   nuevosDetalles?: DetalleOrdenDto[];
+
+  @ApiProperty({
+    example: 1,
+    description: 'ID del mesero para reasignar o tomar la orden',
+    required: false
+  })
+  @IsOptional()
+  @IsInt()
+  id_mesero?: number;
+
+  @ApiProperty({
+    example: 5,
+    description: 'ID de la nueva mesa por si el cliente se cambia',
+    required: false
+  })
+  @IsOptional()
+  @IsInt()
+  id_mesa?: number;
 }
