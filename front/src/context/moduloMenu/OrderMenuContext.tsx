@@ -21,6 +21,8 @@ interface OrderContextType {
 
     removeProduct: (id: string) => void;
 
+    clearOrder: () => void;
+
 }
 
 const OrderContext = createContext<OrderContextType | null>(null);
@@ -135,6 +137,10 @@ export const OrderMenuProvider = ({
 
     };
 
+    const clearOrder = () => {
+        setOrden([]);
+    };
+
     return (
         <OrderContext.Provider
             value={{
@@ -144,7 +150,8 @@ export const OrderMenuProvider = ({
                 calculatePrice,
                 increaseQuantity,
                 decreaseQuantity,
-                removeProduct
+                removeProduct,
+                clearOrder
             }}
         >
             {children}
