@@ -126,6 +126,8 @@ export class OrdenesService {
         mensaje: '¡Llegó un nuevo pedido!',
       });
 
+      this.ordenesGateway.server.emit('actualizacionOrdenes');
+
       return { 
         mensaje: '¡Orden Recibida!', 
         orden: ordenGuardada.id_orden,
@@ -226,6 +228,7 @@ export class OrdenesService {
       id_mesero: orden.mesero?.id_usuario,
       id_mesa: orden.mesa?.id_mesa,
     });
+    this.ordenesGateway.server.emit('actualizacionOrdenes');
 
     return { mensaje: `La orden #${id} fue actualizada correctamente.`, orden };
   }
@@ -239,6 +242,7 @@ export class OrdenesService {
       await queryRunner.manager.delete(DetalleOrden, { orden: { id_orden: id } });
       await queryRunner.manager.delete(Orden, { id_orden: id });
       await queryRunner.commitTransaction();
+      this.ordenesGateway.server.emit('actualizacionOrdenes');
       return { mensaje: 'Orden y sus detalles eliminados correctamente' };
     } catch (error: any) {
       await queryRunner.rollbackTransaction();
