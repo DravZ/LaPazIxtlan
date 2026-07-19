@@ -3,13 +3,17 @@ import { Clock3 } from "lucide-react";
 import styles from "./EntrantesCard.module.css";
 
 interface EntrantesCardProps {
+    idOrden: number;
     mesa: number;
     horaPedido: string;
+    productos: any[]
 }
 
 export default function EntrantesCard({
+    idOrden,
     mesa,
     horaPedido,
+    productos
 }: EntrantesCardProps) {
     const [, forceUpdate] = useState(0);
 
@@ -22,6 +26,10 @@ export default function EntrantesCard({
     }, []);
 
     const inicio = new Date(horaPedido).getTime();
+
+    if (isNaN(inicio)) {
+        console.error("Fecha inválida:", horaPedido);
+    }
     const minutos = (Date.now() - inicio) / 1000 / 60;
 
     const status =

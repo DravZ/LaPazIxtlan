@@ -3,6 +3,8 @@ import styles from "./CardOrden.module.css";
 import type { OrderItem } from "../../../../interfaces/ModuloMesero/MeseroMesas";
 import { useEffect, useState } from "react";
 import { lateWait, midWait } from "../../../../constants/timmers";
+import { useNotification } from "../../../../context/notifications/NotificationContext";
+import { descartarOrden, marcarOrdenEnPreparacion } from "../../../../controllers/orden.controller";
 
 interface CardOrdenProps {
   idOrden: number
@@ -30,15 +32,62 @@ const CardOrden = ({
         : styles.timerGreen;
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showDescartarModal, setShowDescartarModal] = useState(false);
   const [numMesa, setNumMesa] = useState("");
+  const [motivoCancelacion, setMotivoCancelacion] = useState("")
 
-  const confirmOrder = () => {
+   const { showNotification } = useNotification();
+
+  const confirmOrder = async () => {
+
+    //Cambiar el 1 por idMesero
+
+    try{
+      await marcarOrdenEnPreparacion(idOrden, 1, Number(numMesa))
+
+      showNotification({
+          type: "success",
+          title: "Orden confirmada!",
+          description: `Se ha confirmado la orden`
+        });
+      
+    }catch(error){
+      showNotification({
+          type: "error",
+          title: "Error al confirmar orden",
+          description: `ERROR: ${error}`
+        });
+    }
     console.log(
       `Orden ${numMesa} confirmada por mesero en la mesa ${mesaNumber}`
     );
 
     setShowConfirmModal(false);
     setNumMesa("")
+  };
+
+  const confirmCancelacion = async () => {
+
+    //Cambiar el 1 por idMesero
+    try{
+      await descartarOrden(idOrden, motivoCancelacion)
+
+      showNotification({
+          type: "success",
+          title: "Orden Cancelada",
+          description: `Se ha cancelado la orden.`
+        });
+      
+    }catch(error){
+      showNotification({
+          type: "error",
+          title: "Error al cancelar la orden",
+          description: `ERROR: ${error}`
+        });
+    }
+
+    setShowDescartarModal(false);
+    setMotivoCancelacion("")
   };
 
   useEffect(() => {
@@ -99,7 +148,10 @@ const CardOrden = ({
           Confirmar
         </button>
 
-        <button className={styles.cancelButton}>Descartar</button>
+        <button className={styles.cancelButton}
+          onClick={() => setShowDescartarModal(true)}
+          >
+            Descartar</button>
       </div>
 
       {showConfirmModal && (
@@ -141,6 +193,49 @@ const CardOrden = ({
                 onClick={confirmOrder}
               >
                 Aceptar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showDescartarModal && (
+        <div
+          className={styles.modalOverlay}
+          onClick={() => setShowDescartarModal(false)}
+        >
+          <div
+            className={styles.modal}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className={styles.modalTitle}>Cancelar orden</h3>
+
+            <p className={styles.modalText}>
+              Ingresa el motivo de la cancelación:
+            </p>
+
+            <textarea
+              className={styles.modalInput}
+
+              placeholder="Motivo de cancelación"
+              value={motivoCancelacion}
+              onChange={(e) => setMotivoCancelacion(e.target.value)}
+            />
+
+            <div className={styles.modalButtons}>
+              <button
+                className={styles.cancelButton}
+                onClick={() => setShowDescartarModal(false)}
+              >
+                Cancelar
+              </button>
+
+              <button
+                className={styles.confirmButton}
+                disabled={motivoCancelacion.trim() == ""}
+                onClick={confirmCancelacion}
+              >
+                Confirmar
               </button>
             </div>
           </div>

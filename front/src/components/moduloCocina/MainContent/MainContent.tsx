@@ -1,12 +1,31 @@
+import { useEffect, useState } from "react";
 import CompletadasCard from "./CompletadasCard/CompletadasCard";
 import EntrantesCard from "./EntrantesCard/EntrantesCard";
 import styles from "./MainContent.module.css";
+import { getOrdenesPorEntregar } from "../../../controllers/orden.controller";
 
 interface MainContentProps {
   seccion: string;
 }
 
 const MainContent = ({ seccion }: MainContentProps) => {
+
+  const [ordenesEnPreparacion, setOrdenesEnPreparacion] = useState([]);
+
+  useEffect(() => {
+    const cargarOrdenes = async () => {
+      try {
+        const dataEnPrepacion = await getOrdenesPorEntregar();
+
+        setOrdenesEnPreparacion(dataEnPrepacion);
+        console.log("Órdenes en preparacion:", dataEnPrepacion);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    cargarOrdenes();
+  }, []);
 
   return (
     <div className={`p-3 ` + styles.container}>
@@ -28,21 +47,24 @@ const MainContent = ({ seccion }: MainContentProps) => {
       <div className="row mx-0 mt-4 p-0">
         {seccion === "Entrantes" && (
           <>
-          <EntrantesCard mesa={1} horaPedido="2026-06-24T17:08:00"/>
-          <EntrantesCard mesa={1} horaPedido="2026-06-24T17:08:00"/>
-          <EntrantesCard mesa={1} horaPedido="2026-06-24T17:08:00"/>
-          <EntrantesCard mesa={1} horaPedido="2026-06-24T17:08:00"/>
-          
+          {ordenesEnPreparacion.map((orden: any) => (
+              <EntrantesCard
+                key={orden.id_orden}
+                idOrden={orden.id_orden}
+                productos={orden.detalles}
+                mesa={orden.mesa.id_mesa} 
+                horaPedido={orden.hora_creacion}/>
+            ))}
           </>
         )}
 
         {seccion === "Completadas" && (
           <>
-            <CompletadasCard/>
-            <CompletadasCard/>
-            <CompletadasCard/>
-            <CompletadasCard/>
-            
+            <CompletadasCard />
+            <CompletadasCard />
+            <CompletadasCard />
+            <CompletadasCard />
+
           </>
         )}
 

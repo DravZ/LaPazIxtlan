@@ -5,6 +5,9 @@ import CardEntrega from "../CardEntrega/CardEntrega";
 import CardHistorial from "../CardHistorial/CardHistorial";
 import { useEffect, useState } from "react";
 import { getAllOrdenes, getOrdenesPendientes, getOrdenesPorEntregar } from "../../../../controllers/orden.controller";
+import { socket } from "../../../../services/socket.service";
+import { useOrdenesSocket } from "../../../../hooks/useOrdenesSocket";
+import { useNotification } from "../../../../context/notifications/NotificationContext";
 
 interface MainContentProps {
   category: string;
@@ -16,28 +19,80 @@ const MainContent = ({ category }: MainContentProps) => {
   const [ordenesPorEntregar, setOrdenesPorEntregar] = useState([]);
   const [ordenesHistorial, setOrdenesHistorial] = useState([]);
 
+  const { showNotification } = useNotification();
+
+  const cargarOrdenes = async () => {
+    try {
+      const [dataPendientes, dataEntregar, dataHistorial] =
+        await Promise.all([
+          getOrdenesPendientes(),
+          getOrdenesPorEntregar(),
+          getAllOrdenes(),
+        ]);
+
+      setOrdenesPendientes(dataPendientes);
+      setOrdenesPorEntregar(dataEntregar);
+      setOrdenesHistorial(dataHistorial);
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    const cargarOrdenes = async () => {
-      try {
-        const dataPendientes = await getOrdenesPendientes();
-        const dataEntregar = await getOrdenesPorEntregar();
-        const dataHistorial = await getAllOrdenes();
-
-
-        setOrdenesPendientes(dataPendientes);
-        setOrdenesPorEntregar(dataEntregar);
-        setOrdenesHistorial(dataHistorial)
-        console.log("Órdenes pendientes:", dataPendientes);
-        console.log("Órdenes por entregar:", dataEntregar);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     cargarOrdenes();
   }, []);
-  
+
+  useOrdenesSocket((evento) => {
+
+    cargarOrdenes();
+
+    switch (evento.tipo) {
+
+      case "creada":
+        // Reproducir sonido
+        const audio = new Audio("/sounds/notification.mp3");
+        audio.play().catch(() => { });
+
+        // Tu hook de notificaciones
+        showNotification({
+          type: "warning",
+          title: "Nueva orden!",
+          description: "Hay una nueva orden. Revise la sección de Pendientes"
+        });
+        break;
+
+      case "actualizada":
+
+        switch (evento.estado) {
+
+          case "En preparación":
+            break;
+
+          case "Lista":
+            break;
+
+          case "Entregada":
+            break;
+
+          case "Descartada":
+            break;
+        }
+
+        break;
+
+      case "eliminada":
+        // Tu hook de notificaciones
+        showNotification({
+          type: "warning",
+          title: "Orden Cancelada",
+          description: "Se ha cancelado una orden"
+        });
+        break;
+    }
+
+  });
+
   return (
     <div className={`p-3 ${styles.container}`}>
       <div className="row mx-2 p-0">

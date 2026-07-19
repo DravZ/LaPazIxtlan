@@ -70,3 +70,53 @@ export const getEnPreparación = async () => {
         throw error;
     }
 };
+
+export const marcarOrdenEnPreparacion = async (idOrden: number, idMesero: number, idMesa: number) => {
+
+    const order = {
+        estado: "En Preparación",
+        id_mesero: idMesero,
+        id_mesa: idMesa
+    }
+    try {
+        const response = await OrderService.updateOrden(idOrden, order);
+
+        return response.data;
+
+    } catch (error) {
+        console.error("Error marcando orden en preparacion:", error);
+        throw error;
+    }
+}
+
+export const descartarOrden = async (idOrden: number, motivo: string) => {
+
+    const order = {
+        estado: "Descartada",
+        motivo_cancelacion: motivo
+    }
+    try {
+        const response = await OrderService.updateOrden(idOrden, order);
+
+        return response.data;
+
+    } catch (error) {
+        console.error("Error al cancelar la orden:", error);
+        throw error;
+    }
+}
+export const entregarOrden = async (idOrden: number) => {
+
+    const order = {
+        estado: "Entregada"
+    }
+    try {
+        const response = await OrderService.updateOrden(idOrden, order);
+
+        return response.data;
+
+    } catch (error) {
+        console.error("Error al marcar orden como entregada:", error);
+        throw error;
+    }
+}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./Sidebar.module.css";
 import { ClipboardList, ShoppingCart, Clock } from "lucide-react";
 import { getOrdenesPendientes, getOrdenesPorEntregar } from "../../../controllers/orden.controller";
+import { useOrdenesSocket } from "../../../hooks/useOrdenesSocket";
 
 interface SidebarProps {
   category: string;
@@ -20,23 +21,28 @@ const Sidebar = ({
   const [ordenesPendientes, setOrdenesPendientes] = useState(0);
   const [ordenesPorEntregar, setOrdenesPorEntregar] = useState(0);
 
+  const cargarOrdenes = async () => {
+    try {
+      const dataPendientes = await getOrdenesPendientes();
+      const dataEntregar = await getOrdenesPorEntregar();
+
+      setOrdenesPendientes(dataPendientes.length);
+      setOrdenesPorEntregar(dataEntregar.length);
+
+      console.log("Órdenes pendientes:", dataPendientes.length);
+      console.log("Órdenes por entregar:", dataEntregar.length);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useOrdenesSocket(() => {
+
+    cargarOrdenes();
+
+  });
 
   useEffect(() => {
-    const cargarOrdenes = async () => {
-      try {
-        const dataPendientes = await getOrdenesPendientes();
-        const dataEntregar = await getOrdenesPorEntregar();
-
-        setOrdenesPendientes(dataPendientes.length);
-        setOrdenesPorEntregar(dataEntregar.length);
-
-        console.log("Órdenes pendientes:", dataPendientes.length);
-        console.log("Órdenes por entregar:", dataEntregar.length);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     cargarOrdenes();
   }, []);
   return (

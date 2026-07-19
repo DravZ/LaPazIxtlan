@@ -14,14 +14,14 @@ import { Topping } from 'src/menu/entities/topping.entity';
 
 @Injectable()
 export class OrdenesService {
-  constructor (
+  constructor(
     private readonly dataSource: DataSource,
-    
+
     @InjectRepository(Orden)
     private readonly ordenRepository: Repository<Orden>,
 
     private readonly ordenesGateway: OrdenesGateway,
-  ) {}
+  ) { }
 
   async create(createOrdenDto: CreateOrdenDto) {
     const queryRunner = this.dataSource.createQueryRunner();
@@ -30,14 +30,14 @@ export class OrdenesService {
 
     try {
       const nuevaOrden = queryRunner.manager.create(Orden, {
-        mesero: createOrdenDto.id_mesero ? { id_usuario: createOrdenDto.id_mesero } : undefined, 
-        mesa: { id_mesa: createOrdenDto.id_mesa }, 
+        mesero: createOrdenDto.id_mesero ? { id_usuario: createOrdenDto.id_mesero } : undefined,
+        mesa: { id_mesa: createOrdenDto.id_mesa },
         estado: EstadoOrden.PENDIENTE,
-        total: 0 
+        total: 0
       });
-      
+
       let ordenGuardada = await queryRunner.manager.save(nuevaOrden);
-      let totalOrden = 0; 
+      let totalOrden = 0;
       const detallesAGuardar: DetalleOrden[] = [];
 
       for (const detalleDto of createOrdenDto.detalles) {
@@ -56,7 +56,7 @@ export class OrdenesService {
         if (detalleDto.toppings && detalleDto.toppings.length > 0) {
           for (const topDto of detalleDto.toppings) {
             const toppingDb = await queryRunner.manager.findOne(Topping, { where: { id_topping: topDto.id_topping } });
-            
+
             if (!toppingDb) {
               throw new BadRequestException(`El ingrediente/topping con ID ${topDto.id_topping} no existe.`);
             }
@@ -72,17 +72,17 @@ export class OrdenesService {
             nuevosToppings.push(nuevoDetalleTopping);
           }
         }
-        
+
         const precioTotalUnitario = precioBase + costoExtras;
         totalOrden += precioTotalUnitario * detalleDto.cantidad_solicitada;
 
         const nuevoDetalle = queryRunner.manager.create(DetalleOrden, {
-          orden: ordenGuardada, 
-          producto: { id_producto: detalleDto.id_producto }, 
+          orden: ordenGuardada,
+          producto: { id_producto: detalleDto.id_producto },
           cantidad_solicitada: detalleDto.cantidad_solicitada,
           notas_preparacion: detalleDto.notas_preparacion,
-          precio_unitario: precioTotalUnitario, 
-          detallesToppings: nuevosToppings 
+          precio_unitario: precioTotalUnitario,
+          detallesToppings: nuevosToppings
         });
 
         detallesAGuardar.push(nuevoDetalle);
@@ -126,15 +126,19 @@ export class OrdenesService {
         mensaje: '¡Llegó un nuevo pedido!',
       });
 
-      this.ordenesGateway.server.emit('actualizacionOrdenes');
+      this.ordenesGateway.server.emit('actualizacionOrdenes', {
+        tipo: "creada",
+        estado: ordenGuardada.estado
+        // id_orden: orden.id_orden,
+      });
 
-      return { 
-        mensaje: '¡Orden Recibida!', 
+      return {
+        mensaje: '¡Orden Recibida!',
         orden: ordenGuardada.id_orden,
         total: totalOrden
       };
 
-    } catch (error:any) {
+    } catch (error: any) {
       await queryRunner.rollbackTransaction();
       if (error instanceof BadRequestException) {
         throw error;
@@ -148,17 +152,17 @@ export class OrdenesService {
   async findAll() {
     const ordenes = await this.ordenRepository.find({
       relations: {
-        mesero: true, 
+        mesero: true,
         mesa: true,
         detalles: {
-          producto: true, 
+          producto: true,
           detallesToppings: {
-            topping: true 
+            topping: true
           },
         },
       },
       order: {
-        hora_creacion: 'DESC', 
+        hora_creacion: 'DESC',
       }
     });
 
@@ -177,7 +181,7 @@ export class OrdenesService {
         mesero: true,
         mesa: true,
         detalles: {
-          producto: true, 
+          producto: true,
           detallesToppings: {
             topping: true
           },
@@ -198,7 +202,7 @@ export class OrdenesService {
 
   async update(id: number, updateOrdenDto: UpdateOrdenDto) {
     const { estado, nuevosDetalles, id_mesero, id_mesa, motivo_cancelacion, ...datosOrden } = updateOrdenDto as any;
-    
+
     const orden = await this.ordenRepository.preload({
       id_orden: id,
       ...datosOrden,
@@ -209,7 +213,7 @@ export class OrdenesService {
     });
 
     if (!orden) throw new NotFoundException(`La orden #${id} no existe en la base de datos`);
-    
+
     const ahora = new Date();
 
     if (estado === EstadoOrden.EN_PREPARACION && !orden.hora_confirmacion) {
@@ -228,7 +232,11 @@ export class OrdenesService {
       id_mesero: orden.mesero?.id_usuario,
       id_mesa: orden.mesa?.id_mesa,
     });
-    this.ordenesGateway.server.emit('actualizacionOrdenes');
+    this.ordenesGateway.server.emit('actualizacionOrdenes', {
+        tipo: "actualizada",
+        estado: estado
+        // id_orden: orden.id_orden,
+      });
 
     return { mensaje: `La orden #${id} fue actualizada correctamente.`, orden };
   }
@@ -242,7 +250,11 @@ export class OrdenesService {
       await queryRunner.manager.delete(DetalleOrden, { orden: { id_orden: id } });
       await queryRunner.manager.delete(Orden, { id_orden: id });
       await queryRunner.commitTransaction();
-      this.ordenesGateway.server.emit('actualizacionOrdenes');
+      this.ordenesGateway.server.emit('actualizacionOrdenes', {
+        tipo: "eliminada",
+        estado: "Descartada"
+        // id_orden: orden.id_orden,
+      });
       return { mensaje: 'Orden y sus detalles eliminados correctamente' };
     } catch (error: any) {
       await queryRunner.rollbackTransaction();

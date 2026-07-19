@@ -9,7 +9,7 @@ interface CardHistorial {
   price: number;
   confirm: boolean;
   products: any[];
-  status?: "Pendiente" | "Lista" | "Descartada";
+  status?: "Pendiente" | "En Preparación"| "Lista" | "Descartada";
 }
 
 const CardHistorial = ({
@@ -40,6 +40,7 @@ const CardHistorial = ({
             {status === "Pendiente" && "✓ Confirmada"}
             {status === "Lista" && "🗹 Entregada"}
             {status === "Descartada" && "☒ Descartada"}
+            {status === "En Preparación" && "En Preparación"}
           </span>
         </div>
 
