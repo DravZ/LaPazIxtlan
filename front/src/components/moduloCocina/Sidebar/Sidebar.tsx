@@ -1,7 +1,9 @@
 // components/Sidebar.tsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Sidebar.module.css";
 import { CheckCircle2, ChefHat, Info, Menu, ShoppingCart } from "lucide-react";
+import { getOrdenesEnPreparación } from "../../../controllers/orden.controller";
+import { useOrdenesSocket } from "../../../hooks/useOrdenesSocket";
 
 interface SidebarProps {
   selected: string;
@@ -9,6 +11,26 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ selected, setSelected }: SidebarProps) => {
+  const [ordenesEnPreparacion, setOrdenesEnPreparacion] = useState(0);
+
+  const cargarOrdenes = async () => {
+      try {
+        const dataEnPrepacion = await getOrdenesEnPreparación();
+
+        setOrdenesEnPreparacion(dataEnPrepacion.length);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+  useEffect(() => {
+    
+    cargarOrdenes();
+  }, []);
+  useOrdenesSocket(() => {
+
+    cargarOrdenes();
+  });
   return (
     <div className={`pt-3 ${styles.sidebar}`}>
       <div className={styles.titleDivider}>
@@ -29,7 +51,7 @@ const Sidebar = ({ selected, setSelected }: SidebarProps) => {
             <span>Entrantes</span>
           </span>
 
-          <span className={styles.notifier}>1</span>
+          {ordenesEnPreparacion == 0 ? null : <span className={styles.notifier}>{ordenesEnPreparacion}</span>}
         </p>
 
         <p
@@ -42,7 +64,7 @@ const Sidebar = ({ selected, setSelected }: SidebarProps) => {
             <span>Completadas</span>
           </span>
 
-          <span className={styles.notifier}>1</span>
+
         </p>
       </div>
     </div>

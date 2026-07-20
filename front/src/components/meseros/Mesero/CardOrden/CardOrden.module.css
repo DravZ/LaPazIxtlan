@@ -40,55 +40,6 @@
   margin-bottom: 8px;
 }
 
-.buttonContainer {
-  margin-top: 30px;
-
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-}
-
-.confirmButton {
-  flex: 1;
-  max-width: 260px;
-
-  height: 56px;
-
-  border: none;
-  border-radius: 20px;
-
-  background: #63855a;
-  color: white;
-
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-.confirmButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.cancelButton {
-  flex: 1;
-  max-width: 260px;
-
-  height: 56px;
-
-  border-radius: 20px;
-
-  background: transparent;
-  border: 1px solid #d8cec1;
-
-  color: #8a5a35;
-
-  font-size: 1.2rem;
-  font-weight: 500;
-}
-
-.confirmButton:hover,
-.cancelButton:hover {
-  opacity: 0.9;
-}
 
 .withoutIngredients {
   color: #8a5a35;
@@ -166,4 +117,54 @@
 .modalButtons {
     display: flex;
     gap: 15px;
+}
+
+.buttonContainer {
+  margin-top: 30px;
+
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.confirmButton {
+  flex: 1;
+  max-width: 260px;
+
+  height: 56px;
+
+  border: none;
+  border-radius: 20px;
+
+  background: #63855a;
+  color: white;
+
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.confirmButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  flex: 1;
+  max-width: 260px;
+
+  height: 56px;
+
+  border-radius: 20px;
+
+  background: transparent;
+  border: 1px solid #d8cec1;
+
+  color: #8a5a35;
+
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.confirmButton:hover,
+.cancelButton:hover {
+  opacity: 0.9;
 }

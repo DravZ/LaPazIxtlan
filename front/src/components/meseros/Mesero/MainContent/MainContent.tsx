@@ -70,6 +70,17 @@ const MainContent = ({ category }: MainContentProps) => {
             break;
 
           case "Lista":
+            // Reproducir sonido
+            const audio = new Audio("/sounds/notification.mp3");
+            audio.play().catch(() => { });
+
+            // Tu hook de notificaciones
+            showNotification({
+              type: "warning",
+              title: "Nueva orden lista para entregar!",
+              description: "Hay una nueva orden lista para entregar. " + 
+              "Revise la sección de Entregar"
+            });
             break;
 
           case "Entregada":
