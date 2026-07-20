@@ -33,7 +33,8 @@ async create(datosUsuarios: CreateUsuarioDto) {
         nombre_completo: true,
         username: true,
         rol: true,
-        activo:true
+        activo:true,
+        turno: true,
       },
     });
   }
@@ -47,6 +48,7 @@ async create(datosUsuarios: CreateUsuarioDto) {
         username: true,
         rol: true,
         activo: true,
+        turno: true,
       },
     });
   }
