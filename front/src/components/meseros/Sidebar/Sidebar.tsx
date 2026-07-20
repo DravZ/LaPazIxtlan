@@ -1,5 +1,8 @@
+import { useEffect, useState } from "react";
 import styles from "./Sidebar.module.css";
 import { ClipboardList, ShoppingCart, Clock } from "lucide-react";
+import { getOrdenesPendientes, getOrdenesPorEntregar } from "../../../controllers/orden.controller";
+import { useOrdenesSocket } from "../../../hooks/useOrdenesSocket";
 
 interface SidebarProps {
   category: string;
@@ -14,6 +17,34 @@ const Sidebar = ({
   badgePendientes = 1,
   badgeEntregar = 0,
 }: SidebarProps) => {
+
+  const [ordenesPendientes, setOrdenesPendientes] = useState(0);
+  const [ordenesPorEntregar, setOrdenesPorEntregar] = useState(0);
+
+  const cargarOrdenes = async () => {
+    try {
+      const dataPendientes = await getOrdenesPendientes();
+      const dataEntregar = await getOrdenesPorEntregar();
+
+      setOrdenesPendientes(dataPendientes.length);
+      setOrdenesPorEntregar(dataEntregar.length);
+
+      console.log("Órdenes pendientes:", dataPendientes.length);
+      console.log("Órdenes por entregar:", dataEntregar.length);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useOrdenesSocket(() => {
+
+    cargarOrdenes();
+
+  });
+
+  useEffect(() => {
+    cargarOrdenes();
+  }, []);
   return (
     <div className={`pt-3 ${styles.sidebar}`}>
       <div className={styles.titleDivider}>
@@ -26,49 +57,46 @@ const Sidebar = ({
         <p className={styles.subtitle + " mt-3 ms-4"}>OPERACIONES</p>
 
         {/* PENDIENTES */}
-        <p
-          className={`${styles.categoryItem} ${
-            category === "Pendientes" ? styles.selectedItem : ""
-          }`}
+        <div
+          className={`${styles.categoryItem} ${category === "Pendientes" ? styles.selectedItem : ""
+            }`}
           onClick={() => setCategory("Pendientes")}
         >
           <div className={styles.iconContainer}>
             <ClipboardList size={20} />
-            {badgePendientes > 0 && (
-              <span className={styles.badge}>{badgePendientes}</span>
+            {ordenesPendientes > 0 && (
+              <span className={styles.badge}>{ordenesPendientes}</span>
             )}
           </div>
           Pendientes
-        </p>
+        </div>
 
         {/* ENTREGAR */}
-        <p
-          className={`${styles.categoryItem} ${
-            category === "Por entregar" ? styles.selectedItem : ""
-          }`}
+        <div
+          className={`${styles.categoryItem} ${category === "Por entregar" ? styles.selectedItem : ""
+            }`}
           onClick={() => setCategory("Por entregar")}
         >
           <div className={styles.iconContainer}>
             <ShoppingCart size={20} />
-            {badgeEntregar > 0 && (
-              <span className={styles.badge}>{badgeEntregar}</span>
+            {ordenesPorEntregar > 0 && (
+              <span className={styles.badge}>{ordenesPorEntregar}</span>
             )}
           </div>
           Entregar
-        </p>
+        </div>
 
         {/* HISTORIAL */}
-        <p
-          className={`${styles.categoryItem} ${
-            category === "Historial" ? styles.selectedItem : ""
-          }`}
+        <div
+          className={`${styles.categoryItem} ${category === "Historial" ? styles.selectedItem : ""
+            }`}
           onClick={() => setCategory("Historial")}
         >
           <div className={styles.iconContainer}>
             <Clock size={20} />
           </div>
           Historial
-        </p>
+        </div>
       </div>
 
       <button className={styles.aboutButton}>

@@ -1,17 +1,49 @@
 import { useEffect, useState } from "react";
 import { Clock3 } from "lucide-react";
 import styles from "./EntrantesCard.module.css";
+import { useNotification } from "../../../../context/notifications/NotificationContext";
+import { setOrdenPreparada } from "../../../../controllers/orden.controller";
+import { lateCocinaWait, midCocinaWait } from "../../../../constants/timmers";
 
 interface EntrantesCardProps {
+    idOrden: number;
     mesa: number;
     horaPedido: string;
+    productos: any[]
 }
 
 export default function EntrantesCard({
+    idOrden,
     mesa,
     horaPedido,
+    productos
 }: EntrantesCardProps) {
     const [, forceUpdate] = useState(0);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+    const { showNotification } = useNotification();
+
+    const confirmOrder = async () => {
+
+        try {
+            await setOrdenPreparada(idOrden)
+
+            showNotification({
+                type: "success",
+                title: "Orden lista!",
+                description: `Se ha marcado la orden como lista para entregar.`
+            });
+
+        } catch (error) {
+            showNotification({
+                type: "error",
+                title: "Error al marcar orden como lista",
+                description: `ERROR: ${error}`
+            });
+        }
+        
+        setShowConfirmModal(false);
+    };
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -22,12 +54,16 @@ export default function EntrantesCard({
     }, []);
 
     const inicio = new Date(horaPedido).getTime();
+
+    if (isNaN(inicio)) {
+        console.error("Fecha inválida:", horaPedido);
+    }
     const minutos = (Date.now() - inicio) / 1000 / 60;
 
     const status =
-        minutos >= 10
+        minutos >= lateCocinaWait
             ? "danger"
-            : minutos >= 5
+            : minutos >= midCocinaWait
                 ? "warning"
                 : "success";
 
@@ -60,24 +96,71 @@ export default function EntrantesCard({
             </div>
 
             <div className={styles.body}>
-                <p className={styles.productsList}>
-                    <span>1x</span> Hamburguesa Ixtlan
-                </p>
 
-                <ul>
-                    <li>
-                        Sin - Cebolla
-                    </li>
-                </ul>
+                {productos.map((product: any) => (
+                    <div key={product.id_detalle}>
+                        <p className={styles.productsList}>
+                            <span>{product.cantidad_solicitada}x{" "}</span>
+                            {product.producto.nombre_producto}
+                        </p>
 
-                <p className={styles.productsList}>
-                    <span>2x</span> Limonada Natural
-                </p>
+                        {product.detallesToppings && product.detallesToppings.length > 0 && (
+                            <ul className="mb-1">
+                                {product.detallesToppings
+                                    .map((topping: any) => (
+                                        <li key={topping.id_detalle_topping}>
+                                            {topping.estado.charAt(0).toUpperCase() + topping.estado.slice(1)}
+                                            - {topping.topping.nombre}
+                                        </li>
+                                    ))}
+
+                            </ul>
+                        )}
+
+                    </div>
+
+                ))}
+
             </div>
 
-            <button className={styles.readyButton}>
+            <button
+                onClick={() => setShowConfirmModal(true)}
+                className={styles.readyButton}>
                 ✓ Listo para Despachar
             </button>
+            {showConfirmModal && (
+                <div
+                    className={styles.modalOverlay}
+                    onClick={() => setShowConfirmModal(false)}
+                >
+                    <div
+                        className={styles.modal}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <h3 className={styles.modalTitle}>Marcar orden como preparada</h3>
+
+                        <p className={styles.modalText}>
+                            ¿Esta seguro de marcar la orden como preparada?
+                        </p>
+
+                        <div className={styles.modalButtons}>
+                            <button
+                                className={styles.cancelButton}
+                                onClick={() => setShowConfirmModal(false)}
+                            >
+                                Cancelar
+                            </button>
+
+                            <button
+                                className={styles.confirmButton}
+                                onClick={confirmOrder}
+                            >
+                                Aceptar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

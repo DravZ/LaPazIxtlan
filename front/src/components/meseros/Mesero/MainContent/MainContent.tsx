@@ -1,78 +1,108 @@
 // components/MainContent.tsx
 import CardOrden from "../CardOrden/CardOrden";
 import styles from "./MainContent.module.css";
-import type { MeseroMesas } from "../../../../interfaces/ModuloMesero/MeseroMesas";
 import CardEntrega from "../CardEntrega/CardEntrega";
 import CardHistorial from "../CardHistorial/CardHistorial";
-import { useState } from "react";
-import { Info, User } from "lucide-react";
+import { useEffect, useState } from "react";
+import { getAllOrdenes, getOrdenesPendientes, getOrdenesPorEntregar } from "../../../../controllers/orden.controller";
+import { socket } from "../../../../services/socket.service";
+import { useOrdenesSocket } from "../../../../hooks/useOrdenesSocket";
+import { useNotification } from "../../../../context/notifications/NotificationContext";
 
 interface MainContentProps {
   category: string;
 }
 
 const MainContent = ({ category }: MainContentProps) => {
-  const mesas: MeseroMesas = {
-    mesaNumber: 1,
-    timer: 10,
-    price: 250,
-    confirm: false,
-    products: [
-      {
-        quantity: 2,
-        product: {
-          productName: "Hamburguesa Especial",
-          description: "Carne de res con queso",
-          price: 120,
-          hasToppings: true,
-          toppings: [
-            {
-              name: "Cebolla",
-              quantity: 1,
-            },
-            {
-              name: "Tomate",
-              quantity: 1,
-            },
-          ],
-          img: "/menu/hamburguesa.jpg",
-        },
-      },
-      {
-        quantity: 1,
-        product: {
-          productName: "Papas",
-          description: "Papas a la francesa",
-          price: 50,
-          hasToppings: false,
-          img: "/menu/papas.jpg",
-        },
-      },
-    ],
-  };
-  const mesas2: MeseroMesas = {
-    mesaNumber: 2,
-    timer: 150,
-    price: 145,
-    confirm: false,
-    products: [],
+
+  const [ordenesPendientes, setOrdenesPendientes] = useState([]);
+  const [ordenesPorEntregar, setOrdenesPorEntregar] = useState([]);
+  const [ordenesHistorial, setOrdenesHistorial] = useState([]);
+
+  const { showNotification } = useNotification();
+
+  const cargarOrdenes = async () => {
+    try {
+      const [dataPendientes, dataEntregar, dataHistorial] =
+        await Promise.all([
+          getOrdenesPendientes(),
+          getOrdenesPorEntregar(),
+          getAllOrdenes(),
+        ]);
+
+      setOrdenesPendientes(dataPendientes);
+      setOrdenesPorEntregar(dataEntregar);
+      setOrdenesHistorial(dataHistorial);
+
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const mesaEntrega: MeseroMesas = {
-    mesaNumber: 3,
-    timer: 150,
-    price: 145,
-    confirm: false,
-    products: [],
-  };
+  useEffect(() => {
+    cargarOrdenes();
+  }, []);
 
-  const mesaEntrega2: MeseroMesas = {
-    mesaNumber: 3,
-    timer: 150,
-    price: 145,
-    confirm: false,
-    products: [],
-  };
+  useOrdenesSocket((evento) => {
+
+    cargarOrdenes();
+
+    switch (evento.tipo) {
+
+      case "creada":
+        // Reproducir sonido
+        const audio = new Audio("/sounds/notification.mp3");
+        audio.play().catch(() => { });
+
+        // Tu hook de notificaciones
+        showNotification({
+          type: "warning",
+          title: "Nueva orden!",
+          description: "Hay una nueva orden. Revise la sección de Pendientes"
+        });
+        break;
+
+      case "actualizada":
+
+        switch (evento.estado) {
+
+          case "En preparación":
+            break;
+
+          case "Lista":
+            // Reproducir sonido
+            const audio = new Audio("/sounds/notification.mp3");
+            audio.play().catch(() => { });
+
+            // Tu hook de notificaciones
+            showNotification({
+              type: "warning",
+              title: "Nueva orden lista para entregar!",
+              description: "Hay una nueva orden lista para entregar. " + 
+              "Revise la sección de Entregar"
+            });
+            break;
+
+          case "Entregada":
+            break;
+
+          case "Descartada":
+            break;
+        }
+
+        break;
+
+      case "eliminada":
+        // Tu hook de notificaciones
+        showNotification({
+          type: "warning",
+          title: "Orden Cancelada",
+          description: "Se ha cancelado una orden"
+        });
+        break;
+    }
+
+  });
 
   return (
     <div className={`p-3 ${styles.container}`}>
@@ -83,33 +113,62 @@ const MainContent = ({ category }: MainContentProps) => {
         </div>
         {category === "Pendientes" && (
           <>
-            <div className="col-xl-6 col-lg-6 col-md-12 mb-4">
-              <CardOrden {...mesas} />
-            </div>
-
-            <div className="col-xl-6 col-lg-6 col-md-12 mb-4">
-              <CardOrden {...mesas2} />
-            </div>
+            {ordenesPendientes.map((o: any) => (
+              <div
+                key={o.id_orden}
+                className="col-xl-6 col-lg-6 col-md-12 mb-4"
+              >
+                <CardOrden
+                  idOrden={o.id_orden}
+                  products={o.detalles}
+                  confirm={false}
+                  mesaNumber={o.mesa.numero_mesa}
+                  price={o.total}
+                  timer={o.hora_creacion}
+                />
+              </div>
+            ))}
           </>
         )}
 
         {category === "Por entregar" && (
           <>
-            <div className="col-xl-6 col-lg-6 col-md-12 mb-4">
-              <CardEntrega {...mesas} />
-            </div>
-
-            <div className="col-xl-6 col-lg-6 col-md-12 mb-4">
-              <CardEntrega {...mesaEntrega} />
-            </div>
+            {ordenesPorEntregar.map((o: any) => (
+              <div
+                key={o.id_orden}
+                className="col-xl-6 col-lg-6 col-md-12 mb-4"
+              >
+                <CardEntrega
+                  id_orden={o.id_orden}
+                  products={o.detalles}
+                  confirm={false}
+                  mesaNumber={o.mesa.numero_mesa}
+                  price={o.total}
+                  timer={o.hora_creacion}
+                />
+              </div>
+            ))}
           </>
         )}
 
         {category === "Historial" && (
           <>
-            <CardHistorial {...mesas} />
-
-            <CardHistorial {...mesaEntrega} />
+            {ordenesHistorial.map((o: any) => (
+              <div
+                key={o.id_orden}
+                className="col-xl-6 col-lg-6 col-md-12 mb-4"
+              >
+                <CardHistorial
+                  idOrden={o.id_orden}
+                  products={o.detalles}
+                  confirm={false}
+                  mesaNumber={o.mesa.numero_mesa}
+                  price={o.total}
+                  timer={o.hora_creacion}
+                  status={o.estado}
+                />
+              </div>
+            ))}
           </>
         )}
       </div>

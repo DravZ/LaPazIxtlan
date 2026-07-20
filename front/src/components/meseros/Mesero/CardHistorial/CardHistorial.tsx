@@ -1,16 +1,33 @@
 import styles from "./CardHistorial.module.css";
 import type { MeseroMesas } from "../../../../interfaces/ModuloMesero/MeseroMesas";
 
-interface CardEntregaProps extends MeseroMesas {
-  status?: "confirmada" | "entregada" | "descartada";
+
+interface CardHistorial {
+  idOrden: number;
+  mesaNumber: number;
+  timer: string;
+  price: number;
+  confirm: boolean;
+  products: any[];
+  status?: "Pendiente" | "En Preparación"| "Lista" | "Descartada";
 }
 
 const CardHistorial = ({
+  idOrden,
   mesaNumber,
   timer,
   products = [],
-  status = "confirmada",
-}: CardEntregaProps) => {
+  status = "Pendiente",
+}: CardHistorial) => {
+
+  const fechaHora = new Date(timer).toLocaleString("es-MX", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
   return (
     <div className={styles.cardContainer}>
       {/* HEADER */}
@@ -20,14 +37,15 @@ const CardHistorial = ({
 
           <span className={`${styles.status} ${styles[status]}`}>
             {/* Agregados los caracteres/iconos correspondientes antes del texto */}
-            {status === "confirmada" && "✓ Confirmada"}
-            {status === "entregada" && "🗹 Entregada"}
-            {status === "descartada" && "☒ Descartada"}
+            {status === "Pendiente" && "✓ Confirmada"}
+            {status === "Lista" && "🗹 Entregada"}
+            {status === "Descartada" && "☒ Descartada"}
+            {status === "En Preparación" && "En Preparación"}
           </span>
         </div>
 
         {/* Mantiene la prop timer pero quitamos el emoji del reloj aquí */}
-        <span className={styles.timerMesa}>{timer}</span>
+        <span className={styles.timerMesa}>{fechaHora}</span>
       </div>
 
       {/* PRODUCTS */}
@@ -35,14 +53,16 @@ const CardHistorial = ({
         {(products ?? []).map((item, index) => (
           <div key={index}>
             <p>
-              {item.quantity}x {item.product.productName}
+              {item.cantidad_solicitada}x {item.producto?.nombre_producto}
             </p>
 
-            {item.product.toppings?.length ? (
+            {item.detallesToppings && item.detallesToppings.length > 0 && (
               <small className={styles.withoutIngredients}>
-                Sin: {item.product.toppings.map((t) => t.name).join(", ")}
+                {item.detallesToppings
+                  .map((topping: any) => `${topping.topping.nombre} (${topping.estado})`)
+                  .join(", ")}
               </small>
-            ) : null}
+            )}
           </div>
         ))}
       </div>

@@ -40,6 +40,85 @@
   margin-bottom: 8px;
 }
 
+
+.withoutIngredients {
+  color: #8a5a35;
+  font-size: 0.9rem;
+}
+
+.totalContainer {
+  margin-top: 1rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 1.1rem;
+  font-weight: 600;
+
+  color: #4a2a16;
+}
+
+
+
+.timerGreen {
+  color: #28a745;
+}
+
+.timerYellow {
+  color: #d09c00;
+}
+
+.timerRed {
+  color: #dc3545;
+}
+
+/******************************MODAL DE NUM MESA****************************************/
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    width: 420px;
+    max-width: 90%;
+    background: #fffaf3;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.2);
+}
+
+.modalTitle {
+    font-size: 24px;
+    font-weight: 700;
+    color: #3c2212;
+}
+
+.modalText {
+    margin: 15px 0;
+    color: #6d4b32;
+}
+
+.modalInput {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 1px solid #d8c8b5;
+    outline: none;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.modalButtons {
+    display: flex;
+    gap: 15px;
+}
+
 .buttonContainer {
   margin-top: 30px;
 
@@ -63,6 +142,10 @@
   font-size: 1.2rem;
   font-weight: 700;
 }
+.confirmButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 .cancelButton {
   flex: 1;
@@ -84,22 +167,4 @@
 .confirmButton:hover,
 .cancelButton:hover {
   opacity: 0.9;
-}
-
-.withoutIngredients {
-  color: #8a5a35;
-  font-size: 0.9rem;
-}
-
-.totalContainer {
-  margin-top: 1rem;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  font-size: 1.1rem;
-  font-weight: 600;
-
-  color: #4a2a16;
 }

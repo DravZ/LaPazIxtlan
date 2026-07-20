@@ -1,12 +1,81 @@
+import { useEffect, useState } from "react";
 import CompletadasCard from "./CompletadasCard/CompletadasCard";
 import EntrantesCard from "./EntrantesCard/EntrantesCard";
 import styles from "./MainContent.module.css";
+import { getOrdenesEnPreparación, getOrdenesPorEntregar, getOrdenesPreparadas_Dia } from "../../../controllers/orden.controller";
+import { useOrdenesSocket } from "../../../hooks/useOrdenesSocket";
+import { useNotification } from "../../../context/notifications/NotificationContext";
 
 interface MainContentProps {
   seccion: string;
 }
 
 const MainContent = ({ seccion }: MainContentProps) => {
+
+  const [ordenesEnPreparacion, setOrdenesEnPreparacion] = useState([]);
+  const [ordenesPreparadas, setOrdenesPreparadas] = useState([])
+  const { showNotification } = useNotification();
+
+  const cargarOrdenes = async () => {
+    try {
+      const dataEnPrepacion = await getOrdenesEnPreparación();
+      const dataPreparadas = await getOrdenesPreparadas_Dia();
+
+      setOrdenesEnPreparacion(dataEnPrepacion);
+      setOrdenesPreparadas(dataPreparadas)
+      console.log("Órdenes en despachadas:", dataPreparadas);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    cargarOrdenes();
+  }, []);
+
+  useOrdenesSocket((evento) => {
+
+    cargarOrdenes();
+
+    switch (evento.tipo) {
+
+      case "creada":
+        break;
+
+      case "actualizada":
+
+        switch (evento.estado) {
+
+          case "En Preparación":
+            // Reproducir sonido
+            const audio = new Audio("/sounds/notification.mp3");
+            audio.play().catch(() => { });
+
+            // Tu hook de notificaciones
+            showNotification({
+              type: "warning",
+              title: "Nueva orden!",
+              description: "Orden lista para preparar. Revisa la sección Entrentes"
+            });
+            break;
+
+          case "Lista":
+            break;
+
+          case "Entregada":
+            break;
+
+          case "Descartada":
+            break;
+        }
+
+        break;
+
+      case "eliminada":
+        break;
+    }
+
+  });
 
   return (
     <div className={`p-3 ` + styles.container}>
@@ -28,21 +97,29 @@ const MainContent = ({ seccion }: MainContentProps) => {
       <div className="row mx-0 mt-4 p-0">
         {seccion === "Entrantes" && (
           <>
-          <EntrantesCard mesa={1} horaPedido="2026-06-24T17:08:00"/>
-          <EntrantesCard mesa={1} horaPedido="2026-06-24T17:08:00"/>
-          <EntrantesCard mesa={1} horaPedido="2026-06-24T17:08:00"/>
-          <EntrantesCard mesa={1} horaPedido="2026-06-24T17:08:00"/>
-          
+            {ordenesEnPreparacion.map((orden: any) => (
+              <EntrantesCard
+                key={orden.id_orden}
+                idOrden={orden.id_orden}
+                productos={orden.detalles}
+                mesa={orden.mesa.id_mesa}
+                horaPedido={orden.hora_confirmacion} />
+            ))}
           </>
         )}
 
         {seccion === "Completadas" && (
           <>
-            <CompletadasCard/>
-            <CompletadasCard/>
-            <CompletadasCard/>
-            <CompletadasCard/>
+            {ordenesPreparadas.map((orden: any) => (
+              <CompletadasCard
+                key={orden.id_orden}
+                idOrden={orden.id_orden}
+                productos={orden.detalles}
+                mesa={orden.mesa.id_mesa}
+                horaDespachado={orden.hora_lista} />
+            ))}
             
+
           </>
         )}
 

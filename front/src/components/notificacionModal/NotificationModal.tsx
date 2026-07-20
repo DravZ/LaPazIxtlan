@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { AlertTriangle, Check, X } from "lucide-react";
+import { AlertTriangle, Check, CheckCircle, CheckCircle2, X } from "lucide-react";
 import styles from "./NotificationModal.module.css";
 
 interface NotificationData {
@@ -53,7 +53,7 @@ const NotificationModal = ({
                     <div
                         className={`${styles.iconCircle} ${styles.success}`}
                     >
-                        <Check
+                        <CheckCircle2
                             size={42}
                             className={styles.icon}
                         />
