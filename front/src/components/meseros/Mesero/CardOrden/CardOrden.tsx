@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { lateWait, midWait } from "../../../../constants/timmers";
 import { useNotification } from "../../../../context/notifications/NotificationContext";
 import { descartarOrden, marcarOrdenEnPreparacion } from "../../../../controllers/orden.controller";
+import { getUserId } from "../../../../services/session.service";
 
 interface CardOrdenProps {
   idOrden: number
@@ -36,27 +37,39 @@ const CardOrden = ({
   const [numMesa, setNumMesa] = useState("");
   const [motivoCancelacion, setMotivoCancelacion] = useState("")
 
-   const { showNotification } = useNotification();
+
+  const { showNotification } = useNotification();
 
   const confirmOrder = async () => {
 
     //Cambiar el 1 por idMesero
 
-    try{
-      await marcarOrdenEnPreparacion(idOrden, 1, Number(numMesa))
+    const idUsuario = getUserId();
+
+    if (!idUsuario) {
+      showNotification({
+        type: "error",
+        title: "Sesión no encontrada",
+        description: "No se pudo obtener la sesion actual."
+      });
+      return;
+    }
+
+    try {
+      await marcarOrdenEnPreparacion(idOrden, idUsuario, Number(numMesa))
 
       showNotification({
-          type: "success",
-          title: "Orden confirmada!",
-          description: `Se ha confirmado la orden`
-        });
-      
-    }catch(error){
+        type: "success",
+        title: "Orden confirmada!",
+        description: `Se ha confirmado la orden`
+      });
+
+    } catch (error) {
       showNotification({
-          type: "error",
-          title: "Error al confirmar orden",
-          description: `ERROR: ${error}`
-        });
+        type: "error",
+        title: "Error al confirmar orden",
+        description: `ERROR: ${error}`
+      });
     }
     console.log(
       `Orden ${numMesa} confirmada por mesero en la mesa ${mesaNumber}`
@@ -69,21 +82,21 @@ const CardOrden = ({
   const confirmCancelacion = async () => {
 
     //Cambiar el 1 por idMesero
-    try{
+    try {
       await descartarOrden(idOrden, motivoCancelacion)
 
       showNotification({
-          type: "success",
-          title: "Orden Cancelada",
-          description: `Se ha cancelado la orden.`
-        });
-      
-    }catch(error){
+        type: "success",
+        title: "Orden Cancelada",
+        description: `Se ha cancelado la orden.`
+      });
+
+    } catch (error) {
       showNotification({
-          type: "error",
-          title: "Error al cancelar la orden",
-          description: `ERROR: ${error}`
-        });
+        type: "error",
+        title: "Error al cancelar la orden",
+        description: `ERROR: ${error}`
+      });
     }
 
     setShowDescartarModal(false);
@@ -150,8 +163,8 @@ const CardOrden = ({
 
         <button className={styles.cancelButton}
           onClick={() => setShowDescartarModal(true)}
-          >
-            Descartar</button>
+        >
+          Descartar</button>
       </div>
 
       {showConfirmModal && (
