@@ -4,7 +4,7 @@ import styles from './PersonalCard.module.css';
 import type { Empleado } from '../../../interfaces/ModuloAdmin/Empleado';
 
 interface PersonalCardProps {
-  empleado: Empleado;
+  empleado: any;
   onEdit: () => void;
   onDelete: () => void;
 }
@@ -24,12 +24,12 @@ export const PersonalCard: React.FC<PersonalCardProps> = ({ empleado, onEdit, on
     <div className={styles.card}>
       <div className={styles.leftSide}>
         <div className={styles.avatarCircle}>
-          {getInitials(empleado.name)}
+          {getInitials(empleado.nombre_completo)}
         </div>
         <div className={styles.info}>
-          <h3 className={styles.name}>{empleado.name}</h3>
+          <h3 className={styles.name}>{empleado.nombre_completo}</h3>
           <span className={styles.roleShift}>
-            {empleado.role} • {empleado.shift}
+            {empleado.rol}
           </span>
           <span className={styles.empId}>{empleado.id}</span>
         </div>

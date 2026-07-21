@@ -1,0 +1,248 @@
+/* Contenedor Completo de la Pantalla */
+.pageContainer {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #F7F1E5; /* Fondo beige suave */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.loginWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 440px;
+}
+
+/* Marca e Identidad Superior */
+.brandHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.logoBadge {
+  width: 56px;
+  height: 56px;
+  background-color: #2B1810;
+  color: #F7F1E5;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(43, 24, 16, 0.15);
+}
+
+.brandSub {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #8C7A6B;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.brandTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #2B1810;
+  margin: 0;
+}
+
+/* Tarjeta Formulario */
+.card {
+  background-color: #FFFDF9;
+  border-radius: 24px;
+  padding: 36px 32px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(43, 24, 16, 0.05);
+  box-sizing: border-box;
+}
+
+.cardHeader {
+  margin-bottom: 24px;
+}
+
+.cardTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #2B1810;
+  margin: 0 0 6px 0;
+}
+
+.cardSubtitle {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  color: #8C7A6B;
+  margin: 0;
+}
+
+/* Formulario e Inputs */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #6E5D4F;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 14px;
+  color: #6E5D4F;
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  padding: 14px 14px 14px 44px;
+  background-color: #EFE6D5;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 14px;
+  color: #2B1810;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.input::placeholder {
+  color: #9E8E80;
+}
+
+.input:focus {
+  border-color: #2B1810;
+  background-color: #EAE0CD;
+}
+
+.togglePasswordBtn {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  color: #6E5D4F;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+/* Botón Principal de Envío */
+.submitBtn {
+  margin-top: 8px;
+  width: 100%;
+  padding: 14px;
+  background-color: #BA4A1B; /* Tono terracota/naranja rojizo */
+  color: #FFFFFF;
+  border: none;
+  border-radius: 14px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.submitBtn:hover {
+  background-color: #A03D14;
+}
+
+/* Separador "o" */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 24px 0 20px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #EAE0CD;
+}
+
+.divider span {
+  padding: 0 12px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 12px;
+  color: #9E8E80;
+}
+
+/* Footer con Link de Registro */
+.registerFooter {
+  text-align: center;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 13px;
+  color: #6E5D4F;
+}
+
+.registerLink {
+  color: #BA4A1B;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.registerLink:hover {
+  text-decoration: underline;
+}
+
+/* Botón Flotante de Ayuda */
+.helpFloatingBtn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  border: 1px solid #EAE0CD;
+  color: #2B1810;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.helpFloatingBtn:hover {
+  transform: scale(1.05);
+}

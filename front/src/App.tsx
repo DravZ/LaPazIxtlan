@@ -7,6 +7,7 @@ import DashboardAdmin from "./pages/moduloAdmin/AdminPage";
 import DashboardCaja from "./pages/moduloCaja/Dashboard";
 import { OrderMenuProvider } from "./context/moduloMenu/OrderMenuContext";
 import { NotificationProvider } from "./context/notifications/NotificationContext";
+import { LoginPage } from "./pages/Login/LoginPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/cocinero" element={<DashboardCocina />} />
         <Route path="/admin" element={<DashboardAdmin />} />
         <Route path="/caja" element={<DashboardCaja />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={
           <OrderMenuProvider>
             <Dashboard />

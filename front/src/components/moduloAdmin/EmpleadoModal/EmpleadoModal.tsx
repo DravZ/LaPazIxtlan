@@ -2,20 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import styles from './EmpleadoModal.module.css';
 import type { Empleado } from '../../../interfaces/ModuloAdmin/Empleado';
+import { useNotification } from '../../../context/notifications/NotificationContext';
+import { createUser, editUser, getUserById } from '../../../controllers/user.controller';
 
 interface EmpleadoModalProps {
-  empleado?: Empleado;
+  idEmpleado?: number
   onClose: () => void;
-  onSave: (data: Empleado) => void;
+  onSuccess: () => void;
 }
 
 export const EmpleadoModal: React.FC<EmpleadoModalProps> = ({
-  empleado,
+  idEmpleado,
   onClose,
-  onSave
+  onSuccess
 }) => {
   const [name, setName] = useState('');
-  const [id, setId] = useState('');
   const [shift, setShift] = useState('Mañana (7am–3pm)');
   const [role, setRole] = useState('Mesero');
   const [user, setUser] = useState('');
@@ -23,65 +24,168 @@ export const EmpleadoModal: React.FC<EmpleadoModalProps> = ({
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
+  const { showNotification } = useNotification();
+
   useEffect(() => {
-    if (empleado) {
-      setName(empleado.name);
-      setId(empleado.id);
-      setShift(empleado.shift);
-      setRole(empleado.role);
+    const loadEmpleado = async () => {
+      if (idEmpleado) {
+        try {
+          const empleado = await getUserById(idEmpleado);
 
-      // Si después recibes usuario desde el backend puedes cargarlo aquí
-      setUser('');
+          setName(empleado.nombre_completo);
+          setShift("Matutino");
+          setRole(empleado.rol);
+          setUser(empleado.username);
 
-      // Por seguridad las contraseñas no se precargan
-      setPassword('');
-      setConfirmPassword('');
-    } else {
-      setName('');
-      setId('');
-      setShift('Mañana (7am–3pm)');
-      setRole('Mesero');
-      setUser('');
-      setPassword('');
-      setConfirmPassword('');
+          // Por seguridad las contraseñas no se precargan
+          setPassword("");
+          setConfirmPassword("");
+        } catch (error) {
+          showNotification({
+            type: "error",
+            title: "Error al obtener el empleado",
+            description: `ERROR: ${error}`,
+          });
+        }
+      } else {
+        setName("");
+        setShift("Matutino");
+        setRole("Mesero");
+        setUser("");
+        setPassword("");
+        setConfirmPassword("");
+      }
+
+      setPasswordError("");
+    };
+
+    loadEmpleado();
+  }, [idEmpleado]);
+
+  const registrarUsuario = async (newUser: any) => {
+    try {
+      await createUser(newUser)
+
+      showNotification({
+        type: "success",
+        title: "Usuario Creado!",
+        description: `Se han ingresado los datos del personal.`
+      });
+
+      onSuccess();
+
+    } catch (error) {
+      showNotification({
+        type: "error",
+        title: "Error al crear usuario",
+        description: `ERROR: ${error}`
+      });
     }
+  };
 
-    setPasswordError('');
-  }, [empleado]);
+  const editarUsuario = async (user: any) => {
+    try {
+      if(idEmpleado){
+        await editUser(idEmpleado ,user)
+      }
+
+      showNotification({
+        type: "success",
+        title: "Usuario Actualizado!",
+        description: `Se han actualizado los datos del personal.`
+      });
+
+      onSuccess();
+
+    } catch (error) {
+      showNotification({
+        type: "error",
+        title: "Error al editar usuario",
+        description: `ERROR: ${error}`
+      });
+    }
+  };
+
 
   const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (password !== confirmPassword) {
-    setPasswordError('Las contraseñas no coinciden.');
-    return;
-  }
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#_-])[A-Za-z\d@$!%*?&.#_-]{8,}$/;
 
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#_-])[A-Za-z\d@$!%*?&.#_-]{8,}$/;
+    // Registro
+    if (!idEmpleado) {
+      if (password !== confirmPassword) {
+        setPasswordError("Las contraseñas no coinciden.");
+        return;
+      }
 
-  if (!passwordRegex.test(password)) {
-    setPasswordError(
-      'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.'
-    );
-    return;
-  }
+      if (!passwordRegex.test(password)) {
+        setPasswordError(
+          "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial."
+        );
+        return;
+      }
+    }
+    // Edición
+    else if (password.trim() !== "" || confirmPassword.trim() !== "") {
+      if (password !== confirmPassword) {
+        setPasswordError("Las contraseñas no coinciden.");
+        return;
+      }
 
-  setPasswordError('');
+      if (!passwordRegex.test(password)) {
+        setPasswordError(
+          "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial."
+        );
+        return;
+      }
+    }
 
-  if (empleado) {
-    console.log('Se edito');
-  } else {
-    console.log('Se registro');
-  }
+    setPasswordError("");
 
-  onSave({
-    id: id.trim(),
-    name: name.trim(),
-    role,
-    shift
-  });
-};
+    if (idEmpleado) {
+
+      var editEmpleado = {};
+
+      if (password.trim() != "") {
+        editEmpleado = {
+          nombre_completo: name,
+          username: user,
+          password: password,
+          rol: role,
+          turno: shift,
+          activo: true
+        }
+      } else {
+        editEmpleado = {
+          nombre_completo: name,
+          username: user,
+          rol: role,
+          turno: shift,
+          activo: true
+        }
+      }
+
+      editarUsuario(editEmpleado);
+
+    } else {
+      console.log('Se registro');
+
+      const newEmpleado = {
+        nombre_completo: name,
+        username: user,
+        password: password,
+        rol: role,
+        turno: shift,
+        activo: true
+      }
+
+      registrarUsuario(newEmpleado);
+
+
+    }
+  };
 
   return (
     <div className={styles.overlay}>
@@ -89,10 +193,10 @@ export const EmpleadoModal: React.FC<EmpleadoModalProps> = ({
         <div className={styles.header}>
           <div>
             <span className={styles.subtitle}>
-              {empleado ? 'EDITAR EMPLEADO' : 'NUEVO EMPLEADO'}
+              {idEmpleado ? 'EDITAR EMPLEADO' : 'NUEVO EMPLEADO'}
             </span>
             <h2 className={styles.title}>
-              {empleado ? 'Editar Personal' : 'Agregar Personal'}
+              {idEmpleado ? 'Editar Personal' : 'Agregar Personal'}
             </h2>
           </div>
 
@@ -131,9 +235,8 @@ export const EmpleadoModal: React.FC<EmpleadoModalProps> = ({
               value={shift}
               onChange={(e) => setShift(e.target.value)}
             >
-              <option value="Mañana (7am–3pm)">Mañana (7am–3pm)</option>
-              <option value="Tarde (3pm–11pm)">Tarde (3pm–11pm)</option>
-              <option value="Noche (11pm–7am)">Noche (11pm–7am)</option>
+              <option value="Matutino">Mañana</option>
+              <option value="Vespertino">Tarde</option>
             </select>
           </div>
 
@@ -142,6 +245,7 @@ export const EmpleadoModal: React.FC<EmpleadoModalProps> = ({
             <input
               type="text"
               value={user}
+              placeholder='Usuario'
               onChange={(e) => setUser(e.target.value)}
               required
             />
@@ -159,7 +263,7 @@ export const EmpleadoModal: React.FC<EmpleadoModalProps> = ({
                   setPasswordError('');
                 }
               }}
-              required
+              required={!idEmpleado}
             />
           </div>
 
@@ -175,7 +279,7 @@ export const EmpleadoModal: React.FC<EmpleadoModalProps> = ({
                   setPasswordError('');
                 }
               }}
-              required
+              required={!idEmpleado}
             />
           </div>
 
@@ -198,7 +302,7 @@ export const EmpleadoModal: React.FC<EmpleadoModalProps> = ({
               type="submit"
               className={styles.btnRegister}
             >
-              {empleado ? 'Guardar Cambios' : 'Registrar'}
+              {idEmpleado ? 'Guardar Cambios' : 'Registrar'}
             </button>
           </div>
         </form>

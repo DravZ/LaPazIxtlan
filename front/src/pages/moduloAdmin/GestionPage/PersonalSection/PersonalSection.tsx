@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserPlus } from 'lucide-react';
 import styles from './PersonalSection.module.css';
 import type { Empleado } from '../../../../interfaces/ModuloAdmin/Empleado';
 import { PersonalCard } from '../../../../components/moduloAdmin/PersonalCard/PersonalCard';
 import { EmpleadoModal } from '../../../../components/moduloAdmin/EmpleadoModal/EmpleadoModal';
 import { DeletePersonalModal } from '../../../../components/moduloAdmin/DeletePersonalModal/DeletePersonalModal';
+import { deleteUser, getAllUsersActive } from '../../../../controllers/user.controller';
+import { useNotification } from '../../../../context/notifications/NotificationContext';
+
 
 const MOCK_PERSONAL: Empleado[] = [
   { id: 'EMP-001', name: 'Carlos Mendoza', role: 'Mesero', shift: 'Tarde (3pm–11pm)' },
@@ -15,43 +18,69 @@ const MOCK_PERSONAL: Empleado[] = [
 ];
 
 const PersonalSection = () => {
-  const [personal, setPersonal] = useState<Empleado[]>(MOCK_PERSONAL);
-  
+  const [personal, setPersonal] = useState([]);
+
   // Estados de control para Modales
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [selectedEmpleado, setSelectedEmpleado] = useState<Empleado | undefined>(undefined);
+  const [selectedEmpleado, setSelectedEmpleado] = useState<number | undefined>(undefined);
+
+  const { showNotification } = useNotification();
+
+  const cargarUsuarios = async () => {
+    try {
+      const usuarios = await getAllUsersActive();
+
+      console.log(usuarios)
+      setPersonal(usuarios)
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+
+    cargarUsuarios();
+  }, []);
 
   const handleOpenAdd = () => {
     setSelectedEmpleado(undefined);
     setIsModalOpen(true);
   };
 
-  const handleOpenEdit = (empleado: Empleado) => {
-    setSelectedEmpleado(empleado);
+  const handleOpenEdit = (id: number) => {
+    setSelectedEmpleado(id);
     setIsModalOpen(true);
   };
 
-  const handleOpenDelete = (empleado: Empleado) => {
-    setSelectedEmpleado(empleado);
+  const handleOpenDelete = (id: number) => {
+    setSelectedEmpleado(id);
     setIsDeleteOpen(true);
   };
 
-  const handleSave = (data: Empleado) => {
+  const handleDeleteConfirm = async () => {
     if (selectedEmpleado) {
-      // Backend: update API
-      setPersonal(prev => prev.map(e => e.id === selectedEmpleado.id ? { ...data } : e));
-    } else {
-      // Backend: create API
-      setPersonal(prev => [...prev, data]);
-    }
-    setIsModalOpen(false);
-  };
+      try {
+        await deleteUser(selectedEmpleado);
 
-  const handleDeleteConfirm = () => {
-    if (selectedEmpleado) {
-      // Backend: delete API
-      setPersonal(prev => prev.filter(e => e.id !== selectedEmpleado.id));
+        showNotification({
+          type: "success",
+          title: "Usuario Eliminado!",
+          description: `Se han eliminado los datos del personal.`
+        });
+
+        cargarUsuarios();
+
+      } catch (error) {
+        showNotification({
+          type: "error",
+          title: "Error al eliminar usuario",
+          description: `ERROR: ${error}`
+        });
+      }
+
+
     }
     setIsDeleteOpen(false);
   };
@@ -65,12 +94,12 @@ const PersonalSection = () => {
           </button>
 
           <div className={styles.cardsGrid}>
-            {personal.map(empleado => (
-              <PersonalCard 
-                key={empleado.id} 
+            {personal.map((empleado: any) => (
+              <PersonalCard
+                key={empleado.id_usuario}
                 empleado={empleado}
-                onEdit={() => handleOpenEdit(empleado)}
-                onDelete={() => handleOpenDelete(empleado)}
+                onEdit={() => handleOpenEdit(empleado.id_usuario)}
+                onDelete={() => handleOpenDelete(empleado.id_usuario)}
               />
             ))}
           </div>
@@ -79,16 +108,19 @@ const PersonalSection = () => {
 
       {/* Modales Atómicos */}
       {isModalOpen && (
-        <EmpleadoModal 
-          empleado={selectedEmpleado} 
-          onClose={() => setIsModalOpen(false)} 
-          onSave={handleSave}
+        <EmpleadoModal
+          idEmpleado={selectedEmpleado}
+          onClose={() => setIsModalOpen(false)}
+          onSuccess={() => {
+            setIsModalOpen(false);
+            cargarUsuarios();
+          }}
         />
       )}
 
       {isDeleteOpen && (
-        <DeletePersonalModal 
-          onClose={() => setIsDeleteOpen(false)} 
+        <DeletePersonalModal
+          onClose={() => setIsDeleteOpen(false)}
           onConfirm={handleDeleteConfirm}
         />
       )}
