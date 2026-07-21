@@ -8,6 +8,7 @@ import { getAllOrdenes, getOrdenesPendientes, getOrdenesPorEntregar } from "../.
 import { socket } from "../../../../services/socket.service";
 import { useOrdenesSocket } from "../../../../hooks/useOrdenesSocket";
 import { useNotification } from "../../../../context/notifications/NotificationContext";
+import LogOutBtn from "../../../logOut/LogOutBtn";
 
 interface MainContentProps {
   category: string;
@@ -78,8 +79,8 @@ const MainContent = ({ category }: MainContentProps) => {
             showNotification({
               type: "warning",
               title: "Nueva orden lista para entregar!",
-              description: "Hay una nueva orden lista para entregar. " + 
-              "Revise la sección de Entregar"
+              description: "Hay una nueva orden lista para entregar. " +
+                "Revise la sección de Entregar"
             });
             break;
 
@@ -107,9 +108,15 @@ const MainContent = ({ category }: MainContentProps) => {
   return (
     <div className={`p-3 ${styles.container}`}>
       <div className="row mx-2 p-0">
-        <div className="m-0 p-0 d-none d-md-block">
-          <p className={"mt-2 mb-0 p-0 " + styles.subtitle}>MODO MESERO</p>
-          <p className={"mt-0 mb-0 p-0 " + styles.title}>{category}</p>
+        <div className="m-0 p-0 d-none d-md-flex align-content-center align-items-center
+        justify-content-between">
+          <div>
+            <p className={"mt-2 mb-0 p-0 " + styles.subtitle}>MODO MESERO</p>
+            <p className={"mt-0 mb-0 p-0 " + styles.title}>{category}</p>
+          </div>
+          <div className="ms-2 me-2">
+            <LogOutBtn />
+          </div>
         </div>
         {category === "Pendientes" && (
           <>

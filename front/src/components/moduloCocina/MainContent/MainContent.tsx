@@ -5,6 +5,7 @@ import styles from "./MainContent.module.css";
 import { getOrdenesEnPreparación, getOrdenesPorEntregar, getOrdenesPreparadas_Dia } from "../../../controllers/orden.controller";
 import { useOrdenesSocket } from "../../../hooks/useOrdenesSocket";
 import { useNotification } from "../../../context/notifications/NotificationContext";
+import LogOutBtn from "../../logOut/LogOutBtn";
 
 interface MainContentProps {
   seccion: string;
@@ -79,19 +80,20 @@ const MainContent = ({ seccion }: MainContentProps) => {
 
   return (
     <div className={`p-3 ` + styles.container}>
-      <div className="row mx-2 p-0">
-        <div className="m-0 p-0 d-none d-md-block">
-          <p className={"mt-2 mb-0 p-0 " + styles.subtitle}>MODO COCINA</p>
+      <div className="row mx-2 d-flex justify-content-between align-items-center p-0">
+        <div className="m-0 p-0 d-none d-md-block w-auto">
+          <p className={"mt-2 mb-0 p-0  w-auto " + styles.subtitle}>MODO COCINA</p>
           <p className={"mt-0 mb-0 p-0 " + styles.title}>{seccion}</p>
         </div>
 
-        <div className="m-0 p-0 d-block d-md-none">
+        <div className="m-0 p-0 d-block d-md-none w-auto">
           <p className={"mt-2 mb-0 p-0 " + styles.subtitle}>RESTAURANTE</p>
           <p className={"mt-0 mb-0 p-0 " + styles.title}>La Pax Ixtlan</p>
           <p className={"mt-0 mb-0 p-0 " + styles.subtitleCategory}>
             {seccion}
           </p>
         </div>
+        <LogOutBtn/>
       </div>
 
       <div className="row mx-0 mt-4 p-0">

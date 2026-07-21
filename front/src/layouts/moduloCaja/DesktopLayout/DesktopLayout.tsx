@@ -4,12 +4,13 @@ import { MainContent } from "../../../components/moduloCaja/MainContent/MainCont
 import styles from './DesktopLayout.module.css';
 import { SecondaryPanel } from "../../../components/moduloCaja/SecondaryPanel/SecondaryPanel";
 import type { Orden } from "../../../interfaces/moduloCaja/Orden"; // Asegúrate de importar el tipo
+import LogOutBtn from "../../../components/logOut/LogOutBtn";
 
 interface DesktopLayoutProps {
   isDesktop?: boolean
 }
-const DesktopLayout = ({isDesktop
- }: DesktopLayoutProps) => {
+const DesktopLayout = ({ isDesktop
+}: DesktopLayoutProps) => {
   // El estado inicia vacío aquí arriba
   const [selectedProduct, setSelectedProduct] = useState<Orden | null>(null);
 
@@ -26,8 +27,11 @@ const DesktopLayout = ({isDesktop
           <p className={styles.title + " mb-0"}>La Paz Ixtlan</p>
         </div>
 
-        <div className={styles.chip + " w-auto me-4"}>
-          <CreditCard size={16} className="me-1" /> Caja Registradora
+        <div className=" w-auto me-4 d-flex">
+          <div className={styles.chip + " w-auto me-4"}>
+            <CreditCard size={16} className="me-1" /> Caja Registradora
+          </div>
+          <LogOutBtn/>
         </div>
       </div>
 

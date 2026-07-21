@@ -1,0 +1,33 @@
+.btn {
+    display: flex;
+    height: 35px;
+    width: 35px;
+    background-color: #EDDFD0;
+    color: #BF5517;
+    border: 1px solid #dd834f;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+    cursor: pointer;
+
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.btn:hover {
+    background-color: #BF5517;
+    color: #fff;
+    border-color: #a74812;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(191, 85, 23, 0.25);
+}
+
+.btn:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 2px 6px rgba(191, 85, 23, 0.2);
+}

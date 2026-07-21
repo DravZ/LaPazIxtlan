@@ -7,6 +7,7 @@ import type { Orden } from "../../../interfaces/moduloCaja/Orden";
 import styles from './TabletLayout.module.css'
 import { CreditCard } from "lucide-react";
 import { CobroModal } from "../../../components/moduloCaja/CobroModal/CobroModal";
+import LogOutBtn from "../../../components/logOut/LogOutBtn";
 
 interface TabletLayoutProps {
   isDesktop?: boolean
@@ -32,8 +33,11 @@ const TabletLayout = ({ isDesktop
           <p className={styles.title + " mb-0"}>La Paz Ixtlan</p>
         </div>
 
-        <div className={styles.chip + " w-auto me-4"}>
-          <CreditCard size={16} className="me-1" /> Caja Registradora
+        <div className=" w-auto me-4 d-flex">
+          <div className={styles.chip + " w-auto me-4"}>
+            <CreditCard size={16} className="me-1" /> Caja
+          </div>
+          <LogOutBtn/>
         </div>
       </div>
 

@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, LogIn, HelpCircle } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, LogIn, HelpCircle, User } from 'lucide-react';
 import styles from './LoginPage.module.css';
 import { login } from '../../controllers/auth.controller';
 import axios from 'axios';
 import { useNotification } from '../../context/notifications/NotificationContext';
+import { useNavigate } from 'react-router-dom';
+import { saveSession } from '../../services/session.service'; 
 
 export const LoginPage: React.FC = () => {
     const [usuario, setUsuario] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    
 
     const { showNotification } = useNotification();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -21,13 +25,30 @@ export const LoginPage: React.FC = () => {
                 password: password,
             });
 
+            saveSession(res);
+
             showNotification({
                 type: "success",
                 title: "Bienvenido!",
                 description: `Sesión inciada correctamente`,
             });
 
-            console.log(res);
+            //console.log(res);
+
+            switch(res.rol){
+                case "Administrador":
+                    navigate("/admin");
+                    break;
+                case "Mesero":
+                    navigate("/mesero");
+                    break;
+                case "Cocina":
+                    navigate("/cocinero");
+                    break;
+                case "Cajero":
+                    navigate("/caja");
+                    break;
+            }
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 401) {
@@ -79,7 +100,7 @@ export const LoginPage: React.FC = () => {
                         <div className={styles.inputGroup}>
                             <label className={styles.label}>USUARIO</label>
                             <div className={styles.inputWrapper}>
-                                <Mail className={styles.inputIcon} size={18} />
+                                <User className={styles.inputIcon} size={18} />
                                 <input
                                     type="text"
                                     className={styles.input}

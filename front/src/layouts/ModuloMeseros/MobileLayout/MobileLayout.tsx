@@ -5,6 +5,7 @@ import BottomNav from "../../../components/meseros/Mesero/BottomNav/BottomNav";
 import type { ProductMenu } from "../../../interfaces/ModuloMenu/ProductMenu";
 
 import styles from "./MobileLayout.module.css";
+import LogOutBtn from "../../../components/logOut/LogOutBtn";
 
 
 const MobileLayout = () => {
@@ -23,7 +24,7 @@ const MobileLayout = () => {
                   La Paz Ixtlan
                 </h2>
               </div>
-              <span className={styles.badgeMesero}>Mesero</span>
+              <LogOutBtn/>
             </div>
             {/* Categoría debajo en formato grande */}
             <h1 className={`${styles.categoryTitle} mt-3 mb-1`}>{category}</h1>

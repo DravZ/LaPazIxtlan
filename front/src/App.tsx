@@ -8,30 +8,64 @@ import DashboardCaja from "./pages/moduloCaja/Dashboard";
 import { OrderMenuProvider } from "./context/moduloMenu/OrderMenuContext";
 import { NotificationProvider } from "./context/notifications/NotificationContext";
 import { LoginPage } from "./pages/Login/LoginPage";
+import { Navigate } from "react-router-dom";
+import GuestRoute from "./components/auth/GuestRoute";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 function App() {
   return (
     <NotificationProvider>
       <BrowserRouter>
-      <Routes>
-        <Route path="/:id" element={
-          <OrderMenuProvider>
-            <Dashboard />
-          </OrderMenuProvider>
-        } />
-        <Route path="/about" element={<AboutPage/>}/>
-        <Route path="/mesero" element={<DashboardMesero />} />
-        <Route path="/cocinero" element={<DashboardCocina />} />
-        <Route path="/admin" element={<DashboardAdmin />} />
-        <Route path="/caja" element={<DashboardCaja />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="*" element={
-          <OrderMenuProvider>
-            <Dashboard />
-          </OrderMenuProvider>
-        } />
-      </Routes>
-    </BrowserRouter>
+        <Routes>
+          <Route path="/:id" element={
+            <OrderMenuProvider>
+              <Dashboard />
+            </OrderMenuProvider>
+          } />
+          <Route path="/about" element={<AboutPage />} />
+          <Route
+            path="/mesero"
+            element={
+              <ProtectedRoute roles={["Administrador","Mesero"]}>
+                <DashboardMesero />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/cocinero"
+            element={
+              <ProtectedRoute roles={["Administrador","Cocina"]}>
+                <DashboardCocina />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute roles={["Administrador"]}>
+                <DashboardAdmin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/caja"
+            element={
+              <ProtectedRoute roles={["Administrador","Cajero"]}>
+                <DashboardCaja />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <GuestRoute>
+                <LoginPage />
+              </GuestRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/1" replace />} />
+        </Routes>
+      </BrowserRouter>
     </NotificationProvider>
   );
 }

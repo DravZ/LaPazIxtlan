@@ -18,6 +18,8 @@
   font-weight: 300;
   font-size: 0.8rem;
   color: #7A5C3E;
+
+  width: fit-content !important;
 }
 
 .title {
@@ -25,6 +27,7 @@
   font-weight: 600;
   font-size: 2rem;
   color: #2C1A0E;
+  width: fit-content !important;
 }
 
 .subtitleCategory {
@@ -32,5 +35,6 @@
   font-weight: 600;
   font-size: 1.2rem;
   color: #B54A1C;
+  width: fit-content !important;
 }
 
