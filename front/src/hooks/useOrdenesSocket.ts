@@ -4,7 +4,7 @@ import { socket } from "../services/socket.service";
 export interface ActualizacionOrden {
     tipo: "creada" | "actualizada" | "eliminada";
     estado?: string;
-    // id_orden?: number;
+    id_orden?: number;
 }
 
 export const useOrdenesSocket = (

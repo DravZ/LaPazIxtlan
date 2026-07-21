@@ -23,6 +23,18 @@ export const getAllOrdenes = async () => {
     }
 };
 
+export const getOrdenById = async (id: number) => {
+    try {
+        const response = await OrderService.getOrdenById(id);
+
+        return response.data;
+
+    } catch (error) {
+        console.error("Error obteniendo orden :" + id, error);
+        throw error;
+    }
+};
+
 export const getOrdenesPendientes = async () => {
     try {
         const response = await OrderService.getAllOrders();

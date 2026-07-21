@@ -7,6 +7,10 @@ export const getAllOrders = () => {
     return api.get("/ordenes");
 };
 
+export const getOrdenById = (id: number) => {
+    return api.get("/ordenes/"+id);
+}
+
 export const updateOrden = (idOrden: number, order: any) => {
 
     return api.patch(`/ordenes/${idOrden}`, order);

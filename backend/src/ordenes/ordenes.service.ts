@@ -128,8 +128,8 @@ export class OrdenesService {
 
       this.ordenesGateway.server.emit('actualizacionOrdenes', {
         tipo: "creada",
-        estado: ordenGuardada.estado
-        // id_orden: orden.id_orden,
+        estado: ordenGuardada.estado,
+        id_orden: ordenGuardada.id_orden,
       });
 
       return {
@@ -242,8 +242,8 @@ export class OrdenesService {
     });
     this.ordenesGateway.server.emit('actualizacionOrdenes', {
         tipo: "actualizada",
-        estado: estado
-        // id_orden: orden.id_orden,
+        estado: estado,
+        id_orden: id,
       });
 
     return { mensaje: `La orden #${id} fue actualizada correctamente.`, orden };
@@ -260,8 +260,8 @@ export class OrdenesService {
       await queryRunner.commitTransaction();
       this.ordenesGateway.server.emit('actualizacionOrdenes', {
         tipo: "eliminada",
-        estado: "Descartada"
-        // id_orden: orden.id_orden,
+        estado: "Descartada",
+        id_orden: id,
       });
       return { mensaje: 'Orden y sus detalles eliminados correctamente' };
     } catch (error: any) {

@@ -3,6 +3,7 @@ import styles from "./Sidebar.module.css";
 import { ClipboardList, ShoppingCart, Clock } from "lucide-react";
 import { getOrdenesPendientes, getOrdenesPorEntregar } from "../../../controllers/orden.controller";
 import { useOrdenesSocket } from "../../../hooks/useOrdenesSocket";
+import { getUserId } from "../../../services/session.service";
 
 interface SidebarProps {
   category: string;
@@ -23,12 +24,17 @@ const Sidebar = ({
 
   const cargarOrdenes = async () => {
     try {
+      const idMesero = getUserId();
+
       const dataPendientes = await getOrdenesPendientes();
       const dataEntregar = await getOrdenesPorEntregar();
 
-      setOrdenesPendientes(dataPendientes.length);
-      setOrdenesPorEntregar(dataEntregar.length);
+      const dataEntregarFiltrada = dataEntregar.filter(
+        (orden: any) => orden.mesero?.id_usuario === idMesero
+      );
 
+      setOrdenesPendientes(dataPendientes.length);
+      setOrdenesPorEntregar(dataEntregarFiltrada.length);
       console.log("Órdenes pendientes:", dataPendientes.length);
       console.log("Órdenes por entregar:", dataEntregar.length);
     } catch (error) {

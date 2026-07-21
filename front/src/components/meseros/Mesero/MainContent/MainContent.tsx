@@ -4,11 +4,13 @@ import styles from "./MainContent.module.css";
 import CardEntrega from "../CardEntrega/CardEntrega";
 import CardHistorial from "../CardHistorial/CardHistorial";
 import { useEffect, useState } from "react";
-import { getAllOrdenes, getOrdenesPendientes, getOrdenesPorEntregar } from "../../../../controllers/orden.controller";
+import { getAllOrdenes, getOrdenById, getOrdenesPendientes, getOrdenesPorEntregar } from "../../../../controllers/orden.controller";
 import { socket } from "../../../../services/socket.service";
 import { useOrdenesSocket } from "../../../../hooks/useOrdenesSocket";
 import { useNotification } from "../../../../context/notifications/NotificationContext";
 import LogOutBtn from "../../../logOut/LogOutBtn";
+
+import { getUserId } from "../../../../services/session.service";
 
 interface MainContentProps {
   category: string;
@@ -40,11 +42,23 @@ const MainContent = ({ category }: MainContentProps) => {
     }
   };
 
+  const obtenerIdMesero_Orden = async (id: number) => {
+    try {
+      const res = await getOrdenById(id);
+
+      console.log(res.mesero.id_usuario)
+      return res.mesero.id_usuario;
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     cargarOrdenes();
   }, []);
 
-  useOrdenesSocket((evento) => {
+  useOrdenesSocket(async (evento) => {
 
     cargarOrdenes();
 
@@ -72,16 +86,22 @@ const MainContent = ({ category }: MainContentProps) => {
 
           case "Lista":
             // Reproducir sonido
-            const audio = new Audio("/sounds/notification.mp3");
-            audio.play().catch(() => { });
 
-            // Tu hook de notificaciones
-            showNotification({
-              type: "warning",
-              title: "Nueva orden lista para entregar!",
-              description: "Hay una nueva orden lista para entregar. " +
-                "Revise la sección de Entregar"
-            });
+            if (evento.id_orden) {
+              const id_m = await obtenerIdMesero_Orden(evento.id_orden);
+
+              if (id_m === getUserId()) {
+                const audio = new Audio("/sounds/notification.mp3");
+                audio.play().catch(() => { });
+
+                showNotification({
+                  type: "warning",
+                  title: "Nueva orden lista para entregar!",
+                  description:
+                    "Hay una nueva orden lista para entregar. Revise la sección de Entregar"
+                });
+              }
+            }
             break;
 
           case "Entregada":
@@ -141,7 +161,7 @@ const MainContent = ({ category }: MainContentProps) => {
         {category === "Por entregar" && (
           <>
             {ordenesPorEntregar.map((o: any) => (
-              <div
+              o.mesero.id_usuario == getUserId() ? (<div
                 key={o.id_orden}
                 className="col-xl-6 col-lg-6 col-md-12 mb-4"
               >
@@ -153,7 +173,7 @@ const MainContent = ({ category }: MainContentProps) => {
                   price={o.total}
                   timer={o.hora_creacion}
                 />
-              </div>
+              </div>) : null
             ))}
           </>
         )}
