@@ -154,6 +154,7 @@ export class OrdenesService {
       relations: {
         mesero: true,
         mesa: true,
+        ticket: true,
         detalles: {
           producto: true,
           detallesToppings: {
@@ -170,7 +171,10 @@ export class OrdenesService {
       if (orden.mesero) {
         delete (orden.mesero as any).password_cifrada;
       }
-      return orden;
+      return {
+        ...orden,
+        pagada: orden.ticket !== null
+      };
     });
   }
 
@@ -180,6 +184,7 @@ export class OrdenesService {
       relations: {
         mesero: true,
         mesa: true,
+        ticket: true,
         detalles: {
           producto: true,
           detallesToppings: {
@@ -197,7 +202,10 @@ export class OrdenesService {
       delete (orden.mesero as any).password_cifrada;
     }
 
-    return orden;
+    return {
+      ...orden,
+      pagada: orden.ticket !== null
+    };
   }
 
   async update(id: number, updateOrdenDto: UpdateOrdenDto) {
