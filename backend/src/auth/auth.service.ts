@@ -39,6 +39,8 @@ export class AuthService {
     return {
       mensaje: '¡Bienvenido a La Paz Ixtlán!',
       token: this.jwtService.sign(payload), 
+      id: usuario.id_usuario,
+      rol: usuario.rol
     };
   }
 
